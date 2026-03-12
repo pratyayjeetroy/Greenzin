@@ -41,7 +41,7 @@ const Navbar = () => {
         <div style={{ flexShrink: 0 }}>
           <Link href="/">
             <img
-              src="/greenZinLogo.jpeg"
+              src="/greenZinLogo.png"
               alt="GreenZin - The Best Gardening Brand"
               style={{ height: "56px", width: "auto", objectFit: "contain" }}
             />

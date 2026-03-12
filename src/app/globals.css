@@ -3,6 +3,14 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  /* ── Brand Gradient (green → blue, matches CTA button design) ── */
+  --brand-gradient: linear-gradient(to right, #83B930, #1992D5);
+}
+
+/* Utility class — apply to any element that needs the brand gradient as background */
+.bg-brand-gradient {
+  background: var(--brand-gradient);
 }
 
 @theme inline {
