@@ -1,11 +1,13 @@
 "use client";
 
-import HeroCarousel from "@/components/HeroCarousel";
+import CategoriesSec from "@/components/home/CategoriesSec";
+import HeroCarousel from "@/components/home/HeroCarousel";
 
 export default function Home() {
   return (
     <>
       <HeroCarousel />
+      <CategoriesSec/>
     </>
   );
 }

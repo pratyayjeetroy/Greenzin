@@ -85,16 +85,13 @@ export default function HeroCarousel() {
   const slide = slides[current];
 
   return (
-    <section
-      className="relative w-full overflow-hidden"
-      aria-label="Hero carousel"
-    >
+    <div className="relative w-full overflow-hidden" aria-label="Hero carousel">
       {/* ── Background Image wrapper — drives the section height ── */}
       <div className="relative w-full">
         <img
           src={slide.image}
           alt={slide.tag}
-          className={`w-full h-auto object-contain block transition-opacity duration-500 ease-in-out ${
+          className={`block h-auto w-full object-contain transition-opacity duration-500 ease-in-out ${
             animating ? "opacity-0" : "opacity-100"
           }`}
           draggable={false}
@@ -104,7 +101,7 @@ export default function HeroCarousel() {
 
         {/* ── Text Content ── */}
         <div
-          className={`absolute inset-0 flex flex-col justify-center px-[6%] max-w-[52%] transition-all duration-500 ${
+          className={`absolute inset-0 flex max-w-[60%] flex-col justify-center px-[8%] transition-all duration-500 ${
             animating
               ? direction === "next"
                 ? "-translate-x-8 opacity-0"
@@ -114,23 +111,22 @@ export default function HeroCarousel() {
         >
           {/* Heading — accentColor is runtime per-slide, so one inline style is unavoidable */}
           <h1
-            className="font-extrabold leading-tight tracking-tight text-[clamp(26px,3.2vw,52px)]"
+            className="font-[Tinos] text-[60px] leading-tight font-semibold"
             style={{ color: slide.accentColor }}
           >
-            {slide.tag} <span className="font-black text-[#265735]">&gt;</span>
+            {slide.tag} <span className="font-black text-[#228EC0]">&gt;</span>
           </h1>
 
           {/* Gradient underline */}
-          <div className="mt-2 mb-4 rounded-full h-[3px] w-[clamp(80px,10vw,160px)] [background:var(--brand-gradient)]" />
+          <div className="mt-[8px] mb-[16px] h-[3px] w-[120px] rounded-full [background:var(--brand-gradient)]" />
 
           {/* Subtitle */}
-          <p className="font-medium text-gray-700 text-[clamp(13px,1.5vw,22px)]">
-            {slide.subtitle}
-          </p>
+          <p className="text-[30px] text-gray-600">{slide.subtitle}</p>
 
           {/* CTA Button */}
-          <a href={slide.ctaHref}
-            className="mt-5 w-fit inline-flex items-center justify-center font-semibold text-white rounded-full px-7 py-2.5 text-[clamp(13px,1.2vw,18px)] [background:var(--brand-gradient)] [box-shadow:0_4px_14px_rgba(56,189,248,0.35)] transition-all duration-300 hover:scale-105 hover:shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500"
+          <a
+            href={slide.ctaHref}
+            className="mt-[20px] inline-flex w-fit items-center justify-center rounded-full px-[28px] py-[10px] text-[20px] text-white [box-shadow:0_4px_14px_rgba(56,189,248,0.35)] transition-all duration-300 [background:var(--brand-gradient)] hover:scale-105 hover:shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500"
           >
             {slide.cta}
           </a>
@@ -141,23 +137,23 @@ export default function HeroCarousel() {
       <button
         onClick={goPrev}
         aria-label="Previous slide"
-        className="absolute left-3 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-[clamp(36px,3.5vw,50px)] h-[clamp(36px,3.5vw,50px)] rounded-full text-white border-0 cursor-pointer [background:var(--brand-gradient)] [box-shadow:0_4px_16px_rgba(56,189,248,0.4)] transition-all duration-200 hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
+        className="absolute top-1/2 left-[12px] z-10 flex h-[60px] w-[60px] -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border-0 border-[1px] border-white text-white [box-shadow:0_4px_16px_rgba(56,189,248,0.4)] transition-all duration-200 [background:var(--brand-gradient)] hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
       >
-        <ChevronLeft className="w-[50%] h-[50%]" strokeWidth={2.5} />
+        <ChevronLeft className="h-[60%] w-[60%]" strokeWidth={2} />
       </button>
 
       {/* ── Right Arrow ── */}
       <button
         onClick={goNext}
         aria-label="Next slide"
-        className="absolute right-3 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-[clamp(36px,3.5vw,50px)] h-[clamp(36px,3.5vw,50px)] rounded-full text-white border-0 cursor-pointer [background:var(--brand-gradient)] [box-shadow:0_4px_16px_rgba(56,189,248,0.4)] transition-all duration-200 hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
+        className="absolute top-1/2 right-[12px] z-10 flex h-[60px] w-[60px] -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border-0 border-[1px] border-white text-white [box-shadow:0_4px_16px_rgba(56,189,248,0.4)] transition-all duration-200 [background:var(--brand-gradient)] hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
       >
-        <ChevronRight className="w-[50%] h-[50%]" strokeWidth={2.5} />
+        <ChevronRight className="h-[60%] w-[60%]" strokeWidth={2} />
       </button>
 
       {/* ── Dot Indicators ── */}
       <div
-        className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 flex items-center gap-2"
+        className="absolute bottom-[16px] left-1/2 z-10 flex -translate-x-1/2 items-center gap-[8px]"
         role="tablist"
         aria-label="Slide indicators"
       >
@@ -168,14 +164,11 @@ export default function HeroCarousel() {
             aria-label={`Go to slide ${i + 1}: ${s.tag}`}
             aria-selected={i === current}
             onClick={() => goTo(i, i > current ? "next" : "prev")}
-            className="rounded-full p-0 shrink-0 cursor-pointer transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
+            className="shrink-0 cursor-pointer rounded-full p-0 transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
             style={{
               /* width/background depend on JS state → inline style is the right call */
-              width:
-                i === current
-                  ? "clamp(22px, 2vw, 32px)"
-                  : "clamp(9px, 0.9vw, 13px)",
-              height: "clamp(9px, 0.9vw, 13px)",
+              width: i === current ? "28px" : "11px",
+              height: "11px",
               background:
                 i === current
                   ? "var(--brand-gradient)"
@@ -186,7 +179,6 @@ export default function HeroCarousel() {
           />
         ))}
       </div>
-
-    </section>
+    </div>
   );
 }
