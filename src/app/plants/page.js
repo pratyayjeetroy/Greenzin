@@ -10,8 +10,8 @@ export default function PlantsPage() {
   const [selectedCategory, setSelectedCategory] = useState("Indoor Plants");
 
   const filteredPlants = plants.filter(
-    (plant) => plant.category === selectedCategory
-  );
+  (plant) => plant.category?.includes(selectedCategory)
+);
 
   return (
     <div className="w-full">
@@ -79,7 +79,7 @@ Explore a wide range of indoor, outdoor, medicinal, and decorative plants to sui
 
       {/* Featured Plants Section */}
 
-      <div className="w-full px-[40px] py-[24px] border">
+      <div className="w-full px-[40px] py-[24px] bg-[#f8faf7]">
 <h2 className="text-[33px] font-[600] font-[poppins] text-slate-800 text-center mb-10">
   Featured {selectedCategory}
 </h2>
@@ -89,7 +89,7 @@ Explore a wide range of indoor, outdoor, medicinal, and decorative plants to sui
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
 
           {filteredPlants.map((plant, index) => (
-            <PlantCard key={index} plant={plant} />
+            <PlantCard key={index} plant={plant} selectedCategory={selectedCategory} />
           ))}
 
         </div>

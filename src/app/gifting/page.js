@@ -34,7 +34,7 @@ export default function PlantsPage() {
 
         {/* Category Circles */}
 
-        <div className="max-w-6xl mx-auto mt-10 px-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-y-6 gap-x-2 ">
+        <div className="max-w-5xl mx-auto mt-10 px-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-y-6 gap-x-2 ">
 
           {categories.map((cat) => (
 
@@ -44,13 +44,13 @@ export default function PlantsPage() {
               className="flex flex-col items-center cursor-pointer"
             >
               <div
-  className={`w-[120px] h-[120px] rounded-full p-[4px] ${
+  className={`w-[154px] h-[154px] rounded-full p-[4px] ${
     selectedCategory === cat.name
       ? "bg-brand-gradient"
       : "bg-gray-200"
   }`}
 >
-  <div className="w-[112px] h-[112px] rounded-full overflow-hidden bg-white">
+  <div className="w-[146px] h-[146px] rounded-full overflow-hidden bg-white">
     <img
       src={cat.image}
       alt={cat.name}
