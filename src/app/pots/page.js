@@ -2,16 +2,70 @@
 
 import { useState } from "react";
 import PlantCard from "@/components/plants/PlantCard";
-import { plants } from "@/data/plants";
+import { plants } from "@/data/pots";
 import { categories } from "@/data/potCategories";
+import FaqSection from "@/components/general/FaqSection";
+
 
 export default function PlantsPage() {
 
   const [selectedCategory, setSelectedCategory] = useState("Plastic Pots");
 
   const filteredPlants = plants.filter(
-    (plant) => plant.category === selectedCategory
+    (plant) => plant.category?.includes(selectedCategory)
   );
+  const faqs = [
+  {
+    question: "What types of pots are available?",
+    answer:
+      "We offer different types of pots including ceramic pots, plastic pots, metal pots, decorative pots, hanging pots, tabletop planters, and modern designer planters.",
+  },
+  {
+    question: "Which pots are best for indoor plants?",
+    answer:
+      "Ceramic pots, decorative planters, and compact tabletop pots are great for indoor plants because they look elegant and fit well in home and office spaces.",
+  },
+  {
+    question: "Do you have pots for outdoor use?",
+    answer:
+      "Yes, we offer outdoor pots that are durable and suitable for balconies, terraces, patios, and gardens.",
+  },
+  {
+    question: "Are lightweight pots available?",
+    answer:
+      "Yes, lightweight pots such as plastic and certain fiber planters are available and are easy to move and maintain.",
+  },
+  {
+    question: "Do you offer decorative and designer pots?",
+    answer:
+      "Yes, we have decorative and designer pots in different colors, shapes, and finishes to match various home and office interiors.",
+  },
+  {
+    question: "Which pot size should I choose for my plant?",
+    answer:
+      "The pot size depends on the plant type and root growth. A slightly larger pot than the current root size is usually recommended for healthy growth.",
+  },
+  {
+    question: "Do the pots come with drainage holes?",
+    answer:
+      "Many of our pots come with drainage holes, which help prevent overwatering and support better plant health. Availability may vary depending on the pot design.",
+  },
+  {
+    question: "Are these pots suitable for gifting?",
+    answer:
+      "Yes, many of our pots are selected especially for gifting and are available in stylish, decorative, and premium designs.",
+  },
+  {
+    question: "Can I get pots in different colors and shapes?",
+    answer:
+      "Yes, we offer pots in a variety of colors, shapes, sizes, and styles to suit different décor preferences.",
+  },
+  {
+    question: "How do I clean and maintain decorative pots?",
+    answer:
+      "Most decorative pots can be cleaned easily with a soft cloth and mild water cleaning. Proper handling and regular dusting help maintain their look for a long time.",
+  },
+];
 
   return (
     <div className="w-full">
@@ -79,7 +133,7 @@ export default function PlantsPage() {
 
       {/* Featured Plants Section */}
 
-      <div className="w-full px-[40px] py-[24px] border">
+      <div className="w-full px-[40px] py-[24px] bg-[#f8faf7]">
 <h2 className="text-[33px] font-[600] font-[poppins] text-slate-800 text-center mb-10">
   Featured {selectedCategory}
 </h2>
@@ -89,12 +143,13 @@ export default function PlantsPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
 
           {filteredPlants.map((plant, index) => (
-            <PlantCard key={index} plant={plant} />
+            <PlantCard key={index} plant={plant} selectedCategory={selectedCategory} />
           ))}
 
         </div>
 
       </div>
+   <FaqSection title="General FAQs" faqs={faqs} />
 
     </div>
   );

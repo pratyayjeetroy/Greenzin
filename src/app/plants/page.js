@@ -4,10 +4,64 @@ import { useState } from "react";
 import PlantCard from "@/components/plants/PlantCard";
 import { plants } from "@/data/plants";
 import { categories } from "@/data/plantCategories";
+import FaqSection from "@/components/general/FaqSection";
+
 
 export default function PlantsPage() {
 
   const [selectedCategory, setSelectedCategory] = useState("Indoor Plants");
+  const faqs = [
+  {
+    question: "What are the different categories of plants available?",
+    answer:
+      "We offer a wide range of plant categories including indoor plants, outdoor plants, flowering plants, air-purifying plants, succulents, bonsai plants, hanging plants, and low-maintenance plants.",
+  },
+  {
+    question: "Which plants are best suited for indoor spaces?",
+    answer:
+      "Indoor plants such as snake plant, pothos, peace lily, lucky bamboo, ZZ plant, and syngonium are popular choices because they are easy to maintain and adapt well to indoor conditions.",
+  },
+  {
+    question: "Do you have outdoor plants for balconies, terraces, or gardens?",
+    answer:
+      "Yes, we offer outdoor plants that are suitable for balconies, terraces, patios, and gardens, including flowering plants, decorative foliage plants, and hardy green plants.",
+  },
+  {
+    question: "Do you offer flowering plants?",
+    answer:
+      "Yes, we have flowering plants in different varieties that can add color and freshness to homes, balconies, gardens, and office spaces.",
+  },
+  {
+    question: "Which plants are low-maintenance and easy to care for?",
+    answer:
+      "Low-maintenance plants like snake plant, jade plant, aloe vera, ZZ plant, cactus, and succulents are great options for beginners and busy plant owners.",
+  },
+  {
+    question: "Do you have plants that help purify indoor air?",
+    answer:
+      "Yes, we offer air-purifying plants such as areca palm, spider plant, peace lily, pothos, and snake plant, which are commonly chosen for indoor environments.",
+  },
+  {
+    question: "How often should I water my plants?",
+    answer:
+      "Watering depends on the type of plant, pot size, and environment. In general, most indoor plants should be watered only when the top layer of soil feels dry.",
+  },
+  {
+    question: "How much sunlight do plants need?",
+    answer:
+      "Sunlight requirements vary by plant category. Some plants thrive in bright indirect light, while others prefer direct sunlight or partial shade. We recommend checking the care needs of each plant before purchase.",
+  },
+  {
+    question: "Do you provide plant care tips for beginners?",
+    answer:
+      "Yes, we share basic care tips such as watering guidance, sunlight needs, pot placement, soil care, and general maintenance to help beginners care for their plants easily.",
+  },
+  {
+    question: "How do I choose the right plant for my home or office?",
+    answer:
+      "The right plant depends on the space, available sunlight, maintenance preference, and purpose. Indoor low-maintenance plants are ideal for offices, while flowering and outdoor plants are better for open spaces and balconies.",
+  },
+];
 
   const filteredPlants = plants.filter(
   (plant) => plant.category?.includes(selectedCategory)
@@ -34,7 +88,7 @@ Explore a wide range of indoor, outdoor, medicinal, and decorative plants to sui
 
         {/* Category Circles */}
 
-        <div className="max-w-6xl mx-auto mt-10 px-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-y-6 gap-x-2 ">
+        <div className="max-w-7xl mx-auto mt-10 px-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-y-6 gap-x-2 ">
 
           {categories.map((cat) => (
 
@@ -95,6 +149,7 @@ Explore a wide range of indoor, outdoor, medicinal, and decorative plants to sui
         </div>
 
       </div>
+   <FaqSection title="General FAQs" faqs={faqs} />
 
     </div>
   );
