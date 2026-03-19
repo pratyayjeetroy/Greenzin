@@ -1,6 +1,7 @@
 "use client"
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 const Navbar = () => {
@@ -16,59 +17,37 @@ const Navbar = () => {
     { label: "Corporate Gifs", href: "/corporate-gifts" },
     { label: "Bulk Orders", href: "/bulk-orders" },
     { label: "Blogs", href: "/blogs" },
-    { label: "Best Seller", href: "/best-seller" },
     { label: "About Us", href: "/about-us" },
     { label: "Contact", href: "/contact" },
   ];
 
   return (
-    <nav style={{ width: "100%", fontFamily: "sans-serif", boxShadow: "0 4px 6px -1px rgba(0,0,0,0.1)" }}>
+    <nav className="w-full font-sans shadow-md">
       {/* Top Bar */}
-      <div
-        style={{
-          backgroundColor: "#ffffff",
-          paddingLeft: "24px",
-          paddingRight: "24px",
-          paddingTop: "12px",
-          paddingBottom: "12px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          gap: "16px",
-        }}
-      >
+      <div className="bg-white px-6 py-3 flex items-center justify-between gap-4">
         {/* Logo */}
-        <div style={{ flexShrink: 0 }}>
+        <div className="shrink-0">
           <Link href="/">
-            <img
+            <Image
               src="/greenZinLogo.png"
               alt="GreenZin - The Best Gardening Brand"
-              style={{ height: "56px", width: "auto", objectFit: "contain" }}
+              width={200}
+              height={56}
+              className="h-14 w-auto object-contain"
+              priority
             />
           </Link>
         </div>
 
-        {/* Search Bar */}
-        <div style={{ flex: 1, maxWidth: "672px", marginLeft: "16px", marginRight: "16px" }}>
+        {/* Search Bar — hidden on very small screens to prevent overflow */}
+        <div className="hidden sm:block flex-1 max-w-2xl mx-4">
           <form
             onSubmit={(e) => {
               e.preventDefault();
               // handle search submit
             }}
             role="search"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              backgroundColor: "#f3f4f6",
-              borderRadius: "9999px",
-              paddingLeft: "20px",
-              paddingRight: "20px",
-              paddingTop: "10px",
-              paddingBottom: "10px",
-              gap: "12px",
-              border: "1px solid #e5e7eb",
-              transition: "border-color 0.2s",
-            }}
+            className="flex items-center bg-gray-100 rounded-full px-5 py-2.5 gap-3 border border-gray-200 transition-colors duration-200"
           >
             <input
               type="search"
@@ -76,31 +55,16 @@ const Navbar = () => {
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search for plants, pots & more.."
               aria-label="Search for plants, pots and more"
-              style={{
-                flex: 1,
-                backgroundColor: "transparent",
-                color: "#4b5563",
-                fontSize: "14px",
-                outline: "none",
-                border: "none",
-              }}
+              className="flex-1 bg-transparent text-gray-600 text-sm outline-none border-none"
             />
             <button
               type="submit"
               aria-label="Submit search"
-              style={{
-                color: "#9ca3af",
-                background: "none",
-                border: "none",
-                cursor: "pointer",
-                padding: 0,
-                display: "flex",
-                alignItems: "center",
-              }}
+              className="text-gray-400 bg-transparent border-none cursor-pointer p-0 flex items-center"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                style={{ height: "20px", width: "20px" }}
+                className="h-5 w-5"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -118,23 +82,14 @@ const Navbar = () => {
         </div>
 
         {/* Right Actions */}
-        <div style={{ display: "flex", alignItems: "center", gap: "24px", flexShrink: 0 }}>
+        <div className="flex items-center gap-4 shrink-0">
           <Link
             href="/login"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-              color: "#374151",
-              textDecoration: "none",
-              fontSize: "20px",
-              fontWeight: 500,
-              transition: "color 0.2s",
-            }}
+            className="flex items-center gap-2 text-gray-700 text-xl font-medium transition-colors hover:text-gray-900"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              style={{ height: "20px", width: "20px" }}
+              className="h-5 w-5"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -147,22 +102,17 @@ const Navbar = () => {
                 d="M16 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0zM12 14a7 7 0 0 0-7 7h14a7 7 0 0 0-7-7z"
               />
             </svg>
-            <span>Login / Register</span>
+            <span className="hidden sm:inline">Login / Register</span>
           </Link>
 
           <Link
             href="/cart"
-            style={{
-              position: "relative",
-              color: "#374151",
-              textDecoration: "none",
-              transition: "color 0.2s",
-            }}
+            className="relative text-gray-700 transition-colors hover:text-gray-900"
             aria-label="Cart with 0 items"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              style={{ height: "24px", width: "24px" }}
+              className="h-6 w-6"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -176,37 +126,15 @@ const Navbar = () => {
               />
             </svg>
             <span
-              style={{
-                position: "absolute",
-                top: "-8px",
-                right: "-8px",
-                backgroundColor: "#22c55e",
-                color: "#ffffff",
-                fontSize: "12px",
-                borderRadius: "9999px",
-                height: "16px",
-                width: "16px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontWeight: "bold",
-              }}
+              className="absolute -top-2 -right-2 bg-green-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center font-bold"
             >
               0
             </span>
           </Link>
 
-          {/* Mobile Hamburger */}
+          {/* Mobile Hamburger — display controlled only by Tailwind (lg:flex → lg:hidden) */}
           <button
-            style={{
-              display: "none",
-              color: "#4b5563",
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              padding: 0,
-            }}
-            className="lg:hidden"
+            className="text-gray-600 bg-transparent border-none cursor-pointer p-0 flex items-center lg:hidden"
             onClick={() => setMenuOpen((prev) => !prev)}
             aria-expanded={menuOpen}
             aria-controls="mobile-menu"
@@ -214,7 +142,7 @@ const Navbar = () => {
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              style={{ height: "24px", width: "24px" }}
+              className="h-6 w-6"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -235,23 +163,11 @@ const Navbar = () => {
 
       {/* Desktop Nav Links */}
       <div
-        className="hidden lg:block"
-        style={{ backgroundColor: "#3d5a3e" }}
+        className="hidden lg:block bg-[#3d5a3e]"
         role="navigation"
         aria-label="Main navigation"
       >
-        <ul
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            paddingLeft: "24px",
-            paddingRight: "24px",
-            listStyle: "none",
-            margin: 0,
-            padding: 0,
-          }}
-        >
+        <ul className="flex items-center justify-center px-6 list-none m-0 p-0">
           {navLinks.map(({ label, href }) => {
             const isActive = pathname === href;
             return (
@@ -259,21 +175,9 @@ const Navbar = () => {
                 <Link
                   href={href}
                   onClick={() => setMenuOpen(false)}
-                  style={{
-                    display: "block",
-                    color: "#ffffff",
-                    fontSize: "20px",
-                    fontWeight: 500,
-                    paddingLeft: "16px",
-                    paddingRight: "16px",
-                    paddingTop: "14px",
-                    paddingBottom: "14px",
-                    transition: "background-color 0.2s",
-                    whiteSpace: "nowrap",
-                    borderBottom: isActive ? "2px solid #ffffff" : "2px solid transparent",
-                    textDecoration: "none",
-                    backgroundColor: "transparent",
-                  }}
+                  className={`block text-white text-xl font-medium px-4 py-3.5 transition-colors whitespace-nowrap bg-transparent border-b-2 ${
+                    isActive ? "border-white" : "border-transparent"
+                  }`}
                   aria-current={isActive ? "page" : undefined}
                 >
                   {label}
@@ -288,35 +192,24 @@ const Navbar = () => {
       {menuOpen && (
         <div
           id="mobile-menu"
-          className="lg:hidden"
-          style={{ backgroundColor: "#3d5a3e" }}
+          className="lg:hidden bg-[#3d5a3e]"
           role="navigation"
           aria-label="Mobile navigation"
         >
-          <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
+          <ul className="list-none m-0 p-0">
             {navLinks.map(({ label, href }) => {
               const isActive = pathname === href;
               return (
                 <li
                   key={label}
-                  style={{ borderBottom: "1px solid rgba(255,255,255,0.1)" }}
+                  className="border-b border-white/10"
                 >
                   <Link
                     href={href}
                     onClick={() => setMenuOpen(false)}
-                    style={{
-                      display: "block",
-                      fontSize: "14px",
-                      fontWeight: 500,
-                      paddingLeft: "24px",
-                      paddingRight: "24px",
-                      paddingTop: "12px",
-                      paddingBottom: "12px",
-                      transition: "background-color 0.2s, color 0.2s",
-                      textDecoration: "none",
-                      color: isActive ? "#ffffff" : "rgba(255,255,255,0.8)",
-                      backgroundColor: isActive ? "rgba(255,255,255,0.2)" : "transparent",
-                    }}
+                    className={`block text-sm font-medium px-6 py-3 transition-colors ${
+                      isActive ? "text-white bg-white/20" : "text-white/80 bg-transparent"
+                    }`}
                     aria-current={isActive ? "page" : undefined}
                   >
                     {label}

@@ -21,16 +21,19 @@ const CATEGORY_SECTIONS = [
         id: "flowering-plants",
         label: "Flowering Plants",
         href: "/categories/plants/flowering",
+        image: "/home/floweringPlants.jpeg",
       },
       {
         id: "air-purifying-plants",
         label: "Air Purifying Plants",
         href: "/categories/plants/air-purifying",
+        image: "/home/airPurifyingPlants.jpeg",
       },
       {
         id: "vastu-plants",
         label: "Vastu Plants",
         href: "/categories/plants/vastu",
+        image: "/home/vastuPlants.jpeg",
       },
     ],
   },
@@ -48,16 +51,19 @@ const CATEGORY_SECTIONS = [
         id: "ceramic-pots",
         label: "Ceramic",
         href: "/categories/pots/ceramic",
+        image: "/home/ceramicPots.jpeg",
       },
       {
         id: "designer-pots",
         label: "Designer",
         href: "/categories/pots/designer",
+        image: "/home/designerPots.jpeg",
       },
       {
         id: "plastic-pots",
         label: "Plastic",
         href: "/categories/pots/plastic",
+        image: "/home/plasticPots.jpeg",
       },
     ],
   },
@@ -75,29 +81,29 @@ const CATEGORY_SECTIONS = [
         id: "birthday-gifts",
         label: "Birthday Gifts",
         href: "/categories/gifts/birthday",
+        image: "/home/floweringPlants.jpeg",
       },
       {
         id: "housewarming-gifts",
         label: "Housewarming Gifts",
         href: "/categories/gifts/housewarming",
+        image: "/home/floweringPlants.jpeg",
       },
       {
         id: "office-sets",
         label: "Office Sets",
         href: "/categories/gifts/office",
+        image: "/home/floweringPlants.jpeg",
       },
     ],
   },
 ];
 
-// Shared dummy image path (replace individually once real assets are ready)
-const DUMMY_IMG = "/home/category.png";
-
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
 /** Renders the coloured heading markup from the `headingParts` array */
 const SectionHeading = ({ parts }) => (
-  <h2 className="text-center text-[28px] leading-tight font-bold text-[#2d2d2d]">
+  <h2 className="text-center text-[20px] font-bold leading-tight text-[#2d2d2d] sm:text-[22px] md:text-[26px] lg:text-[28px]">
     {parts.map((part, i) =>
       part.highlight ? (
         <span key={i} className="text-[#228EC0]">
@@ -111,48 +117,59 @@ const SectionHeading = ({ parts }) => (
 );
 
 /** Individual category card */
-const CategoryCard = ({ label, href }) => (
+const CategoryCard = ({ label, href, image }) => (
   <Link
     href={href}
     className="group relative block overflow-hidden rounded-xl border border-[#e8e8e8] bg-white shadow-sm transition-shadow duration-300 hover:shadow-md"
   >
-    <div className="relative h-60 w-full overflow-hidden">
+    <div className="relative w-full aspect-[1.85/1] overflow-hidden bg-[#f4f5f4]">
       <Image
-        src={DUMMY_IMG}
+        src={image}
         alt={label}
         fill
-        className="w-[25%] object-cover transition-transform duration-300 group-hover:scale-105"
+        className="object-cover transition-transform duration-300 group-hover:scale-105"
       />
     </div>
-    <div className="py-2.5 text-center">
-      <p className="text-[16px] font-semibold text-[#2d2d2d]">{label}</p>
+    <div className="py-2 text-center sm:py-2.5">
+      <p className="text-[13px] font-semibold text-[#2d2d2d] sm:text-[14px] md:text-[15px] lg:text-[16px]">
+        {label}
+      </p>
     </div>
   </Link>
 );
 
 /** One full category section (heading + subheading + "View All" + 3 cards) */
 const CategorySection = ({ headingParts, subheading, viewAllHref, cards }) => (
-  <div className="mb-10">
+  <div className="mb-8 md:mb-10 last:mb-0">
     {/* Header row */}
-    <div className="mb-1.5 flex items-center justify-between gap-4">
-      <div className="flex-1 text-center">
+    <div className="relative mb-3 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+      <div className="text-center">
         <SectionHeading parts={headingParts} />
         {subheading && (
-          <p className="mt-1 text-[13px] text-[#6b6b6b]">{subheading}</p>
+          <p className="mt-1 text-[12px] text-[#6b6b6b] sm:text-[13px]">
+            {subheading}
+          </p>
         )}
       </div>
-      <Link
-        href={viewAllHref}
-        className="bg-brand-gradient font shrink-0 rounded-full px-4 py-1.5 text-[16px] text-white transition-colors duration-200"
-      >
-        View All &gt;
-      </Link>
+      <div className="sm:absolute sm:right-0 sm:top-1/2 sm:-translate-y-1/2">
+        <Link
+          href={viewAllHref}
+          className="bg-brand-gradient shrink-0 rounded-full px-4 py-1.5 text-[13px] text-white transition-opacity duration-200 hover:opacity-90 sm:text-[14px] md:text-[15px] lg:text-[16px]"
+        >
+          View All &gt;
+        </Link>
+      </div>
     </div>
 
     {/* Cards grid */}
-    <div className="mt-[16px] grid grid-cols-3 gap-[3%]">
+    <div className="mt-3 grid grid-cols-3 gap-3 md:gap-[3%]">
       {cards.map((card) => (
-        <CategoryCard key={card.id} label={card.label} href={card.href} />
+        <CategoryCard
+          key={card.id}
+          label={card.label}
+          href={card.href}
+          image={card.image}
+        />
       ))}
     </div>
   </div>
@@ -162,8 +179,8 @@ const CategorySection = ({ headingParts, subheading, viewAllHref, cards }) => (
 
 const CategoriesSec = () => {
   return (
-    <section className="bg-white py-8">
-      <div className="mx-auto w-[90%] px-5">
+    <section className="bg-white py-6 md:py-8">
+      <div className="mx-auto w-[92%] sm:w-[90%] px-2 sm:px-4 md:px-5">
         {CATEGORY_SECTIONS.map((section) => (
           <CategorySection
             key={section.id}
