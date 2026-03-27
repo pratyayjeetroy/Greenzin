@@ -16,7 +16,7 @@ const Navbar = () => {
     { label: "Gifting", href: "/gifting" },
     { label: "Corporate Gifs", href: "/corporate-gifts" },
     { label: "Bulk Orders", href: "/bulk-orders" },
-    { label: "Blogs", href: "/blogs" },
+    { label: "Blogs", href: "/blogs/1" },
     { label: "About Us", href: "/about-us" },
     { label: "Contact", href: "/contact" },
   ];
