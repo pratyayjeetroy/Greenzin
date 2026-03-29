@@ -40,7 +40,7 @@ export const plants = [
     price: 349,
     rating: 4.6,
     review: 295,
-    category: ["Clay Pots", "Eco-Friendly Pots", "Traditional"],
+    category: ["Clay Pots", "Eco-Friendly", "Traditional"],
     image1: "/pot_categories/clay.png",
     image2: "/pot_categories/clay.png"
   },
@@ -49,7 +49,7 @@ export const plants = [
     price: 399,
     rating: 4.5,
     review: 248,
-    category: ["Clay Pots", "Eco-Friendly Pots", "Breathable"],
+    category: ["Clay Pots", "Eco-Friendly", "Breathable"],
     image1: "/pot_categories/clay.png",
     image2: "/pot_categories/clay.png"
   },
@@ -130,7 +130,7 @@ export const plants = [
     price: 379,
     rating: 4.4,
     review: 221,
-    category: ["Eco-Friendly Pots", "Natural", "Biodegradable"],
+    category: ["Eco-Friendly", "Natural", "Biodegradable"],
     image1: "/pot_categories/ecofriendly.png",
     image2: "/pot_categories/ecofriendly.png"
   },
@@ -139,7 +139,7 @@ export const plants = [
     price: 429,
     rating: 4.5,
     review: 246,
-    category: ["Eco-Friendly Pots", "Handcrafted", "Sustainable"],
+    category: ["Eco-Friendly", "Handcrafted", "Sustainable"],
     image1: "/pot_categories/ecofriendly.png",
     image2: "/pot_categories/ecofriendly.png"
   }

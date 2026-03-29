@@ -28,7 +28,7 @@ export const categories = [
     image: "/pot_categories/planters.png"
   },
    {
-    name: "Eco-Friendly Pots",
+    name: "Eco-Friendly",
     image: "/pot_categories/ecofriendly.png"
   },
  

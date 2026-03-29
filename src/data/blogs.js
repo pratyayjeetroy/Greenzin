@@ -49,7 +49,7 @@ Always size up gradually. Moving a plant into a pot that's too large too quickly
 
 Start with just one or two plants and observe how they respond to your home's light and temperature. Once you get a feel for their rhythms, you'll find plant care becomes second nature — and deeply rewarding.
     `,
-    image: "/plant_categories/vastu.png",
+    image: "/blogs/blog1.png",
     relatedIds: [4, 5, 6],
   },
 
@@ -99,7 +99,7 @@ Different seasons call for different plants. In summer, bright flowering plants 
 
 For festivals like Diwali or housewarmings, the classic combination of a Money Plant in a golden pot is hard to beat.
     `,
-    image: "/plant_categories/vastu.png",
+    image: "/blogs/blog2.png",
     relatedIds: [5, 6, 7],
   },
 
@@ -156,7 +156,7 @@ If you fall in love with a decorative pot that has no drainage hole, use it as a
 
 There is no universally better option. The best pot is the one that matches your plant's needs, your watering habits, and your home's environment. Start with terracotta for most common houseplants, and experiment from there.
     `,
-    image: "/plant_categories/vastu.png",
+    image: "/blogs/blog3.png",
     relatedIds: [4, 7, 8],
   },
 
@@ -207,7 +207,7 @@ Dusty leaves reduce a plant's ability to absorb pollutants. Wipe leaves with a d
 
 Healthy, actively growing plants purify air more effectively than stressed or root-bound ones. Repot when roots start emerging from drainage holes, and fertilize during the growing season.
     `,
-    image: "/plant_categories/vastu.png",
+    image: "/blogs/blog4.png",
     relatedIds: [1, 3, 8],
   },
 
@@ -269,7 +269,7 @@ The most important principle in indoor plant care is consistency. Plants adapt t
 
 Establish a weekly routine — check soil moisture, inspect leaves for pests, wipe dust from large leaves, and rotate pots for even growth. This 10-minute weekly habit is all most indoor plants need to stay healthy and beautiful.
     `,
-    image: "/plant_categories/vastu.png",
+    image: "/blogs/blog5.png",
     relatedIds: [1, 2, 6],
   },
 
@@ -320,7 +320,7 @@ Use mirrored surfaces strategically near plant groupings. The reflection doubles
 
 Smaller pots dry out faster because they hold less soil. Check moisture levels every two to three days rather than weekly. Consider self-watering pots for small-space setups — they have a reservoir at the base that wicks water upward as needed, reducing watering frequency significantly.
     `,
-    image: "/plant_categories/vastu.png",
+    image: "/blogs/blog6.png",
     relatedIds: [1, 2, 5],
   },
 
@@ -367,7 +367,7 @@ Even placing a simple daylight-spectrum bulb in a floor lamp near your plant gro
 
 Reflective surfaces — white walls, mirrors, and light-colored furniture — bounce available light deeper into a room. Positioning plants near these surfaces can meaningfully increase the light they receive without any artificial intervention.
     `,
-    image: "/plant_categories/vastu.png",
+    image: "/blogs/blog7.png",
     relatedIds: [2, 3, 8],
   },
 
@@ -424,7 +424,7 @@ Terracotta spikes connected to a water reservoir are another low-tech option tha
 
 Mastering watering is the single most impactful skill in plant care. Once you develop the habit of checking before watering and respond to what the plant actually needs rather than a schedule, your plants will visibly thrive.
     `,
-    image: "/plant_categories/vastu.png",
+    image: "/blogs/blog8.png",
     relatedIds: [3, 4, 7],
   },
 ];

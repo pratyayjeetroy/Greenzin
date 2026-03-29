@@ -6,7 +6,7 @@ export const plants = [
     category: ["Indoor Plants","Air Purifying Plants","Easy Care","Vastu Plants"],
     review: 600,
 
-    image1: "/plant_categories/vastu.png",
+    image1: "/plant_categories/blog1.png",
         image2: "/plant_categories/indoor.png"
 
   },

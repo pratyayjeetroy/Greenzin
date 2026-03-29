@@ -8,9 +8,7 @@ import RelatedPosts from "@/components/blogs/RelatedPosts";
 
 export default function BlogDetailPage() {
   const { id } = useParams();
-
   const blogId = Array.isArray(id) ? id[0] : id;
-
   const selectedBlog = blogs.find((b) => b.id === Number(blogId));
 
   if (!selectedBlog) {
@@ -24,38 +22,46 @@ export default function BlogDetailPage() {
   const sidebarBlogs = blogs.slice(0, 4);
 
   return (
-    <div className="w-full min-h-screen bg-white  pt-8">
-      <div className="max-w-6xl mx-auto ">
+    <div className="w-full border min-h-screen bg-white pt-6 md:pt-7">
+      <div className="max-w-7xl mx-auto">
 
-        {/* ── MAIN ROW: scrollable content + sticky sidebar ── */}
-        <div style={{ display: "flex", flexDirection: "row", gap: "2rem", padding: "2rem", alignItems: "flex-start" }}>
+        {/* ── MAIN ROW ── */}
+        <div className="flex flex-col md:flex-row md:gap-8 md:pb-8 md:items-start p-4">
 
-          {/* LEFT — Scrollable content column */}
+          {/* ── LEFT: Content ── */}
           <div
+            className="w-full md:flex-1 md:min-w-0"
             style={{
-              flex: 1,
-              minWidth: 0,
               maxHeight: "80vh",
               overflowY: "auto",
-              paddingRight: "1rem",
+              paddingRight: "0.5rem",
               scrollbarWidth: "thin",
               scrollbarColor: "#d1d5db transparent",
             }}
           >
-            <h1 className="text-[33px] font-bold tracking-[0.5px] leading-[1.3] font-[poppins] font-[600]  text-slate-800   mb-2"> 
-
+            {/* Title */}
+            <h1 className="text-[24px] md:text-[33px] font-bold tracking-[0.5px] leading-[1.3] font-[poppins] font-[600] text-slate-800 mb-2">
               {selectedBlog.title}
             </h1>
 
-            <p className="text-[18px] font-[poppins] tracking-[0.5px] font-[500] text-gray-800 mb-4">
+            {/* Excerpt */}
+            <p className="text-[15px] md:text-[18px] font-[poppins] tracking-[0.5px] font-[600] text-slate-600 mb-4">
               {selectedBlog.excerpt}
             </p>
 
-            {/* Floated image — content wraps around it */}
+            {/* MOBILE: full width image */}
+            <img
+              src={selectedBlog.image}
+              alt={selectedBlog.title}
+              className="block md:hidden w-full h-[200px] object-cover rounded-xl mb-4"
+            />
+
+            {/* DESKTOP: floated image, content wraps */}
             <div style={{ overflow: "hidden" }}>
               <img
                 src={selectedBlog.image}
                 alt={selectedBlog.title}
+                className="hidden md:block"
                 style={{
                   float: "right",
                   height: "250px",
@@ -68,18 +74,17 @@ export default function BlogDetailPage() {
               <BlogContent blog={selectedBlog} />
             </div>
 
-            {/* CTA Button */}
-            {/* <button className="mt-6 px-5 py-2 bg-[#3a7d44] text-white text-sm rounded-lg hover:bg-[#2e6438] transition">
-              Call out to Action →
-            </button> */}
+            {/* MOBILE: sidebar below content */}
+            <div className="block md:hidden mt-6">
+              <Sidebar blogs={sidebarBlogs} />
+            </div>
 
           </div>
 
-          {/* RIGHT — Sticky sidebar */}
+          {/* ── RIGHT: Sticky sidebar — desktop only ── */}
           <div
+            className="hidden md:block md:w-[280px] md:shrink-0"
             style={{
-              width: "280px",
-              flexShrink: 0,
               position: "sticky",
               top: "2rem",
               maxHeight: "80vh",
@@ -92,13 +97,16 @@ export default function BlogDetailPage() {
 
         </div>
 
-        {/* ── RELATED POSTS — full width, proper padding, separated ── */}
-        <div style={{
-  padding: "1.5vw 2vw 4vw 2vw",
-  backgroundColor: "#f8faf7",
-}}>
-  <RelatedPosts blogs={relatedBlogs} />
-</div>
+        {/* ── RELATED POSTS ── */}
+        <div
+          className="mx-4  mb-6 rounded-2xl"
+          style={{
+            padding: "1.25rem 1.5rem 2rem 1.5rem",
+            backgroundColor: "#f8faf7",
+          }}
+        >
+          <RelatedPosts blogs={relatedBlogs} />
+        </div>
 
       </div>
     </div>
