@@ -6,17 +6,17 @@ const GIFTS_DATA = [
   {
     id: "bulk-office",
     label: "Bulk Office Plants",
-    image: "/home/category.png",
+    image: "/home/bulkOfficePlants.png",
   },
   {
     id: "employee-appreciation",
     label: "Employee Appreciation",
-    image: "/home/category.png",
+    image: "/home/employeeGift.png",
   },
   {
     id: "custom-branded",
     label: "Custom Branded Gifts",
-    image: "/home/category.png",
+    image: "/home/customBrandedGift.png",
   },
 ];
 
@@ -28,7 +28,7 @@ const CorporateGiftsSec = () => {
         <div className="relative mb-4 flex flex-col items-center gap-3 sm:mb-6 sm:flex-row sm:justify-center">
           <div className="text-center">
             <h2 className="text-[20px] font-bold leading-tight text-[#2d2d2d] sm:text-[22px] md:text-[26px] lg:text-[28px]">
-              Explore <span className="text-[#5C7058]">Corporate Gifts</span>
+              Explore <span className="text-[#3d5a3e]">Corporate Gifts</span>
             </h2>
           </div>
           <div className="sm:absolute sm:right-0 sm:top-1/2 sm:-translate-y-1/2">
@@ -49,7 +49,7 @@ const CorporateGiftsSec = () => {
               href={`/corporate-gifts/${item.id}`}
               className="group relative block w-full overflow-hidden rounded-xl border border-[#e8e8e8] bg-white shadow-sm transition-shadow duration-300 hover:shadow-md"
             >
-              <div className="relative w-full aspect-[1.85/1] overflow-hidden bg-[#f4f5f4]">
+              <div className="relative w-full aspect-3/2 overflow-hidden bg-[#f4f5f4]">
                 <Image
                   src={item.image}
                   alt={item.label}

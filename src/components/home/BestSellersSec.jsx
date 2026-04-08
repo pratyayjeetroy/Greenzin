@@ -11,7 +11,7 @@ const BEST_SELLERS = [
     price: "$19.99",
     originalPrice: "$24.99",
     badge: "Best Seller",
-    image: "/home/category.png",
+    image: "/products/snakePlant.png",
   },
   {
     id: "zz-plant-1",
@@ -21,7 +21,7 @@ const BEST_SELLERS = [
     price: "$19.99",
     originalPrice: "$24.99",
     badge: "Popular",
-    image: "/home/category.png",
+    image: "/products/zzPlant.png",
   },
   {
     id: "zz-plant-2",
@@ -31,7 +31,7 @@ const BEST_SELLERS = [
     price: "$17.99",
     originalPrice: "$22.99",
     badge: null,
-    image: "/home/category.png",
+    image: "/products/pothos.png",
   },
   {
     id: "don-plant",
@@ -41,7 +41,7 @@ const BEST_SELLERS = [
     price: "$21.99",
     originalPrice: "$27.99",
     badge: "New",
-    image: "/home/category.png",
+    image: "/products/peaceLily.png",
   },
   {
     id: "zz-plant-3",
@@ -51,7 +51,7 @@ const BEST_SELLERS = [
     price: "$29.99",
     originalPrice: "$36.99",
     badge: null,
-    image: "/home/category.png",
+    image: "/products/monstera.png",
   },
   {
     id: "office-sets",
@@ -61,12 +61,12 @@ const BEST_SELLERS = [
     price: "$15.99",
     originalPrice: "$19.99",
     badge: "Sale",
-    image: "/home/category.png",
+    image: "/products/officeSet.png",
   },
 ];
 
 const BADGE_STYLES = {
-  "Best Seller": "bg-[#5C7058] text-white",
+  "Best Seller": "bg-[#3d5a3e] text-white",
   Popular: "bg-amber-500 text-white",
   New: "bg-sky-500 text-white",
   Sale: "bg-rose-500 text-white",
@@ -113,7 +113,7 @@ const ProductCard = ({ name, ratingText, reviewCount, price, originalPrice, badg
       </button>
 
       {/* Image */}
-      <div className="relative w-full aspect-[1.85/1] overflow-hidden bg-[#f7f8f5]">
+      <div className="relative w-full aspect-3/2 overflow-hidden bg-[#f7f8f5]">
         <Image
           src={image}
           alt={name}
@@ -146,7 +146,7 @@ const ProductCard = ({ name, ratingText, reviewCount, price, originalPrice, badg
         {/* Add to Cart */}
         <button
           aria-label={`Add ${name} to cart`}
-          className="mt-3 w-full rounded-xl bg-[#5C7058] py-2 text-[12px] font-semibold tracking-wide text-white transition-all duration-200 hover:bg-[#4a5c47] active:scale-[0.98] sm:py-2.5 sm:text-[13px]"
+          className="mt-3 w-full rounded-xl bg-[#3d5a3e] py-2 text-[12px] font-semibold tracking-wide text-white transition-all duration-200 hover:bg-[#4a5c47] active:scale-[0.98] sm:py-2.5 sm:text-[13px]"
         >
           Add to Cart
         </button>
@@ -162,7 +162,7 @@ const BestSellersSec = () => {
         {/* Header */}
         <div className="mb-6 flex items-center justify-between sm:mb-8">
           <div>
-            <p className="mb-0.5 text-xs font-semibold uppercase tracking-widest text-[#5C7058] sm:text-sm">
+            <p className="mb-0.5 text-xs font-semibold uppercase tracking-widest text-[#3d5a3e] sm:text-sm">
               Our Top Picks
             </p>
             <h2 className="text-2xl font-bold leading-tight text-gray-900 sm:text-3xl lg:text-4xl">
@@ -171,7 +171,7 @@ const BestSellersSec = () => {
           </div>
           <Link
             href="/best-sellers"
-            className="shrink-0 rounded-full border border-[#5C7058] px-4 py-1.5 text-xs font-semibold text-[#5C7058] transition-all duration-200 hover:bg-[#5C7058] hover:text-white sm:px-5 sm:py-2 sm:text-sm"
+            className="shrink-0 rounded-full border border-[#3d5a3e] px-4 py-1.5 text-xs font-semibold text-[#3d5a3e] transition-all duration-200 hover:bg-[#3d5a3e] hover:text-white sm:px-5 sm:py-2 sm:text-sm"
           >
             View All →
           </Link>

@@ -5,8 +5,8 @@ export const plants = [
     rating: 4.3,
     review: 320,
     category: ["Plastic Pots", "Lightweight", "Budget Friendly"],
-    image1: "/pot_categories/plastic_new.png",
-    image2: "/pot_categories/plastic_new.png"
+    image1: "/pot_categories/plastic.png",
+    image2: "/pot_categories/plastic.png"
   },
   {
     name: "Brown Utility Plastic Pot",
@@ -14,8 +14,8 @@ export const plants = [
     rating: 4.2,
     review: 280,
     category: ["Plastic Pots", "Durable", "Easy Care"],
-    image1: "/pot_categories/plastic_new.png",
-    image2: "/pot_categories/plastic_new.png"
+    image1: "/pot_categories/plastic.png",
+    image2: "/pot_categories/plastic.png"
   },
   {
     name: "Minimal White Ceramic Pot",

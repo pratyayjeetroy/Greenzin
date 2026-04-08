@@ -51,7 +51,7 @@ const RelatedProductCard = ({ product }) => (
   >
     {/* Badge */}
     {product.badge && (
-      <span className="absolute top-3 left-3 z-10 rounded-full bg-[#5C7058] px-2.5 py-0.5 text-[10px] font-bold text-white">
+      <span className="absolute top-3 left-3 z-10 rounded-full bg-[#3d5a3e] px-2.5 py-0.5 text-[10px] font-bold text-white">
         {product.badge}
       </span>
     )}
@@ -80,7 +80,7 @@ const RelatedProductCard = ({ product }) => (
 
     <div className="mt-2 flex items-center justify-between">
       <span className="text-[15px] font-bold text-[#2d2d2d]">{product.price}</span>
-      <span className="rounded-full bg-[#5C7058]/10 px-3 py-1 text-[11px] font-semibold text-[#5C7058] group-hover:bg-[#5C7058] group-hover:text-white transition-colors duration-200">
+      <span className="rounded-full bg-[#3d5a3e]/10 px-3 py-1 text-[11px] font-semibold text-[#3d5a3e] group-hover:bg-[#3d5a3e] group-hover:text-white transition-colors duration-200">
         View
       </span>
     </div>
@@ -95,7 +95,7 @@ const RelatedProducts = () => {
     <section className="mt-12">
       <div className="mb-5 flex items-center justify-between">
         <h2 className="text-[20px] font-bold text-[#2d2d2d] sm:text-[22px]">
-          You May Also <span className="text-[#5C7058]">Like</span>
+          You May Also <span className="text-[#3d5a3e]">Like</span>
         </h2>
         <Link
           href="/plants"

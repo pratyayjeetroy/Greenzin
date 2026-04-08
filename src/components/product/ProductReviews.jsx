@@ -36,7 +36,7 @@ const ReviewCard = ({ review }) => (
     {/* Helpful */}
     <div className="mt-1 flex items-center gap-4 text-[12px] text-[#7a7a7a]">
       <span className="font-medium">Helpful?</span>
-      <button className="flex items-center gap-1.5 rounded-full border border-[#e8e8e8] px-3 py-1 hover:border-[#5C7058] hover:text-[#5C7058] transition-colors">
+      <button className="flex items-center gap-1.5 rounded-full border border-[#e8e8e8] px-3 py-1 hover:border-[#3d5a3e] hover:text-[#3d5a3e] transition-colors">
         <ThumbsUp className="w-3.5 h-3.5" />
         {review.helpful}
       </button>
@@ -121,7 +121,7 @@ const ProductReviews = ({ product }) => {
       <div className="mt-6 flex justify-center">
         <button
           id="write-review-btn"
-          className="rounded-full border-2 border-[#5C7058] px-6 py-2.5 text-[14px] font-semibold text-[#5C7058] hover:bg-[#5C7058] hover:text-white transition-all duration-200"
+          className="rounded-full border-2 border-[#3d5a3e] px-6 py-2.5 text-[14px] font-semibold text-[#3d5a3e] hover:bg-[#3d5a3e] hover:text-white transition-all duration-200"
         >
           Write a Review
         </button>

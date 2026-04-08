@@ -54,8 +54,8 @@ const PotOption = ({ option, selected, onSelect }) => (
     title={option.label}
     className={`group flex flex-col items-center gap-1 rounded-xl border-2 p-2 transition-all duration-200 ${
       selected
-        ? "border-[#5C7058] bg-[#5C7058]/5 shadow-md scale-105"
-        : "border-[#e8e8e8] hover:border-[#5C7058]/50 hover:scale-[1.02] bg-white"
+        ? "border-[#3d5a3e] bg-[#3d5a3e]/5 shadow-md scale-105"
+        : "border-[#e8e8e8] hover:border-[#3d5a3e]/50 hover:scale-[1.02] bg-white"
     }`}
   >
     <div className="relative w-10 h-10 sm:w-12 sm:h-12 overflow-hidden rounded-lg bg-[#f4f5f4]">
@@ -85,7 +85,7 @@ const TrustBadge = ({ icon, label }) => {
 
   return (
     <div className="flex flex-col items-center gap-1.5 px-3 py-3 text-center">
-      <Icon className="w-5 h-5 text-[#5C7058]" />
+      <Icon className="w-5 h-5 text-[#3d5a3e]" />
       <span className="text-[11px] font-semibold text-[#2d2d2d] leading-tight">{label}</span>
     </div>
   );
@@ -119,7 +119,7 @@ const ProductInfo = ({ product }) => {
       <div>
         <h1 className="text-[22px] font-bold leading-snug text-[#1a1a1a] sm:text-[26px] md:text-[30px]">
           {product.name}
-          <span className="block text-[#5C7058] text-[18px] font-semibold sm:text-[22px] md:text-[24px]">
+          <span className="block text-[#3d5a3e] text-[18px] font-semibold sm:text-[22px] md:text-[24px]">
             {product.tagline}
           </span>
         </h1>
@@ -156,7 +156,7 @@ const ProductInfo = ({ product }) => {
         <ul className="flex flex-col gap-1.5">
           {product.highlights.map((h, i) => (
             <li key={i} className="flex items-center gap-2 text-[13px] text-[#4a4a4a]">
-              <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#5C7058] shrink-0" />
+              <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#3d5a3e] shrink-0" />
               {h}
             </li>
           ))}
@@ -183,7 +183,7 @@ const ProductInfo = ({ product }) => {
         <div className="flex items-center gap-0 rounded-full border border-[#e8e8e8] overflow-hidden bg-white shadow-sm">
           <button
             onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-            className="px-4 py-2 text-[18px] text-[#5C7058] font-bold hover:bg-[#f0f0ed] transition-colors"
+            className="px-4 py-2 text-[18px] text-[#3d5a3e] font-bold hover:bg-[#f0f0ed] transition-colors"
             aria-label="Decrease quantity"
           >
             −
@@ -193,7 +193,7 @@ const ProductInfo = ({ product }) => {
           </span>
           <button
             onClick={() => setQuantity((q) => q + 1)}
-            className="px-4 py-2 text-[18px] text-[#5C7058] font-bold hover:bg-[#f0f0ed] transition-colors"
+            className="px-4 py-2 text-[18px] text-[#3d5a3e] font-bold hover:bg-[#f0f0ed] transition-colors"
             aria-label="Increase quantity"
           >
             +
@@ -215,7 +215,7 @@ const ProductInfo = ({ product }) => {
           className={`flex flex-1 items-center justify-center gap-2 rounded-full py-3 px-6 text-[14px] font-semibold text-white transition-all duration-300 shadow-md hover:shadow-lg active:scale-95 ${
             addedToCart
               ? "bg-[#2d7a35]"
-              : "bg-[#5C7058] hover:bg-[#4a5c47]"
+              : "bg-[#3d5a3e] hover:bg-[#4a5c47]"
           }`}
         >
           <ShoppingCart className="w-4 h-4" />
@@ -258,11 +258,11 @@ const ProductInfo = ({ product }) => {
             onChange={(e) => setPincode(e.target.value.replace(/\D/g, "").slice(0, 6))}
             placeholder="Enter Pincode"
             maxLength={6}
-            className="flex-1 rounded-full border border-[#ddd] bg-[#f9f9f7] px-4 py-2.5 text-[13px] text-[#333] placeholder-[#aaa] focus:outline-none focus:border-[#5C7058] transition-colors"
+            className="flex-1 rounded-full border border-[#ddd] bg-[#f9f9f7] px-4 py-2.5 text-[13px] text-[#333] placeholder-[#aaa] focus:outline-none focus:border-[#3d5a3e] transition-colors"
           />
           <button
             type="submit"
-            className="shrink-0 rounded-full bg-[#5C7058] px-5 py-2.5 text-[13px] font-semibold text-white hover:bg-[#4a5c47] transition-colors"
+            className="shrink-0 rounded-full bg-[#3d5a3e] px-5 py-2.5 text-[13px] font-semibold text-white hover:bg-[#4a5c47] transition-colors"
           >
             Search
           </button>

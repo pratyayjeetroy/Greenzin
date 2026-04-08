@@ -8,7 +8,7 @@ const COLLECTIONS_DATA = [
     date: "October 26, 2023",
     title: "Plant Care Guides",
     authorLine: "BY AUTHOR NAME OCT 26, 2023",
-    image: "/home/category.png",
+    image: "/blogs/blog1.png",
     link: "/collections/plant-care-guides",
   },
   {
@@ -16,7 +16,7 @@ const COLLECTIONS_DATA = [
     date: "October 26, 2023",
     title: "Interior Design Tips",
     authorLine: "BY AUTHOR NAME OCT 26, 2023",
-    image: "/home/category.png",
+    image: "/blogs/blog2.png",
     link: "/collections/interior-design-tips",
   },
   {
@@ -24,7 +24,7 @@ const COLLECTIONS_DATA = [
     date: "October 26, 2023",
     title: "Wellness & Green Living",
     authorLine: "BY AUTHOR NAME OCT 26, 2023",
-    image: "/home/category.png",
+    image: "/blogs/blog3.png",
     link: "/collections/wellness-green-living",
   },
 ];
@@ -37,7 +37,7 @@ const FeaturedCollectionsSec = () => {
         <div className="mb-5 flex flex-col items-center gap-3 sm:mb-8 sm:flex-row sm:justify-between sm:gap-4">
           <div className="flex-1 text-center">
             <h2 className="text-[20px] font-bold leading-tight text-[#2d2d2d] sm:text-[22px] md:text-[26px] lg:text-[28px]">
-              Featured <span className="text-[#5C7058]">Collections</span> by
+              Featured <span className="text-[#3d5a3e]">Collections</span> by
               Professional
             </h2>
           </div>
@@ -57,7 +57,7 @@ const FeaturedCollectionsSec = () => {
               href={post.link}
               className="group flex flex-col overflow-hidden bg-transparent transition-all duration-300"
             >
-              <div className="relative mb-3 w-full aspect-4/3 overflow-hidden rounded-2xl border border-[#e8e8e8] bg-[#f4f5f4] shadow-sm md:mb-4 md:rounded-[20px]">
+              <div className="relative mb-3 w-full aspect-3/2 overflow-hidden rounded-2xl border border-[#e8e8e8] bg-[#f4f5f4] shadow-sm md:mb-4 md:rounded-[20px]">
                 <Image
                   src={post.image}
                   alt={post.title}
@@ -75,7 +75,7 @@ const FeaturedCollectionsSec = () => {
                 <span className="mb-3 text-[11px] font-semibold uppercase tracking-wide text-[#7a7a7a] sm:text-[12px] md:mb-4 md:text-[13px]">
                   {post.authorLine}
                 </span>
-                <p className="text-[14px] font-semibold text-[#5C7058] transition-colors group-hover:text-[#4a5c47] md:text-[15px] lg:text-[16px]">
+                <p className="text-[14px] font-semibold text-[#3d5a3e] transition-colors group-hover:text-[#4a5c47] md:text-[15px] lg:text-[16px]">
                   Read More &gt;
                 </p>
               </div>
