@@ -204,10 +204,19 @@ export default function PlantsPage() {
       </div>
 
       {/* Featured Plants Section */}
-      <div className="w-full px-4 sm:px-6 md:px-[40px] py-6 sm:py-8 md:py-[24px] bg-[#f8faf7]">
-        <h2 className="text-[22px] sm:text-[26px] md:text-[30px] lg:text-[33px] font-[600] font-[poppins] text-slate-800 text-center mb-6 sm:mb-8 md:mb-10">
+<div className="w-full px-4 sm:px-6 md:px-[40px] pt-6 sm:pt-8 md:pt-[24px] pb-10 sm:pb-12 md:pb-16 bg-[#f8faf7]"> 
+        {/* <h2 className="text-[22px] sm:text-[26px] md:text-[30px] lg:text-[33px] font-[600] font-[poppins] text-slate-800 text-center mb-6 sm:mb-8 md:mb-10">
           Featured {selectedCategory}
-        </h2>
+        </h2> */}
+                <div className="text-center mb-6 sm:mb-8 md:mb-10">
+    <span className="text-xs sm:text-sm font-semibold uppercase tracking-widest text-green-600">
+      Top Picks
+    </span>
+    <h2 className="mt-2 font-[poppins] text-[22px] sm:text-[26px] md:text-[30px] lg:text-[33px] font-[600] text-[#2d2d2d] leading-tight">
+      Featured <span className="text-[#3a7d44]">{selectedCategory}</span>
+    </h2>
+    <div className="mt-3 mx-auto h-0.5 w-16 rounded-full bg-gradient-to-r from-[#83B930] to-[#1992D5]" />
+  </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5 md:gap-8 items-stretch">
           {filteredPlants.map((plant, index) => (

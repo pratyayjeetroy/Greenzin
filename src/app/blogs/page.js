@@ -14,32 +14,36 @@ export default function BlogsPage() {
         All Blogs
       </h1>
 
-      {/* GRID: 1 col mobile → 2 col tablet → 4 col desktop */}
+      {/* GRID */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
         {blogs.map((blog) => (
           <div
             key={blog.id}
             onClick={() => router.push(`/blogs/${blog.id}`)}
-            className="bg-white rounded-xl shadow-md hover:shadow-xl hover:-translate-y-[2px] border border-transparent hover:border-[#e5e7eb] transition-all duration-300 cursor-pointer overflow-hidden"
+            className="bg-white rounded-xl shadow-md hover:shadow-xl hover:-translate-y-[2px] border border-transparent hover:border-[#e5e7eb] transition-all duration-300 cursor-pointer overflow-hidden flex flex-col"
           >
             {/* IMAGE */}
-            <img
-              src={blog.image}
-              className="w-full h-[180px] md:h-[210px] object-cover"
-            />
+            <div className="w-full aspect-[16/9] overflow-hidden">
+              <img
+                src={blog.image}
+                alt={blog.title}
+                className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+              />
+            </div>
 
             {/* CONTENT */}
-            <div className="p-4">
-              <h3 className="text-[16px] md:text-[17px] font-semibold text-gray-900 line-clamp-2 leading-snug">
+            <div className="p-3 sm:p-4 flex flex-col flex-1">
+              <h3 className="text-[15px] sm:text-[16px] md:text-[17px] font-semibold font-[poppins] text-gray-900 line-clamp-2 leading-snug">
                 {blog.title}
               </h3>
-              <p className="mt-1 text-[14px] md:text-[15px] font-[inter] text-gray-600 line-clamp-2 leading-tight">
+              <p className="mt-1 text-[13px] sm:text-[14px] md:text-[15px] font-[inter] text-gray-600 line-clamp-2 leading-tight">
                 {blog.excerpt}
               </p>
-              <p className="mt-2 text-[#3a7d44] text-[13px] font-[inter] font-medium">
+              <p className="mt-auto pt-2 text-[#3a7d44] text-[13px] font-[inter] font-medium">
                 Read More →
               </p>
             </div>
+
           </div>
         ))}
       </div>
