@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef ,useEffect} from "react";
 import PlantCard from "@/components/plants/PlantCard";
 import { plants } from "@/data/plants";
 import { categories } from "@/data/plantCategories";
@@ -79,6 +79,12 @@ export default function PlantsPage() {
     });
     setActiveDot(pageIndex);
   };
+
+   useEffect(() => {
+    fetch('http://localhost:5000/api/plants')
+      .then(res => res.json())
+      .then(data => console.log(data))  // open browser console to see
+  }, []);
 
   return (
     <div className="w-full">
