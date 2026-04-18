@@ -1,17 +1,28 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef ,useEffect} from "react";
 import { Headset, PhoneCall } from "lucide-react";
+import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 import { FaWhatsapp } from "react-icons/fa";
 import PlantCard from "@/components/plants/PlantCard";
 import { corporateGifts } from "@/data/corporateGifts";
 import { categories } from "@/data/corporateCategories";
 import FaqSection from "@/components/general/FaqSection";
 
-export default function PlantsPage() {
-  const [selectedCategory, setSelectedCategory] = useState("Employee Appreciation");
+function CorporateContent() {
+  const searchParams = useSearchParams();
+    const categoryFromUrl = searchParams.get("category");
+  
+  const [selectedCategory, setSelectedCategory] = useState(categoryFromUrl ||"Employee Appreciation");
   const [activeDot, setActiveDot] = useState(0);
   const scrollRef = useRef(null);
+
+   useEffect(() => {
+    if (categoryFromUrl) {
+      setSelectedCategory(categoryFromUrl);
+    }
+  }, [categoryFromUrl]);
 
   const filteredPlants = corporateGifts.filter(
     (plant) => plant.category?.includes(selectedCategory)
@@ -285,5 +296,13 @@ export default function PlantsPage() {
       <FaqSection title="General FAQs" faqs={faqs} />
 
     </div>
+  );
+}
+
+export default function CorporatePage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#f8faf7]" />}>
+      <CorporateContent />
+    </Suspense>
   );
 }

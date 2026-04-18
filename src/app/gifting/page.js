@@ -1,18 +1,30 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState,useRef ,useEffect} from "react";
 import { Headset, PhoneCall } from "lucide-react";
+import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
+
 import { FaWhatsapp } from "react-icons/fa";
 import PlantCard from "@/components/plants/PlantCard";
 import { gifts } from "@/data/gifting";
 import { categories } from "@/data/giftingCategories";
 import FaqSection from "@/components/general/FaqSection";
 
-export default function PlantsPage() {
+function PlantsPage() {
+  const searchParams = useSearchParams();
+  const categoryFromUrl = searchParams.get("category");
+  
 
-  const [selectedCategory, setSelectedCategory] = useState("Birthday");
+  const [selectedCategory, setSelectedCategory] = useState(categoryFromUrl ||"Birthday");
   const [activeDot, setActiveDot] = useState(0);
   const scrollRef = useRef(null);
+
+   useEffect(() => {
+    if (categoryFromUrl) {
+      setSelectedCategory(categoryFromUrl);
+    }
+  }, [categoryFromUrl]);
 
   const filteredPlants = gifts.filter(
     (plant) => plant.category?.includes(selectedCategory)
@@ -286,5 +298,13 @@ export default function PlantsPage() {
       <FaqSection title="General FAQs" faqs={faqs} />
 
     </div>
+  );
+}
+
+export default function PotsPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#f8faf7]" />}>
+      <PlantsPage />
+    </Suspense>
   );
 }

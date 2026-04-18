@@ -1,17 +1,30 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef ,useEffect } from "react";
 import PlantCard from "@/components/plants/PlantCard";
 import { tools } from "@/data/tools";
+import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 import { toolCategories } from "@/data/toolCategories";
 import FaqSection from "@/components/general/FaqSection";
 
-export default function ToolsPage() {
+function ToolsPage() {
+   const searchParams = useSearchParams();
+  const categoryFromUrl = searchParams.get("category");
+
   const [selectedCategory, setSelectedCategory] = useState("Gardening Tools");
 
+
+   useEffect(() => {
+    if (categoryFromUrl) {
+      setSelectedCategory(categoryFromUrl);
+    }
+  }, [categoryFromUrl]);
   const filteredTools = tools.filter(
     (tool) => tool.category?.includes(selectedCategory)
   );
+
+
 
   const faqs = [
     {
@@ -134,5 +147,13 @@ From handy tools to kids kits — grow and care for your garden with ease.      
       <FaqSection title="Gardening Tools FAQs" faqs={faqs} />
 
     </div>
+  );
+}
+
+export default function GardenShop() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#f8faf7]" />}>
+      <ToolsPage />
+    </Suspense>
   );
 }

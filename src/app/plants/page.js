@@ -2,13 +2,17 @@
 
 import { useState, useRef ,useEffect} from "react";
 import PlantCard from "@/components/plants/PlantCard";
+import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 import { plants } from "@/data/plants";
 import { categories } from "@/data/plantCategories";
 import FaqSection from "@/components/general/FaqSection";
 
-export default function PlantsPage() {
+function PlantsContent() {
+  const searchParams = useSearchParams();
+  const categoryFromUrl = searchParams.get("category");
 
-  const [selectedCategory, setSelectedCategory] = useState("Indoor Plants");
+  const [selectedCategory, setSelectedCategory] = useState(categoryFromUrl || "Indoor Plants");
   const [activeDot, setActiveDot] = useState(0);
   const scrollRef = useRef(null);
 
@@ -81,10 +85,16 @@ export default function PlantsPage() {
   };
 
    useEffect(() => {
-    fetch('http://localhost:5000/api/plants')
-      .then(res => res.json())
-      .then(data => console.log(data))  // open browser console to see
-  }, []);
+    if (categoryFromUrl) {
+      setSelectedCategory(categoryFromUrl);
+    }
+  }, [categoryFromUrl]);
+
+  //  useEffect(() => {
+  //   fetch('http://localhost:5000/api/plants')
+  //     .then(res => res.json())
+  //     .then(data => console.log(data))  // open browser console to see
+  // }, []);
 
   return (
     <div className="w-full">
@@ -234,5 +244,12 @@ export default function PlantsPage() {
       <FaqSection title="General FAQs" faqs={faqs} />
 
     </div>
+  );
+}
+export default function PlantsPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#f8faf7]" />}>
+      <PlantsContent />
+    </Suspense>
   );
 }

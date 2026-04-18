@@ -1,15 +1,25 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef ,useEffect } from "react";
 import PlantCard from "@/components/plants/PlantCard";
-import { plants } from "@/data/pots";
+import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
+import { pots } from "@/data/pots";
 import { categories } from "@/data/potCategories";
 import FaqSection from "@/components/general/FaqSection";
 
-export default function PlantsPage() {
-  const [selectedCategory, setSelectedCategory] = useState("Plastic Pots");
+function PotsContent() {
+  const searchParams = useSearchParams();
+    const categoryFromUrl = searchParams.get("category");
+  
+  const [selectedCategory, setSelectedCategory] = useState(categoryFromUrl ||"Plastic Pots");
 
-  const filteredPlants = plants.filter(
+   useEffect(() => {
+    if (categoryFromUrl) {
+      setSelectedCategory(categoryFromUrl);
+    }
+  }, [categoryFromUrl]);
+  const filteredPlants = pots.filter(
     (plant) => plant.category?.includes(selectedCategory)
   );
 
@@ -135,5 +145,13 @@ export default function PlantsPage() {
       <FaqSection  faqs={faqs} />
 
     </div>
+  );
+}
+
+export default function PotsPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#f8faf7]" />}>
+      <PotsContent />
+    </Suspense>
   );
 }

@@ -1,4 +1,4 @@
-export const plants = [
+export const pots = [
   {
     name: "Classic Black Plastic Pot",
     price: 199,
