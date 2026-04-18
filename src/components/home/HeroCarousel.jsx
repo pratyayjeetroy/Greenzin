@@ -7,7 +7,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 const slides = [
   {
     id: 1,
-    image: "/home/homeBanner1.png",
+    image: "/home/airPurifyingBanner.png",
     tag: "Air-Purifying Plants",
     subtitle: "Breathe Fresh, Live Healthy",
     cta: "View More",
@@ -16,7 +16,7 @@ const slides = [
   },
   {
     id: 2,
-    image: "/home/homeBanner1.png",
+    image: "/home/potsHeroBanner.png",
     tag: "Indoor Garden Pots",
     subtitle: "Style Meets Nature",
     cta: "Shop Now",
@@ -25,7 +25,7 @@ const slides = [
   },
   {
     id: 3,
-    image: "/home/homeBanner1.png",
+    image: "/home/giftHeroBanner.png",
     tag: "Gift Green, Gift Life",
     subtitle: "Perfect for Every Occasion",
     cta: "Explore Gifts",
@@ -34,7 +34,7 @@ const slides = [
   },
   {
     id: 4,
-    image: "/home/homeBanner1.png",
+    image: "/home/corporateHeroBanner.png",
     tag: "Bulk & Corporate Orders",
     subtitle: "Green Spaces for Your Office",
     cta: "Get a Quote",
@@ -43,7 +43,7 @@ const slides = [
   },
   {
     id: 5,
-    image: "/home/homeBanner1.png",
+    image: "/home/bestSellerHeroBanner.png",
     tag: "Best Sellers",
     subtitle: "Loved by Thousands",
     cta: "Buy Now",

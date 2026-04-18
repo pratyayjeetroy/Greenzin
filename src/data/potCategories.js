@@ -1,7 +1,7 @@
 export const categories = [
   {
     name: "Plastic Pots",
-    image: "/pot_categories/plastic_new.png"
+    image: "/pot_categories/plastic.png"
   },
   {
     name: "Ceramic Pots",

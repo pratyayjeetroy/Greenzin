@@ -34,8 +34,8 @@ const ProductGallery = ({ images = [] }) => {
             aria-label={`View ${img.alt}`}
             className={`relative aspect-square overflow-hidden rounded-xl border-2 transition-all duration-200 bg-[#f7f7f5] ${
               idx === activeIdx
-                ? "border-[#5C7058] shadow-md scale-105"
-                : "border-[#e8e8e8] hover:border-[#5C7058]/50 hover:scale-[1.02]"
+                ? "border-[#3d5a3e] shadow-md scale-105"
+                : "border-[#e8e8e8] hover:border-[#3d5a3e]/50 hover:scale-[1.02]"
             }`}
           >
             <Image

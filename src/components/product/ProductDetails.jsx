@@ -11,12 +11,12 @@ const Accordion = ({ title, defaultOpen = false, children }) => {
     <div className="border-b p-4 border-[#e8e8e8]">
       <button
         onClick={() => setOpen((o) => !o)}
-        className="flex w-full items-center justify-between py-4 text-left transition-colors hover:text-[#5C7058]"
+        className="flex w-full items-center justify-between py-4 text-left transition-colors hover:text-[#3d5a3e]"
         aria-expanded={open}
       >
         <span className="text-[15px] font-bold text-[#2d2d2d] sm:text-[16px]">{title}</span>
         {open ? (
-          <ChevronUp className="w-5 h-5 text-[#5C7058] shrink-0" />
+          <ChevronUp className="w-5 h-5 text-[#3d5a3e] shrink-0" />
         ) : (
           <ChevronDown className="w-5 h-5 text-[#7a7a7a] shrink-0" />
         )}
@@ -37,7 +37,7 @@ const Accordion = ({ title, defaultOpen = false, children }) => {
 
 const CarePill = ({ Icon, label, detail }) => (
   <div className="flex flex-col items-center gap-2 rounded-xl border border-[#e8e8e8] bg-[#f9f9f7] p-3 text-center">
-    <Icon className="w-6 h-6 text-[#5C7058]" />
+    <Icon className="w-6 h-6 text-[#3d5a3e]" />
     <span className="text-[12px] font-bold text-[#2d2d2d]">{label}</span>
     {detail && (
       <span className="text-[11px] text-[#7a7a7a] leading-snug">{detail}</span>

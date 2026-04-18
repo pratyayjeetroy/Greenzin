@@ -21,19 +21,19 @@ const CATEGORY_SECTIONS = [
         id: "flowering-plants",
         label: "Flowering Plants",
         href: "/categories/plants/flowering",
-        image: "/home/floweringPlants.jpeg",
+        image: "/home/floweringPlants.png",
       },
       {
         id: "air-purifying-plants",
         label: "Air Purifying Plants",
         href: "/categories/plants/air-purifying",
-        image: "/home/airPurifyingPlants.jpeg",
+        image: "/home/airPurifyingPlants.png",
       },
       {
         id: "vastu-plants",
         label: "Vastu Plants",
         href: "/categories/plants/vastu",
-        image: "/home/vastuPlants.jpeg",
+        image: "/home/vastu.png",
       },
     ],
   },
@@ -51,19 +51,19 @@ const CATEGORY_SECTIONS = [
         id: "ceramic-pots",
         label: "Ceramic",
         href: "/categories/pots/ceramic",
-        image: "/home/ceramicPots.jpeg",
+        image: "/home/ceramic.png",
       },
       {
         id: "designer-pots",
         label: "Designer",
         href: "/categories/pots/designer",
-        image: "/home/designerPots.jpeg",
+        image: "/home/designer.png",
       },
       {
         id: "plastic-pots",
         label: "Plastic",
         href: "/categories/pots/plastic",
-        image: "/home/plasticPots.jpeg",
+        image: "/home/plastic.png",
       },
     ],
   },
@@ -81,19 +81,19 @@ const CATEGORY_SECTIONS = [
         id: "birthday-gifts",
         label: "Birthday Gifts",
         href: "/categories/gifts/birthday",
-        image: "/home/floweringPlants.jpeg",
+        image: "/home/birthdayPlant.png",
       },
       {
         id: "housewarming-gifts",
         label: "Housewarming Gifts",
         href: "/categories/gifts/housewarming",
-        image: "/home/floweringPlants.jpeg",
+        image: "/home/housewarming.png",
       },
       {
         id: "office-sets",
         label: "Office Sets",
         href: "/categories/gifts/office",
-        image: "/home/floweringPlants.jpeg",
+        image: "/home/officePlant.png",
       },
     ],
   },
@@ -122,7 +122,7 @@ const CategoryCard = ({ label, href, image }) => (
     href={href}
     className="group relative block overflow-hidden rounded-xl border border-[#e8e8e8] bg-white shadow-sm transition-shadow duration-300 hover:shadow-md"
   >
-    <div className="relative w-full aspect-[1.85/1] overflow-hidden bg-[#f4f5f4]">
+    <div className="relative w-full aspect-3/2 overflow-hidden bg-[#f4f5f4]">
       <Image
         src={image}
         alt={label}

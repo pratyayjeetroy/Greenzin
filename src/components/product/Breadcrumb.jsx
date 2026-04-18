@@ -19,7 +19,7 @@ const Breadcrumb = ({ crumbs = [], productName }) => {
           <li key={i} className="flex items-center gap-1">
             <Link
               href={i === 0 ? "/" : `/${crumb.toLowerCase().replace(/\s+/g, "-")}`}
-              className="hover:text-[#5C7058] transition-colors"
+              className="hover:text-[#3d5a3e] transition-colors"
             >
               {crumb}
             </Link>
