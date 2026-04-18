@@ -36,7 +36,7 @@ export const plants = [
     price: 399,
     rating: 4.9,
     review: 600,
-    category: ["Vastu Plants","Flowering Plants","Medicinal Plants"],
+    category: ["Vastu Plants","Flowering Plants","Life Care Plants"],
     image1: "/aparajita.png",
         image2: "/aparajita2.png"
 

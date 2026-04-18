@@ -16,7 +16,7 @@ export const categories = [
     image: "/plant_categories/flowering.png"
   },
   {
-    name: "Medicinal Plants",
+    name: "Life Care Plants",
     image: "/plant_categories/medicinal.png"
   },
   {
