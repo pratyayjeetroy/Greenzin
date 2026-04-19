@@ -20,16 +20,30 @@ const Navbar = () => {
   const router = useRouter();
 
   useEffect(() => {
-    const handleClickOutside = (e) => {
+    let touchMoved = false;
+
+    const handleTouchMove = () => { touchMoved = true; };
+
+    const handleOutsideTouch = (e) => {
+      if (touchMoved) { touchMoved = false; return; }
       if (searchRef.current && !searchRef.current.contains(e.target)) {
         setSearchOpen(false);
       }
       if (mobileSearchRef.current && !mobileSearchRef.current.contains(e.target)) {
         setMobileSearchOpen(false);
+        setSearchOpen(false);
       }
     };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+
+    document.addEventListener("mousedown", handleOutsideTouch);
+    document.addEventListener("touchend", handleOutsideTouch);
+    document.addEventListener("touchmove", handleTouchMove);
+
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideTouch);
+      document.removeEventListener("touchend", handleOutsideTouch);
+      document.removeEventListener("touchmove", handleTouchMove);
+    };
   }, []);
 
   const handleSearchChange = (val) => {
@@ -50,9 +64,11 @@ const Navbar = () => {
     }
   };
 
+  // ✅ FIXED — directly uses product data, no getSearchRedirect guess
+  // Also adds highlight param so the card glows and scrolls into view
   const handleProductClick = (product) => {
-    const redirect = getSearchRedirect(product.name, allProducts);
-    router.push(redirect || product.url);
+    const url = `${product.url}?category=${encodeURIComponent(product.category[0])}&highlight=${encodeURIComponent(product.name)}`;
+    router.push(url);
     setSearchQuery("");
     setSearchOpen(false);
     setMobileSearchOpen(false);
@@ -64,17 +80,19 @@ const Navbar = () => {
     { label: "Pots", href: "/pots" },
     { label: "Gifting", href: "/gifting" },
     { label: "Corporate Gifts", href: "/corporate-gifts" },
-        { label: "Garden Shop", href: "/garden-shop" },
-
+    { label: "Garden Shop", href: "/garden-shop" },
     { label: "Bulk Orders", href: "/bulk-orders" },
     { label: "Blogs", href: "/blogs/1" },
     { label: "About Us", href: "/about-us" },
     { label: "Contact", href: "/contact" },
   ];
 
-  // Reusable dropdown JSX
   const SearchDropdown = () => (
-    <div className="absolute top-full mt-2 left-0 w-full bg-white border border-gray-200 rounded-2xl shadow-xl z-50 overflow-hidden max-h-[70vh] overflow-y-auto">
+    <div
+      onMouseDown={(e) => e.preventDefault()}
+      onTouchStart={(e) => e.stopPropagation()}
+      className="absolute top-full mt-2 left-0 w-full bg-white border border-gray-200 rounded-2xl shadow-xl z-50 overflow-hidden max-h-[70vh] overflow-y-auto"
+    >
       {Object.entries(
         searchResults.reduce((acc, product) => {
           if (!acc[product.section]) acc[product.section] = [];
@@ -83,7 +101,6 @@ const Navbar = () => {
         }, {})
       ).map(([section, items]) => (
         <div key={section}>
-          {/* Section Label */}
           <div className="px-4 py-2 text-[11px] font-[700] text-gray-400 uppercase tracking-widest bg-gray-50 border-b border-gray-100">
             {section}
           </div>
@@ -91,7 +108,11 @@ const Navbar = () => {
             <div
               key={i}
               onClick={() => handleProductClick(product)}
-              className="flex items-center gap-3 px-4 py-3 hover:bg-green-50 cursor-pointer border-b border-gray-50 last:border-b-0 transition-colors duration-150"
+              onTouchEnd={(e) => {
+                e.stopPropagation();
+                handleProductClick(product);
+              }}
+              className="flex items-center gap-3 px-4 py-3 hover:bg-green-50 active:bg-green-100 cursor-pointer border-b border-gray-50 last:border-b-0 transition-colors duration-150"
             >
               <img
                 src={product.image1}
@@ -114,6 +135,7 @@ const Navbar = () => {
 
   return (
     <nav className="w-full font-sans shadow-md">
+
       {/* Top Bar */}
       <div className="bg-white px-4 sm:px-6 py-3 flex items-center justify-between gap-3">
 
@@ -131,7 +153,7 @@ const Navbar = () => {
           </Link>
         </div>
 
-        {/* Desktop Search Bar */}
+        {/* Desktop & Tablet Search Bar */}
         <div ref={searchRef} className="hidden sm:block flex-1 max-w-2xl mx-4 relative">
           <form
             onSubmit={handleSearchSubmit}
@@ -211,9 +233,9 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Search Bar — slides open below top bar */}
+      {/* Mobile Search Bar */}
       {mobileSearchOpen && (
-        <div ref={mobileSearchRef} className="sm:hidden bg-white px-4 pb-3 relative border-t border-gray-100">
+        <div ref={mobileSearchRef} className="sm:hidden bg-white px-4 pb-3 pt-2 relative border-t border-gray-100">
           <form
             onSubmit={handleSearchSubmit}
             role="search"
@@ -228,7 +250,10 @@ const Navbar = () => {
               autoFocus
               className="flex-1 bg-transparent text-gray-600 text-sm outline-none border-none"
             />
-            <button type="submit" className="text-gray-400 hover:text-green-600 bg-transparent border-none cursor-pointer p-0 flex items-center">
+            <button
+              type="submit"
+              className="text-gray-400 hover:text-green-600 bg-transparent border-none cursor-pointer p-0 flex items-center"
+            >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" />
               </svg>

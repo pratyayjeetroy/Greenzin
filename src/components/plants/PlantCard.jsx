@@ -1,4 +1,7 @@
+"use client"; // ✅ add this
+
 import Image from "next/image";
+import { useRef, useEffect, useState } from "react"; // ✅ add these
 
 function StarRating({ rating }) {
   return (
@@ -23,9 +26,33 @@ function StarRating({ rating }) {
   );
 }
 
-export default function PlantCard({ plant, selectedCategory }) {
+export default function PlantCard({ plant, selectedCategory , isHighlighted }) {
+  const cardRef = useRef(null);
+const [glowing, setGlowing] = useState(isHighlighted);
+
+
+useEffect(() => {
+  if (isHighlighted && cardRef.current) {
+    // scroll to card
+    setTimeout(() => {
+      cardRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 300);
+    // stop glowing after 3 seconds
+    const timer = setTimeout(() => setGlowing(false), 3000);
+    return () => clearTimeout(timer);
+  }
+}, [isHighlighted]);
+
   return (
-    <div className="group rounded-xl p-[2px] bg-transparent hover:[background:linear-gradient(to_right,#83B930,#1992D5)] transition-all duration-300 hover:-translate-y-0.5 h-full">
+    // <div className="group rounded-xl p-[2px] bg-transparent hover:[background:linear-gradient(to_right,#83B930,#1992D5)] transition-all duration-300 hover:-translate-y-0.5 h-full">
+
+    <div
+  ref={cardRef} // ✅ add ref
+  className={`group rounded-xl p-[2px] bg-transparent hover:[background:linear-gradient(to_right,#83B930,#1992D5)] transition-all duration-300 hover:-translate-y-0.5 h-full
+    ${glowing ? "[background:linear-gradient(to_right,#83B930,#1992D5)] shadow-lg shadow-green-200 scale-[1.02]" : ""}
+  `} // ✅ add glow classes
+>
+
       <div className="bg-white rounded-[10px] shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden h-full flex flex-col">
 
         {/* Image */}

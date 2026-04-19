@@ -11,6 +11,7 @@ import FaqSection from "@/components/general/FaqSection";
 function PlantsContent() {
   const searchParams = useSearchParams();
   const categoryFromUrl = searchParams.get("category");
+  const highlightName = searchParams.get("highlight"); // ✅ read highlight param
 
   const [selectedCategory, setSelectedCategory] = useState(categoryFromUrl || "Indoor Plants");
   const [activeDot, setActiveDot] = useState(0);
@@ -59,9 +60,17 @@ function PlantsContent() {
     },
   ];
 
-  const filteredPlants = plants.filter(
-    (plant) => plant.category?.includes(selectedCategory)
-  );
+  // const filteredPlants = plants.filter(
+  //   (plant) => plant.category?.includes(selectedCategory)
+  // );
+
+    const filteredPlants = plants
+    .filter((plant) => plant.category?.includes(selectedCategory))
+    .sort((a, b) => {
+      if (a.name === highlightName) return -1;
+      if (b.name === highlightName) return 1;
+      return 0;
+    });
 
   const itemsPerPage = 4;
   const totalPages = Math.ceil(categories.length / itemsPerPage);
@@ -236,7 +245,8 @@ function PlantsContent() {
 
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5 md:gap-8 items-stretch">
           {filteredPlants.map((plant, index) => (
-            <PlantCard key={index} plant={plant} selectedCategory={selectedCategory} />
+            <PlantCard key={index} plant={plant} selectedCategory={selectedCategory} 
+            isHighlighted={plant.name === highlightName} />
           ))}
         </div>
       </div>
