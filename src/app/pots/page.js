@@ -4,8 +4,8 @@ import { useState, useRef ,useEffect } from "react";
 import PlantCard from "@/components/plants/PlantCard";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
-import { pots } from "@/data/pots";
-import { categories } from "@/data/potCategories";
+import { pots } from "@/data/pots/pots";
+import { categories } from "@/data/pots/potCategories";
 import FaqSection from "@/components/general/FaqSection";
 
 function PotsContent() {

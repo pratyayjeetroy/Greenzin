@@ -7,8 +7,8 @@ import { Suspense } from "react";
 
 import { FaWhatsapp } from "react-icons/fa";
 import PlantCard from "@/components/plants/PlantCard";
-import { gifts } from "@/data/gifting";
-import { categories } from "@/data/giftingCategories";
+import { gifts } from "@/data/gifting/gifting";
+import { categories } from "@/data/gifting/giftingCategories";
 import FaqSection from "@/components/general/FaqSection";
 
 function PlantsPage() {

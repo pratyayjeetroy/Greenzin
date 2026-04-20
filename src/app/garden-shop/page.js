@@ -2,10 +2,10 @@
 
 import { useState, useRef ,useEffect } from "react";
 import PlantCard from "@/components/plants/PlantCard";
-import { tools } from "@/data/tools";
+import { tools } from "@/data/tools/tools";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
-import { toolCategories } from "@/data/toolCategories";
+import { toolCategories } from "@/data/tools/toolCategories";
 import FaqSection from "@/components/general/FaqSection";
 
 function ToolsPage() {
