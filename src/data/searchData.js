@@ -1,9 +1,9 @@
 // data/searchData.js
-import { plants } from "./plants";
-import { pots } from "./pots";
-import { tools } from "./tools";
-import { gifts } from "./gifting";
-import { corporateGifts } from "./corporateGifts";
+import { plants } from "./plants/plants";
+import { pots } from "./pots/pots";
+import { tools } from "./tools/tools";
+import { gifts } from "./gifting/gifting";
+import { corporateGifts } from "./corporate/corporateGifts";
 
 export const allProducts = [
   ...plants.map(p => ({ ...p, section: "Plants", url: "/plants" })),

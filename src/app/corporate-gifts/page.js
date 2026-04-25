@@ -6,8 +6,8 @@ import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import { FaWhatsapp } from "react-icons/fa";
 import PlantCard from "@/components/plants/PlantCard";
-import { corporateGifts } from "@/data/corporateGifts";
-import { categories } from "@/data/corporateCategories";
+import { corporateGifts } from "@/data/corporate/corporateGifts";
+import { categories } from "@/data/corporate/corporateCategories";
 import FaqSection from "@/components/general/FaqSection";
 
 function CorporateContent() {
