@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { allProducts } from "@/data/searchData";
-import { searchProducts, getSearchRedirect } from "@/components/general/search";
+import { searchProducts } from "@/components/general/search";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -54,25 +54,23 @@ const Navbar = () => {
   };
 
   const handleSearchSubmit = (e) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      const redirect = getSearchRedirect(searchQuery.trim(), allProducts);
-      router.push(redirect || `/search?q=${encodeURIComponent(searchQuery.trim())}`);
-      setSearchQuery("");
-      setSearchOpen(false);
-      setMobileSearchOpen(false);
-    }
-  };
+  e.preventDefault();
+  if (searchQuery.trim()) {
+    router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+    setSearchQuery("");
+    setSearchOpen(false);
+    setMobileSearchOpen(false);
+  }
+};
 
   // ✅ FIXED — directly uses product data, no getSearchRedirect guess
   // Also adds highlight param so the card glows and scrolls into view
   const handleProductClick = (product) => {
-    const url = `${product.url}?category=${encodeURIComponent(product.category[0])}&highlight=${encodeURIComponent(product.name)}`;
-    router.push(url);
-    setSearchQuery("");
-    setSearchOpen(false);
-    setMobileSearchOpen(false);
-  };
+  router.push(`/search?q=${encodeURIComponent(product.name)}`);
+  setSearchQuery("");
+  setSearchOpen(false);
+  setMobileSearchOpen(false);
+};
 
   const navLinks = [
     { label: "Home", href: "/" },
