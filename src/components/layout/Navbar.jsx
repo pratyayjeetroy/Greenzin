@@ -5,13 +5,14 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { allProducts } from "@/data/searchData";
+import { allProducts, allCategories } from "@/data/searchData";
 import { searchProducts } from "@/components/general/search";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
+  const [categoryResults, setCategoryResults] = useState([]);
   const pathname = usePathname();
   const [searchResults, setSearchResults] = useState([]);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -21,9 +22,7 @@ const Navbar = () => {
 
   useEffect(() => {
     let touchMoved = false;
-
     const handleTouchMove = () => { touchMoved = true; };
-
     const handleOutsideTouch = (e) => {
       if (touchMoved) { touchMoved = false; return; }
       if (searchRef.current && !searchRef.current.contains(e.target)) {
@@ -34,11 +33,9 @@ const Navbar = () => {
         setSearchOpen(false);
       }
     };
-
     document.addEventListener("mousedown", handleOutsideTouch);
     document.addEventListener("touchend", handleOutsideTouch);
     document.addEventListener("touchmove", handleTouchMove);
-
     return () => {
       document.removeEventListener("mousedown", handleOutsideTouch);
       document.removeEventListener("touchend", handleOutsideTouch);
@@ -48,29 +45,57 @@ const Navbar = () => {
 
   const handleSearchChange = (val) => {
     setSearchQuery(val);
+    if (!val.trim()) {
+      setSearchResults([]);
+      setCategoryResults([]);
+      setSearchOpen(false);
+      return;
+    }
     const found = searchProducts(val, allProducts);
-    setSearchResults(found.slice(0, 8));
-    setSearchOpen(found.length > 0 && val.trim() !== "");
+    setSearchResults(found.slice(0, 4)); // max 4 products
+
+    // ✅ match from start of word only — no irrelevant suggestions
+    const matchedCats = allCategories
+      .filter(cat =>
+        cat.toLowerCase().split(" ")
+          .some(word => word.startsWith(val.toLowerCase()))
+      )
+      .slice(0, 3); // max 3 suggestions
+    setCategoryResults(matchedCats);
+
+    setSearchOpen(found.length > 0 || matchedCats.length > 0);
   };
 
   const handleSearchSubmit = (e) => {
-  e.preventDefault();
-  if (searchQuery.trim()) {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+      setSearchQuery("");
+      setSearchOpen(false);
+      setMobileSearchOpen(false);
+    }
+  };
+
+  const handleProductClick = (product) => {
+    router.push(`/search?q=${encodeURIComponent(product.name)}`);
+    setSearchQuery("");
+    setSearchOpen(false);
+    setMobileSearchOpen(false);
+  };
+
+  const handleCategoryClick = (cat) => {
+    router.push(`/search?q=${encodeURIComponent(cat)}`);
+    setSearchQuery("");
+    setSearchOpen(false);
+    setMobileSearchOpen(false);
+  };
+
+  const handleViewAll = () => {
     router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
     setSearchQuery("");
     setSearchOpen(false);
     setMobileSearchOpen(false);
-  }
-};
-
-  // ✅ FIXED — directly uses product data, no getSearchRedirect guess
-  // Also adds highlight param so the card glows and scrolls into view
-  const handleProductClick = (product) => {
-  router.push(`/search?q=${encodeURIComponent(product.name)}`);
-  setSearchQuery("");
-  setSearchOpen(false);
-  setMobileSearchOpen(false);
-};
+  };
 
   const navLinks = [
     { label: "Home", href: "/" },
@@ -91,6 +116,53 @@ const Navbar = () => {
       onTouchStart={(e) => e.stopPropagation()}
       className="absolute top-full mt-2 left-0 w-full bg-white border border-gray-200 rounded-2xl shadow-xl z-50 overflow-hidden max-h-[70vh] overflow-y-auto"
     >
+      {/* Search for line */}
+      <div
+        onClick={handleViewAll}
+        onTouchEnd={(e) => { e.stopPropagation(); handleViewAll(); }}
+        className="flex items-center gap-3 px-4 py-3 hover:bg-green-50 active:bg-green-100 cursor-pointer border-b border-gray-100 transition-colors duration-150"
+      >
+        <div className="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center shrink-0">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" />
+          </svg>
+        </div>
+        <p className="text-sm text-gray-700 flex-1">
+          Search for <span className="text-[#3a7d44] font-[600]">"{searchQuery}"</span>
+        </p>
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-300 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        </svg>
+      </div>
+
+      {/* Category suggestions */}
+      {categoryResults.length > 0 && (
+        <div>
+          <div className="px-4 py-2 text-[11px] font-[700] text-gray-400 uppercase tracking-widest bg-gray-50 border-b border-gray-100">
+            Suggestions
+          </div>
+          {categoryResults.map((cat, i) => (
+            <div
+              key={i}
+              onClick={() => handleCategoryClick(cat)}
+              onTouchEnd={(e) => { e.stopPropagation(); handleCategoryClick(cat); }}
+              className="flex items-center gap-3 px-4 py-2.5 hover:bg-green-50 active:bg-green-100 cursor-pointer border-b border-gray-50 transition-colors duration-150"
+            >
+              <div className="w-8 h-8 rounded-lg bg-[#EAF3DE] flex items-center justify-center shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-[#3B6D11]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" />
+                </svg>
+              </div>
+              <p className="text-sm font-[500] text-gray-700 flex-1">{cat}</p>
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-300 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Product results grouped by section */}
       {Object.entries(
         searchResults.reduce((acc, product) => {
           if (!acc[product.section]) acc[product.section] = [];
@@ -106,10 +178,7 @@ const Navbar = () => {
             <div
               key={i}
               onClick={() => handleProductClick(product)}
-              onTouchEnd={(e) => {
-                e.stopPropagation();
-                handleProductClick(product);
-              }}
+              onTouchEnd={(e) => { e.stopPropagation(); handleProductClick(product); }}
               className="flex items-center gap-3 px-4 py-3 hover:bg-green-50 active:bg-green-100 cursor-pointer border-b border-gray-50 last:border-b-0 transition-colors duration-150"
             >
               <img
@@ -128,6 +197,17 @@ const Navbar = () => {
           ))}
         </div>
       ))}
+
+      {/* ✅ View all results at bottom */}
+      {searchResults.length > 0 && (
+        <div
+          onClick={handleViewAll}
+          onTouchEnd={(e) => { e.stopPropagation(); handleViewAll(); }}
+          className="px-4 py-3 text-center text-[13px] text-[#3a7d44] font-[500] hover:bg-green-50 active:bg-green-100 cursor-pointer border-t border-gray-100 transition-colors duration-150"
+        >
+          View all results for "{searchQuery}" →
+        </div>
+      )}
     </div>
   );
 

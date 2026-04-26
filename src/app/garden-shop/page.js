@@ -11,7 +11,6 @@ import FaqSection from "@/components/general/FaqSection";
 function ToolsPage() {
    const searchParams = useSearchParams();
   const categoryFromUrl = searchParams.get("category");
-  const highlightName = searchParams.get("highlight"); // ✅ read highlight param
  
 
   const [selectedCategory, setSelectedCategory] = useState("Gardening Tools");
@@ -24,14 +23,9 @@ function ToolsPage() {
   }, [categoryFromUrl]);
   const filteredTools = tools.filter(
     (tool) => tool.category?.includes(selectedCategory)
-  ).sort((a, b) => {
-      if (a.name === highlightName) return -1;
-      if (b.name === highlightName) return 1;
-      return 0;
-    });
+  );
 
- console.log("highlight:", highlightName);
-console.log("products:", filteredTools.map(p => p.name));
+ 
 
   const faqs = [
     {
@@ -146,7 +140,7 @@ From handy tools to kids kits — grow and care for your garden with ease.      
 
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5 md:gap-8 items-stretch">
           {filteredTools.map((tool, index) => (
-            <PlantCard key={index} plant={tool} selectedCategory={selectedCategory} isHighlighted={tool.name === highlightName}/>
+            <PlantCard key={index} plant={tool} selectedCategory={selectedCategory} />
           ))}
         </div>
       </div>
