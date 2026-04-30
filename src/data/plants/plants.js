@@ -22,6 +22,28 @@ export const plants = [
 
   },
   {
+    name: "Money Plant",
+    price: 349,
+    rating: 3.5,
+    category: ["Indoor Plants","Easy Care"],
+        review: 600,
+
+    image1: "/plant_categories/vastu.png",
+        image2: "/plant_categories/indoor.png"
+
+  },
+  {
+    name: "Money Plant",
+    price: 349,
+    rating: 3.5,
+    category: ["Indoor Plants","Easy Care"],
+        review: 600,
+
+    image1: "/plant_categories/vastu.png",
+        image2: "/plant_categories/indoor.png"
+
+  },
+  {
     name: "Snake Plant",
     price: 399,
     rating: 4.9,
