@@ -12,3 +12,11 @@ export const allProducts = [
   ...gifts.map(p => ({ ...p, section: "Gifting", url: "/gifting" })),
   ...corporateGifts.map(p => ({ ...p, section: "Corporate Gifts", url: "/corporate-gifts" })),
 ];
+
+// in searchData.js
+// CORRECT — returns plain strings
+export const allCategories = [...new Set(
+  allProducts.flatMap(p => p.category)
+)];
+
+// gives → [{ cat: "Eco-Friendly", section: "Pots" }, ...]

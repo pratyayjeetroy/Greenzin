@@ -1,4 +1,4 @@
-"use client"; // ✅ add this
+"use client";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -9,14 +9,32 @@ function StarRating({ rating }) {
     <div className="flex items-center gap-[2px]">
       {[1, 2, 3, 4, 5].map((star) => {
         const fill =
-          rating >= star ? 100 : rating >= star - 1 ? (rating - (star - 1)) * 100 : 0;
+          rating >= star
+            ? 100
+            : rating >= star - 1
+              ? (rating - (star - 1)) * 100
+              : 0;
         return (
-          <div key={star} className="relative w-3 h-3 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4">
-            <svg viewBox="0 0 24 24" className="absolute inset-0 w-full h-full text-gray-300" fill="currentColor">
+          <div
+            key={star}
+            className="relative h-3 w-3 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              className="absolute inset-0 h-full w-full text-gray-300"
+              fill="currentColor"
+            >
               <path d="M12 2l2.9 6.26 6.9.6-5.2 4.73 1.56 6.81L12 16.9 5.84 20.4 7.4 13.59 2.2 8.86l6.9-.6L12 2z" />
             </svg>
-            <div className="absolute inset-0 overflow-hidden" style={{ width: `${fill}%` }}>
-              <svg viewBox="0 0 24 24" className="w-3 h-3 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4 text-yellow-500" fill="currentColor">
+            <div
+              className="absolute inset-0 overflow-hidden"
+              style={{ width: `${fill}%` }}
+            >
+              <svg
+                viewBox="0 0 24 24"
+                className="h-3 w-3 text-yellow-500 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4"
+                fill="currentColor"
+              >
                 <path d="M12 2l2.9 6.26 6.9.6-5.2 4.73 1.56 6.81L12 16.9 5.84 20.4 7.4 13.59 2.2 8.86l6.9-.6L12 2z" />
               </svg>
             </div>
@@ -27,102 +45,83 @@ function StarRating({ rating }) {
   );
 }
 
-export default function PlantCard({ plant, selectedCategory , isHighlighted }) {
-  const cardRef = useRef(null);
-const [glowing, setGlowing] = useState(isHighlighted);
-
-
-useEffect(() => {
-  if (isHighlighted && cardRef.current) {
-    // scroll to card
-    setTimeout(() => {
-      cardRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
-    }, 300);
-    // stop glowing after 3 seconds
-    const timer = setTimeout(() => setGlowing(false), 3000);
-    return () => clearTimeout(timer);
-  }
-}, [isHighlighted]);
-
+export default function PlantCard({ plant, selectedCategory }) {
   return (
     // Wrap in Link so clicking anywhere on the card navigates to the detail page
-    <Link href={plant.slug ? `/plants/${plant.slug}` : "#"} className="h-full block">
-
-    <div
-  ref={cardRef} // ✅ add ref
-  className={`group rounded-xl p-[2px] bg-transparent hover:[background:linear-gradient(to_right,#83B930,#1992D5)] transition-all duration-300 hover:-translate-y-0.5 h-full
-    ${glowing ? "[background:linear-gradient(to_right,#83B930,#1992D5)] shadow-lg shadow-green-200 scale-[1.02]" : ""}
-  `} // ✅ add glow classes
->
-
-      <div className="bg-white rounded-[10px] shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden h-full flex flex-col">
-
-        {/* Image */}
-        <div className="relative w-full aspect-[3/2] overflow-hidden">
-          <Image
-            src={plant.image1}
-            alt={plant.name}
-            fill
-            className="object-cover transition-all duration-500 group-hover:scale-110 group-hover:opacity-0"
-          />
-          <Image
-            src={plant.image2}
-            alt={plant.name}
-            fill
-            className="object-cover opacity-0 scale-100 transition-all duration-500 group-hover:opacity-100 group-hover:scale-[1.06]"
-          />
-        </div>
-
-        {/* Content */}
-        <div className="p-2 sm:p-3 md:p-4 flex flex-col flex-1">
-
-          {/* Plant Name */}
-          <h3 className="text-[13px] sm:text-[15px] md:text-[17px] lg:text-[18px] font-[600] font-[inter] text-gray-700 leading-snug">
-            {plant.name}
-          </h3>
-
-          {/* Category Tags */}
-          {plant.categories
-            ?.filter((cat) => cat !== selectedCategory)
-            .slice(0, 2).length > 0 && (
-            <div className="flex flex-wrap gap-[3px] sm:gap-[5px] mt-1 sm:mt-1.5">
-              {plant.categories
-                ?.filter((cat) => cat !== selectedCategory)
-                .slice(0, 2)
-                .map((cat) => (
-                  <span
-                    key={cat}
-                    className="text-[9px] sm:text-[10px] md:text-[11px] lg:text-[12px] font-[500] font-[inter] px-1.5 sm:px-2 py-[2px] sm:py-[3px] rounded-lg bg-[#eef2f7] text-gray-600"
-                  >
-                    {cat}
-                  </span>
-                ))}
-            </div>
-          )}
-
-          {/* Price + Rating - always in a row, never stacks */}
-          <div className="flex items-center justify-between gap-1 mt-2 mb-2">
-            <p className="text-[13px] sm:text-[15px] md:text-[17px] lg:text-[18px] font-[600] font-[inter] text-gray-800 whitespace-nowrap">
-              ₹{plant.basePrice}
-            </p>
-            <div className="flex items-center gap-[2px] sm:gap-1">
-              <StarRating rating={plant.ratingScore} />
-              <span className="text-[9px] sm:text-[11px] md:text-[12px] lg:text-[13px] text-gray-500 font-[inter] whitespace-nowrap">
-                {plant.ratingScore} ({plant.reviewCount})
-              </span>
-            </div>
+    <Link
+      href={plant.slug ? `/plants/${plant.slug}` : "#"}
+      className="block h-full"
+    >
+      <div
+        ref={cardRef} // ✅ add ref
+        className={`group h-full rounded-xl bg-transparent p-[2px] transition-all duration-300 hover:-translate-y-0.5 hover:[background:linear-gradient(to_right,#83B930,#1992D5)] ${glowing ? "scale-[1.02] shadow-lg shadow-green-200 [background:linear-gradient(to_right,#83B930,#1992D5)]" : ""} `} // ✅ add glow classes
+      >
+        <div className="flex h-full flex-col overflow-hidden rounded-[10px] bg-white shadow-md transition-all duration-300 hover:shadow-lg">
+          {/* Image */}
+          <div className="relative aspect-[3/2] w-full overflow-hidden">
+            <Image
+              src={plant.image1}
+              alt={plant.name}
+              fill
+              className="object-cover transition-all duration-500 group-hover:scale-110 group-hover:opacity-0"
+            />
+            <Image
+              src={plant.image2}
+              alt={plant.name}
+              fill
+              className="scale-100 object-cover opacity-0 transition-all duration-500 group-hover:scale-[1.06] group-hover:opacity-100"
+            />
           </div>
 
-          {/* Add to Cart Button */}
-          <button
-            onClick={(e) => e.preventDefault()}
-            className="mt-auto w-full font-[500] font-[inter] text-[12px] sm:text-[14px] md:text-[15px] lg:text-[16px] text-white bg-[#3d5a3e] py-[7px] sm:py-[9px] md:py-[10px] rounded-lg hover:[background:linear-gradient(to_right,#83B930,#1992D5)] transition">
-            Add to Cart
-          </button>
+          {/* Content */}
+          <div className="flex flex-1 flex-col p-2 sm:p-3 md:p-4">
+            {/* Plant Name */}
+            <h3 className="font-[inter] text-[13px] leading-snug font-[600] text-gray-700 sm:text-[15px] md:text-[17px] lg:text-[18px]">
+              {plant.name}
+            </h3>
 
+            {/* Category Tags */}
+            {plant.categories
+              ?.filter((cat) => cat !== selectedCategory)
+              .slice(0, 2).length > 0 && (
+              <div className="mt-1 flex flex-wrap gap-[3px] sm:mt-1.5 sm:gap-[5px]">
+                {plant.categories
+                  ?.filter((cat) => cat !== selectedCategory)
+                  .slice(0, 2)
+                  .map((cat) => (
+                    <span
+                      key={cat}
+                      className="rounded-lg bg-[#eef2f7] px-1.5 py-[2px] font-[inter] text-[9px] font-[500] text-gray-600 sm:px-2 sm:py-[3px] sm:text-[10px] md:text-[11px] lg:text-[12px]"
+                    >
+                      {cat}
+                    </span>
+                  ))}
+              </div>
+            )}
+
+            {/* Price + Rating */}
+            <div className="mt-2 mb-2 flex items-center justify-between gap-1">
+              <p className="font-[inter] text-[13px] font-[600] whitespace-nowrap text-gray-800 sm:text-[15px] md:text-[17px] lg:text-[18px]">
+                ₹{plant.basePrice}
+              </p>
+              <div className="flex items-center gap-[2px] sm:gap-1">
+                <StarRating rating={plant.ratingScore} />
+                <span className="font-[inter] text-[9px] whitespace-nowrap text-gray-500 sm:text-[11px] md:text-[12px] lg:text-[13px]">
+                  {plant.ratingScore} ({plant.reviewCount})
+                </span>
+              </div>
+            </div>
+
+            {/* Add to Cart Button */}
+            <button
+              onClick={(e) => e.preventDefault()}
+              className="mt-auto w-full rounded-lg bg-[#3d5a3e] py-[7px] font-[inter] text-[12px] font-[500] text-white transition hover:[background:linear-gradient(to_right,#83B930,#1992D5)] sm:py-[9px] sm:text-[14px] md:py-[10px] md:text-[15px] lg:text-[16px]"
+            >
+              Add to Cart
+            </button>
+          </div>
         </div>
       </div>
-    </div>
     </Link>
   );
 }

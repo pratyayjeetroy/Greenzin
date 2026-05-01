@@ -10,9 +10,10 @@ import FaqSection from "@/components/general/FaqSection";
 function PlantsContent() {
   const searchParams = useSearchParams();
   const categoryFromUrl = searchParams.get("category");
-  const highlightName = searchParams.get("highlight"); // ✅ read highlight param
 
-  const [selectedCategory, setSelectedCategory] = useState(categoryFromUrl || "Indoor Plants");
+  const [selectedCategory, setSelectedCategory] = useState(
+    categoryFromUrl || "Indoor Plants",
+  );
   const [activeDot, setActiveDot] = useState(0);
   const scrollRef = useRef(null);
 
@@ -43,43 +44,54 @@ function PlantsContent() {
   const faqs = [
     {
       question: "What are the different categories of plants available?",
-      answer: "We offer a wide range of plant categories including indoor plants, outdoor plants, flowering plants, air-purifying plants, succulents, bonsai plants, hanging plants, and low-maintenance plants.",
+      answer:
+        "We offer a wide range of plant categories including indoor plants, outdoor plants, flowering plants, air-purifying plants, succulents, bonsai plants, hanging plants, and low-maintenance plants.",
     },
     {
       question: "Which plants are best suited for indoor spaces?",
-      answer: "Indoor plants such as snake plant, pothos, peace lily, lucky bamboo, ZZ plant, and syngonium are popular choices because they are easy to maintain and adapt well to indoor conditions.",
+      answer:
+        "Indoor plants such as snake plant, pothos, peace lily, lucky bamboo, ZZ plant, and syngonium are popular choices because they are easy to maintain and adapt well to indoor conditions.",
     },
     {
-      question: "Do you have outdoor plants for balconies, terraces, or gardens?",
-      answer: "Yes, we offer outdoor plants that are suitable for balconies, terraces, patios, and gardens, including flowering plants, decorative foliage plants, and hardy green plants.",
+      question:
+        "Do you have outdoor plants for balconies, terraces, or gardens?",
+      answer:
+        "Yes, we offer outdoor plants that are suitable for balconies, terraces, patios, and gardens, including flowering plants, decorative foliage plants, and hardy green plants.",
     },
     {
       question: "Do you offer flowering plants?",
-      answer: "Yes, we have flowering plants in different varieties that can add color and freshness to homes, balconies, gardens, and office spaces.",
+      answer:
+        "Yes, we have flowering plants in different varieties that can add color and freshness to homes, balconies, gardens, and office spaces.",
     },
     {
       question: "Which plants are low-maintenance and easy to care for?",
-      answer: "Low-maintenance plants like snake plant, jade plant, aloe vera, ZZ plant, cactus, and succulents are great options for beginners and busy plant owners.",
+      answer:
+        "Low-maintenance plants like snake plant, jade plant, aloe vera, ZZ plant, cactus, and succulents are great options for beginners and busy plant owners.",
     },
     {
       question: "Do you have plants that help purify indoor air?",
-      answer: "Yes, we offer air-purifying plants such as areca palm, spider plant, peace lily, pothos, and snake plant, which are commonly chosen for indoor environments.",
+      answer:
+        "Yes, we offer air-purifying plants such as areca palm, spider plant, peace lily, pothos, and snake plant, which are commonly chosen for indoor environments.",
     },
     {
       question: "How often should I water my plants?",
-      answer: "Watering depends on the type of plant, pot size, and environment. In general, most indoor plants should be watered only when the top layer of soil feels dry.",
+      answer:
+        "Watering depends on the type of plant, pot size, and environment. In general, most indoor plants should be watered only when the top layer of soil feels dry.",
     },
     {
       question: "How much sunlight do plants need?",
-      answer: "Sunlight requirements vary by plant category. Some plants thrive in bright indirect light, while others prefer direct sunlight or partial shade. We recommend checking the care needs of each plant before purchase.",
+      answer:
+        "Sunlight requirements vary by plant category. Some plants thrive in bright indirect light, while others prefer direct sunlight or partial shade. We recommend checking the care needs of each plant before purchase.",
     },
     {
       question: "Do you provide plant care tips for beginners?",
-      answer: "Yes, we share basic care tips such as watering guidance, sunlight needs, pot placement, soil care, and general maintenance to help beginners care for their plants easily.",
+      answer:
+        "Yes, we share basic care tips such as watering guidance, sunlight needs, pot placement, soil care, and general maintenance to help beginners care for their plants easily.",
     },
     {
       question: "How do I choose the right plant for my home or office?",
-      answer: "The right plant depends on the space, available sunlight, maintenance preference, and purpose. Indoor low-maintenance plants are ideal for offices, while flowering and outdoor plants are better for open spaces and balconies.",
+      answer:
+        "The right plant depends on the space, available sunlight, maintenance preference, and purpose. Indoor low-maintenance plants are ideal for offices, while flowering and outdoor plants are better for open spaces and balconies.",
     },
   ];
 
@@ -87,7 +99,7 @@ function PlantsContent() {
   //   (plant) => plant.category?.includes(selectedCategory)
   // );
 
-    const filteredPlants = plants
+  const filteredPlants = plants
     .filter((plant) => plant.categories?.includes(selectedCategory))
     .sort((a, b) => {
       if (a.name === highlightName) return -1;
@@ -116,7 +128,7 @@ function PlantsContent() {
     setActiveDot(pageIndex);
   };
 
-   useEffect(() => {
+  useEffect(() => {
     if (categoryFromUrl) {
       setSelectedCategory(categoryFromUrl);
     }
@@ -124,62 +136,71 @@ function PlantsContent() {
 
   return (
     <div className="w-full">
-
       {/* Banner Section */}
       <div className="bg-[url('/banner/banner.png')] bg-cover bg-center py-10 sm:py-12 md:py-16">
-        <div className="text-center w-full px-4 sm:px-8">
-          <h1 className="text-[20px] sm:text-[26px] md:text-[30px] lg:text-[33px] font-[600] text-slate-700 font-[poppins] tracking-[0.5px] leading-[1.25] sm:leading-[1.3] px-4 sm:px-0">
+        <div className="w-full px-4 text-center sm:px-8">
+          <h1 className="px-4 font-[poppins] text-[20px] leading-[1.25] font-[600] tracking-[0.5px] text-slate-700 sm:px-0 sm:text-[26px] sm:leading-[1.3] md:text-[30px] lg:text-[33px]">
             Bring Home Freshness, Beauty, and Nature One Plant at a Time
           </h1>
-          <p className="text-gray-700 mt-2 sm:mt-3 text-[13px] sm:text-[16px] md:text-[18px] lg:text-[19px] font-[inter] tracking-[0.3px] leading-[1.6] sm:leading-[1.4]">
-            Explore a wide range of indoor, outdoor, medicinal, and decorative plants to suit every space and lifestyle.{" "}
+          <p className="mt-2 font-[inter] text-[13px] leading-[1.6] tracking-[0.3px] text-gray-700 sm:mt-3 sm:text-[16px] sm:leading-[1.4] md:text-[18px] lg:text-[19px]">
+            Explore a wide range of indoor, outdoor, medicinal, and decorative
+            plants to suit every space and lifestyle.{" "}
             <br className="hidden md:block" />
-            Choose your category, view details, and grow your green space with ease.
+            Choose your category, view details, and grow your green space with
+            ease.
           </p>
         </div>
 
         {/* Category Circles — Mobile: carousel, Desktop: grid */}
         <div className="mt-8 sm:mt-10">
-
           {/* MOBILE CAROUSEL — hidden on md+ */}
-          <div className="block md:hidden overflow-hidden">
+          <div className="block overflow-hidden md:hidden">
             <div
               ref={scrollRef}
               onScroll={handleScroll}
-              className="flex snap-x snap-mandatory scrollbar-hide"
-              style={{ scrollbarWidth: "none", msOverflowStyle: "none", overflowX: "auto" }}
+              className="scrollbar-hide flex snap-x snap-mandatory"
+              style={{
+                scrollbarWidth: "none",
+                msOverflowStyle: "none",
+                overflowX: "auto",
+              }}
             >
               {Array.from({ length: totalPages }).map((_, pageIndex) => (
                 <div
                   key={pageIndex}
-                  className="min-w-full flex-shrink-0 snap-start grid grid-cols-4 gap-y-5 gap-x-1 px-4"
+                  className="grid min-w-full flex-shrink-0 snap-start grid-cols-4 gap-x-1 gap-y-5 px-4"
                 >
                   {categories
-                    .slice(pageIndex * itemsPerPage, (pageIndex + 1) * itemsPerPage)
+                    .slice(
+                      pageIndex * itemsPerPage,
+                      (pageIndex + 1) * itemsPerPage,
+                    )
                     .map((cat) => (
                       <div
                         key={cat.name}
                         onClick={() => setSelectedCategory(cat.name)}
-                        className="flex flex-col items-center cursor-pointer"
+                        className="flex cursor-pointer flex-col items-center"
                       >
                         <div
-                          className={`w-[64px] h-[64px] rounded-full p-[3px] transition-all duration-200 ${
-                            selectedCategory === cat.name ? "bg-brand-gradient" : "bg-gray-200"
+                          className={`h-[64px] w-[64px] rounded-full p-[3px] transition-all duration-200 ${
+                            selectedCategory === cat.name
+                              ? "bg-brand-gradient"
+                              : "bg-gray-200"
                           }`}
                         >
-                          <div className="w-full h-full rounded-full overflow-hidden bg-white">
+                          <div className="h-full w-full overflow-hidden rounded-full bg-white">
                             <img
                               src={cat.image}
                               alt={cat.name}
-                              className="w-full h-full object-cover"
+                              className="h-full w-full object-cover"
                             />
                           </div>
                         </div>
                         <div
-                          className={`mt-[4px] text-[10px] font-[inter] px-[6px] py-[2px] rounded-full text-center leading-snug whitespace-nowrap ${
+                          className={`mt-[4px] rounded-full px-[6px] py-[2px] text-center font-[inter] text-[10px] leading-snug whitespace-nowrap ${
                             selectedCategory === cat.name
-                              ? "bg-brand-gradient text-white font-[500]"
-                              : "text-gray-700 font-[600]"
+                              ? "bg-brand-gradient font-[500] text-white"
+                              : "font-[600] text-gray-700"
                           }`}
                         >
                           {cat.name}
@@ -191,15 +212,15 @@ function PlantsContent() {
             </div>
 
             {/* Dot Indicators */}
-            <div className="flex justify-center gap-[6px] mt-5">
+            <div className="mt-5 flex justify-center gap-[6px]">
               {Array.from({ length: totalPages }).map((_, i) => (
                 <button
                   key={i}
                   onClick={() => scrollToPage(i)}
                   className={`rounded-full transition-all duration-300 ${
                     activeDot === i
-                      ? "w-[22px] h-[7px] bg-[#83B930]"
-                      : "w-[7px] h-[7px] bg-gray-300 hover:bg-gray-400"
+                      ? "h-[7px] w-[22px] bg-[#83B930]"
+                      : "h-[7px] w-[7px] bg-gray-300 hover:bg-gray-400"
                   }`}
                 />
               ))}
@@ -207,32 +228,34 @@ function PlantsContent() {
           </div>
 
           {/* DESKTOP GRID — hidden on mobile */}
-          <div className="hidden md:block max-w-7xl mx-auto px-6">
-            <div className="grid grid-cols-5 gap-y-6 gap-x-2">
+          <div className="mx-auto hidden max-w-7xl px-6 md:block">
+            <div className="grid grid-cols-5 gap-x-2 gap-y-6">
               {categories.map((cat) => (
                 <div
                   key={cat.name}
                   onClick={() => setSelectedCategory(cat.name)}
-                  className="flex flex-col items-center cursor-pointer"
+                  className="flex cursor-pointer flex-col items-center"
                 >
                   <div
-                    className={`w-[105px] h-[105px] lg:w-[120px] lg:h-[120px] rounded-full p-[3px] ${
-                      selectedCategory === cat.name ? "bg-brand-gradient" : "bg-gray-200"
+                    className={`h-[105px] w-[105px] rounded-full p-[3px] lg:h-[120px] lg:w-[120px] ${
+                      selectedCategory === cat.name
+                        ? "bg-brand-gradient"
+                        : "bg-gray-200"
                     }`}
                   >
-                    <div className="w-full h-full rounded-full overflow-hidden bg-white">
+                    <div className="h-full w-full overflow-hidden rounded-full bg-white">
                       <img
                         src={cat.image}
                         alt={cat.name}
-                        className="w-full h-full object-cover"
+                        className="h-full w-full object-cover"
                       />
                     </div>
                   </div>
                   <div
-                    className={`mt-[3px] text-[13px] lg:text-[16px] font-[inter] px-3 py-1 rounded-full text-center leading-snug ${
+                    className={`mt-[3px] rounded-full px-3 py-1 text-center font-[inter] text-[13px] leading-snug lg:text-[16px] ${
                       selectedCategory === cat.name
-                        ? "bg-brand-gradient text-white font-[500]"
-                        : "text-gray-700 font-[600]"
+                        ? "bg-brand-gradient font-[500] text-white"
+                        : "font-[600] text-gray-700"
                     }`}
                   >
                     {cat.name}
@@ -241,35 +264,39 @@ function PlantsContent() {
               ))}
             </div>
           </div>
-
         </div>
       </div>
 
       {/* Featured Plants Section */}
-<div className="w-full px-4 sm:px-6 md:px-[40px] pt-6 sm:pt-8 md:pt-[24px] pb-10 sm:pb-12 md:pb-16 bg-[#f8faf7]"> 
+      <div className="w-full bg-[#f8faf7] px-4 pt-6 pb-10 sm:px-6 sm:pt-8 sm:pb-12 md:px-[40px] md:pt-[24px] md:pb-16">
         {/* <h2 className="text-[22px] sm:text-[26px] md:text-[30px] lg:text-[33px] font-[600] font-[poppins] text-slate-800 text-center mb-6 sm:mb-8 md:mb-10">
           Featured {selectedCategory}
         </h2> */}
-                <div className="text-center mb-6 sm:mb-8 md:mb-10">
-    <span className="text-xs sm:text-sm font-semibold uppercase tracking-widest text-green-600">
-      Top Picks
-    </span>
-    <h2 className="mt-2 font-[poppins] text-[22px] sm:text-[26px] md:text-[30px] lg:text-[33px] font-[600] text-[#2d2d2d] leading-tight">
-      Featured <span className="text-[#3a7d44]">{selectedCategory}</span>
-    </h2>
-    <div className="mt-3 mx-auto h-0.5 w-16 rounded-full bg-gradient-to-r from-[#83B930] to-[#1992D5]" />
-  </div>
+        <div className="mb-6 text-center sm:mb-8 md:mb-10">
+          <span className="text-xs font-semibold tracking-widest text-green-600 uppercase sm:text-sm">
+            Top Picks
+          </span>
+          <h2 className="mt-2 font-[poppins] text-[22px] leading-tight font-[600] text-[#2d2d2d] sm:text-[26px] md:text-[30px] lg:text-[33px]">
+            Featured <span className="text-[#3a7d44]">{selectedCategory}</span>
+          </h2>
+          <div className="mx-auto mt-3 h-0.5 w-16 rounded-full bg-gradient-to-r from-[#83B930] to-[#1992D5]" />
+        </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5 md:gap-8 items-stretch">
+        <div className="grid grid-cols-2 items-stretch gap-4 sm:grid-cols-2 sm:gap-5 md:grid-cols-3 md:gap-8 lg:grid-cols-4">
           {plantsLoading ? (
             // Skeleton placeholders while loading
             Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="rounded-xl bg-gray-100 animate-pulse aspect-3/4" />
+              <div
+                key={i}
+                className="aspect-3/4 animate-pulse rounded-xl bg-gray-100"
+              />
             ))
           ) : plantsError ? (
-            <p className="col-span-full text-center text-red-500 py-10">{plantsError}</p>
+            <p className="col-span-full py-10 text-center text-red-500">
+              {plantsError}
+            </p>
           ) : filteredPlants.length === 0 ? (
-            <p className="col-span-full text-center text-gray-500 py-10">
+            <p className="col-span-full py-10 text-center text-gray-500">
               No plants found in this category yet.
             </p>
           ) : (
@@ -286,7 +313,6 @@ function PlantsContent() {
       </div>
 
       <FaqSection title="General FAQs" faqs={faqs} />
-
     </div>
   );
 }

@@ -13,7 +13,6 @@ import FaqSection from "@/components/general/FaqSection";
 function CorporateContent() {
   const searchParams = useSearchParams();
     const categoryFromUrl = searchParams.get("category");
-      const highlightName = searchParams.get("highlight"); // ✅ read highlight param
 
   
   const [selectedCategory, setSelectedCategory] = useState(categoryFromUrl ||"Employee Appreciation");
@@ -21,11 +20,7 @@ function CorporateContent() {
   const scrollRef = useRef(null);
   const filteredPlants = corporateGifts.filter(
     (plant) => plant.category?.includes(selectedCategory)
-  ).sort((a, b) => {
-      if (a.name === highlightName) return -1;
-      if (b.name === highlightName) return 1;
-      return 0;
-    });
+  );
 
    useEffect(() => {
     if (categoryFromUrl) {
@@ -221,7 +216,7 @@ function CorporateContent() {
   </div>
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5 md:gap-8 items-stretch">
           {filteredPlants.map((plant, index) => (
-            <PlantCard key={index} plant={plant} selectedCategory={selectedCategory} isHighlighted={plant.name === highlightName}/>
+            <PlantCard key={index} plant={plant} selectedCategory={selectedCategory} />
           ))}
         </div>
       </div>
