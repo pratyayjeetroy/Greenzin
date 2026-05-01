@@ -31,8 +31,8 @@ yarn-error.log*
 .pnpm-debug.log*
 
 # env files (keep secrets out of git, but allow the example template)
-.env*
-!.env*.example
+# .env*
+# !.env*.example
 
 # vercel
 .vercel

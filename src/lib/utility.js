@@ -1,4 +1,15 @@
 // ---------------------------------------------------------------------------
+// Slug generator — converts a display name to a URL-safe slug
+// ---------------------------------------------------------------------------
+export function generateSlug(name = "") {
+  return name
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}
+
+// ---------------------------------------------------------------------------
 // Error helper class
 // ---------------------------------------------------------------------------
 export class ErrorHandler extends Error {

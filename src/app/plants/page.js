@@ -1,10 +1,9 @@
 "use client";
 
-import { useState, useRef ,useEffect} from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import PlantCard from "@/components/plants/PlantCard";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
-import { plants } from "@/data/plants/plants";
 import { categories } from "@/data/plants/plantCategories";
 import FaqSection from "@/components/general/FaqSection";
 
@@ -16,6 +15,30 @@ function PlantsContent() {
   const [selectedCategory, setSelectedCategory] = useState(categoryFromUrl || "Indoor Plants");
   const [activeDot, setActiveDot] = useState(0);
   const scrollRef = useRef(null);
+
+  // ── Plants data from API ──────────────────────────────────────
+  const [plants, setPlants] = useState([]);
+  const [plantsLoading, setPlantsLoading] = useState(true);
+  const [plantsError, setPlantsError] = useState(null);
+
+  const fetchPlants = useCallback(async () => {
+    setPlantsLoading(true);
+    setPlantsError(null);
+    try {
+      const res = await fetch("/api/plants");
+      if (!res.ok) throw new Error("Failed to load plants");
+      const data = await res.json();
+      setPlants(data.plants ?? []);
+    } catch (err) {
+      setPlantsError(err.message);
+    } finally {
+      setPlantsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchPlants();
+  }, [fetchPlants]);
 
   const faqs = [
     {
@@ -65,7 +88,7 @@ function PlantsContent() {
   // );
 
     const filteredPlants = plants
-    .filter((plant) => plant.category?.includes(selectedCategory))
+    .filter((plant) => plant.categories?.includes(selectedCategory))
     .sort((a, b) => {
       if (a.name === highlightName) return -1;
       if (b.name === highlightName) return 1;
@@ -98,12 +121,6 @@ function PlantsContent() {
       setSelectedCategory(categoryFromUrl);
     }
   }, [categoryFromUrl]);
-
-  //  useEffect(() => {
-  //   fetch('http://localhost:5000/api/plants')
-  //     .then(res => res.json())
-  //     .then(data => console.log(data))  // open browser console to see
-  // }, []);
 
   return (
     <div className="w-full">
@@ -244,10 +261,27 @@ function PlantsContent() {
   </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5 md:gap-8 items-stretch">
-          {filteredPlants.map((plant, index) => (
-            <PlantCard key={index} plant={plant} selectedCategory={selectedCategory} 
-            isHighlighted={plant.name === highlightName} />
-          ))}
+          {plantsLoading ? (
+            // Skeleton placeholders while loading
+            Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="rounded-xl bg-gray-100 animate-pulse aspect-3/4" />
+            ))
+          ) : plantsError ? (
+            <p className="col-span-full text-center text-red-500 py-10">{plantsError}</p>
+          ) : filteredPlants.length === 0 ? (
+            <p className="col-span-full text-center text-gray-500 py-10">
+              No plants found in this category yet.
+            </p>
+          ) : (
+            filteredPlants.map((plant, index) => (
+              <PlantCard
+                key={plant.id ?? index}
+                plant={plant}
+                selectedCategory={selectedCategory}
+                isHighlighted={plant.name === highlightName}
+              />
+            ))
+          )}
         </div>
       </div>
 

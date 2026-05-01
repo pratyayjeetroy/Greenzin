@@ -21,13 +21,8 @@ export const PRODUCTS = [
     ],
 
     images: [
-      { id: "main", src: "/home/snakePlant.png", alt: "Snake Plant - front view" },
-      { id: "thumb1", src: "/home/snakePlant.png", alt: "Snake Plant - angle view" },
-      { id: "thumb2", src: "/home/category.png", alt: "Snake Plant - close-up" },
-      { id: "thumb3", src: "/home/floweringPlants.jpeg", alt: "Snake Plant - in room" },
-      { id: "thumb4", src: "/home/airPurifyingPlants.jpeg", alt: "Snake Plant - outdoor" },
-      { id: "thumb5", src: "/home/vastuPlants.jpeg", alt: "Snake Plant - group" },
-      { id: "thumb6", src: "/home/category.png", alt: "Snake Plant - detail" },
+      { id: "main", src: "/products/snakePlant.png", alt: "Snake Plant - front view" },
+      { id: "thumb1", src: "/products/snakePlant.png", alt: "Snake Plant - angle view" },
     ],
 
     potOptions: [

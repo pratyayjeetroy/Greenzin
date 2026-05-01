@@ -1,6 +1,7 @@
 "use client"; // ✅ add this
 
 import Image from "next/image";
+import Link from "next/link";
 import { useRef, useEffect, useState } from "react"; // ✅ add these
 
 function StarRating({ rating }) {
@@ -44,7 +45,8 @@ useEffect(() => {
 }, [isHighlighted]);
 
   return (
-    // <div className="group rounded-xl p-[2px] bg-transparent hover:[background:linear-gradient(to_right,#83B930,#1992D5)] transition-all duration-300 hover:-translate-y-0.5 h-full">
+    // Wrap in Link so clicking anywhere on the card navigates to the detail page
+    <Link href={plant.slug ? `/plants/${plant.slug}` : "#"} className="h-full block">
 
     <div
   ref={cardRef} // ✅ add ref
@@ -80,11 +82,11 @@ useEffect(() => {
           </h3>
 
           {/* Category Tags */}
-          {plant.category
+          {plant.categories
             ?.filter((cat) => cat !== selectedCategory)
             .slice(0, 2).length > 0 && (
             <div className="flex flex-wrap gap-[3px] sm:gap-[5px] mt-1 sm:mt-1.5">
-              {plant.category
+              {plant.categories
                 ?.filter((cat) => cat !== selectedCategory)
                 .slice(0, 2)
                 .map((cat) => (
@@ -101,23 +103,26 @@ useEffect(() => {
           {/* Price + Rating - always in a row, never stacks */}
           <div className="flex items-center justify-between gap-1 mt-2 mb-2">
             <p className="text-[13px] sm:text-[15px] md:text-[17px] lg:text-[18px] font-[600] font-[inter] text-gray-800 whitespace-nowrap">
-              ₹{plant.price}
+              ₹{plant.basePrice}
             </p>
             <div className="flex items-center gap-[2px] sm:gap-1">
-              <StarRating rating={plant.rating} />
+              <StarRating rating={plant.ratingScore} />
               <span className="text-[9px] sm:text-[11px] md:text-[12px] lg:text-[13px] text-gray-500 font-[inter] whitespace-nowrap">
-                {plant.rating} ({plant.review})
+                {plant.ratingScore} ({plant.reviewCount})
               </span>
             </div>
           </div>
 
           {/* Add to Cart Button */}
-          <button className="mt-auto w-full font-[500] font-[inter] text-[12px] sm:text-[14px] md:text-[15px] lg:text-[16px] text-white bg-[#3d5a3e] py-[7px] sm:py-[9px] md:py-[10px] rounded-lg hover:[background:linear-gradient(to_right,#83B930,#1992D5)] transition">
+          <button
+            onClick={(e) => e.preventDefault()}
+            className="mt-auto w-full font-[500] font-[inter] text-[12px] sm:text-[14px] md:text-[15px] lg:text-[16px] text-white bg-[#3d5a3e] py-[7px] sm:py-[9px] md:py-[10px] rounded-lg hover:[background:linear-gradient(to_right,#83B930,#1992D5)] transition">
             Add to Cart
           </button>
 
         </div>
       </div>
     </div>
+    </Link>
   );
 }
