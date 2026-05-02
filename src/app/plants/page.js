@@ -10,9 +10,10 @@ import FaqSection from "@/components/general/FaqSection";
 function PlantsContent() {
   const searchParams = useSearchParams();
   const categoryFromUrl = searchParams.get("category");
+  const highlightName = searchParams.get("highlight");
 
   const [selectedCategory, setSelectedCategory] = useState(
-    categoryFromUrl || "Indoor Plants",
+    categoryFromUrl || "Indoor",
   );
   const [activeDot, setActiveDot] = useState(0);
   const scrollRef = useRef(null);

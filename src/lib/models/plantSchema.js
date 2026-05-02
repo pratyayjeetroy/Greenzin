@@ -64,14 +64,13 @@ const plantSchema = new mongoose.Schema(
 );
 
 // ─── Pre-validate: auto-generate slug from name ───────────────────────────────
-plantSchema.pre("validate", function (next) {
+plantSchema.pre("validate", async function () {
   if (!this.slug && this.name) {
     this.slug = this.name
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/(^-|-$)/g, "");
   }
-  next();
 });
 
 // ─── Model (singleton-safe for Next.js HMR) ──────────────────────────────────

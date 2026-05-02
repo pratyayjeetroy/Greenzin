@@ -1,43 +1,42 @@
 export const categories = [
   {
-    name: "Vastu Plants",
+    name: "Vastu",
     image: "/plant_categories/vastu.png"
   },
   {
-    name: "Indoor Plants",
+    name: "Indoor",
     image: "/plant_categories/indoor.png"
   },
   {
-    name: "Outdoor Plants",
+    name: "Outdoor",
     image: "/plant_categories/outdoor.png"
   },
   {
-    name: "Flowering Plants",
+    name: "Flowering",
     image: "/plant_categories/flowering.png"
   },
   {
-    name: "Life Care Plants",
+    name: "Life Care",
     image: "/plant_categories/medicinal.png"
   },
   {
-    name: "Air Purifying Plants",
+    name: "Air Purifying",
     image: "/plant_categories/airpurifying.png"
   },
-   {
-    name: "Succulent Plants",
+  {
+    name: "Succulent",
     image: "/plant_categories/succulent.png"
   },
- 
   {
-    name: "Exotic Plants",
+    name: "Exotic",
     image: "/plant_categories/exotic.png"
   },
-   {
+  {
     name: "Cactus",
     image: "/plant_categories/cactus.png"
   },
   {
-    name: "Low Maintenance Plants",
+    name: "Low Maintenance",
     image: "/plant_categories/low_maintanence.png"
   },
 ];

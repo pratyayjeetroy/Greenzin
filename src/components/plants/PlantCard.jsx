@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRef, useEffect, useState } from "react"; // ✅ add these
+import { useRef, useEffect, useState } from "react";
 
 function StarRating({ rating }) {
   return (
@@ -45,16 +45,31 @@ function StarRating({ rating }) {
   );
 }
 
-export default function PlantCard({ plant, selectedCategory }) {
+export default function PlantCard({ plant, selectedCategory, isHighlighted }) {
+  const cardRef = useRef(null);
+  const [glowing, setGlowing] = useState(false);
+
+  useEffect(() => {
+    if (isHighlighted) {
+      setGlowing(true);
+      cardRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+      const timer = setTimeout(() => setGlowing(false), 2500);
+      return () => clearTimeout(timer);
+    }
+  }, [isHighlighted]);
+
   return (
-    // Wrap in Link so clicking anywhere on the card navigates to the detail page
     <Link
       href={plant.slug ? `/plants/${plant.slug}` : "#"}
       className="block h-full"
     >
       <div
-        ref={cardRef} // ✅ add ref
-        className={`group h-full rounded-xl bg-transparent p-[2px] transition-all duration-300 hover:-translate-y-0.5 hover:[background:linear-gradient(to_right,#83B930,#1992D5)] ${glowing ? "scale-[1.02] shadow-lg shadow-green-200 [background:linear-gradient(to_right,#83B930,#1992D5)]" : ""} `} // ✅ add glow classes
+        ref={cardRef}
+        className={`group h-full rounded-xl bg-transparent p-[2px] transition-all duration-300 hover:-translate-y-0.5 hover:[background:linear-gradient(to_right,#83B930,#1992D5)] ${
+          glowing
+            ? "scale-[1.02] shadow-lg shadow-green-200 [background:linear-gradient(to_right,#83B930,#1992D5)]"
+            : ""
+        }`}
       >
         <div className="flex h-full flex-col overflow-hidden rounded-[10px] bg-white shadow-md transition-all duration-300 hover:shadow-lg">
           {/* Image */}

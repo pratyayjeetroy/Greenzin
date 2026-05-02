@@ -112,8 +112,7 @@ export default async function PlantDetailPage({ params }) {
 
       {/* Page Wrapper */}
       <div className="min-h-screen bg-[#f7f7f5]">
-        <div className="mx-auto max-w-7xl w-[92%] sm:w-[90%] px-2 sm:px-4 py-6 md:py-10">
-
+        <div className="mx-auto w-[92%] max-w-7xl px-2 py-6 sm:w-[90%] sm:px-4 md:py-10">
           {/* ── Hero: Gallery + Info ──────────────────────────────── */}
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-12 xl:gap-16">
             <div className="lg:sticky lg:top-4 lg:self-start">
@@ -129,7 +128,7 @@ export default async function PlantDetailPage({ params }) {
           <ProductReviews product={plant} />
 
           {/* ── Related Products ─────────────────────────────────── */}
-          <RelatedProducts />
+          {/* <RelatedProducts /> */}
         </div>
       </div>
     </>
