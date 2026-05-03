@@ -22,7 +22,7 @@ export const corporateGifts = [
     price: 1299,
     rating: 4.8,
     review: 302,
-    category: ["Client Gifts", "Green Corporate Gifting", "Premium"],
+    category: ["Client", "Green Corporate Gifting", "Premium"],
     image1: "/corporate_categories/ClientGifts.png",
     image2: "/corporate_categories/ClientGifts.png"
   },
@@ -31,7 +31,7 @@ export const corporateGifts = [
     price: 1499,
     rating: 4.9,
     review: 276,
-    category: ["Client Gifts", "Green Corporate Gifting", "Elegant"],
+    category: ["Client", "Green Corporate Gifting", "Elegant"],
     image1: "/corporate_categories/ClientGifts.png",
     image2: "/corporate_categories/ClientGifts.png"
   },
@@ -40,7 +40,7 @@ export const corporateGifts = [
     price: 699,
     rating: 4.6,
     review: 241,
-    category: ["Event Gifts", "Green Corporate Gifting", "Bulk Friendly"],
+    category: ["Event", "Green Corporate Gifting", "Bulk Friendly"],
     image1: "/corporate_categories/EventGifts.png",
     image2: "/corporate_categories/EventGifts.png"
   },
@@ -49,7 +49,7 @@ export const corporateGifts = [
     price: 999,
     rating: 4.7,
     review: 193,
-    category: ["Event Gifts", "Green Corporate Gifting", "Professional"],
+    category: ["Event", "Green Corporate Gifting", "Professional"],
     image1: "/corporate_categories/EventGifts.png",
     image2: "/corporate_categories/EventGifts.png"
   },
@@ -76,7 +76,7 @@ export const corporateGifts = [
     price: 1599,
     rating: 4.9,
     review: 318,
-    category: ["Festive Gifts", "Green Corporate Gifting", "Celebration"],
+    category: ["Festive", "Green Corporate Gifting", "Celebration"],
     image1: "/corporate_categories/FestiveGifts.png",
     image2: "/corporate_categories/FestiveGifts.png"
   },
@@ -85,7 +85,7 @@ export const corporateGifts = [
     price: 1799,
     rating: 4.8,
     review: 287,
-    category: ["Festive Gifts", "Green Corporate Gifting", "Premium"],
+    category: ["Festive", "Green Corporate Gifting", "Premium"],
     image1: "/corporate_categories/FestiveGifts.png",
     image2: "/corporate_categories/FestiveGifts.png"
   }

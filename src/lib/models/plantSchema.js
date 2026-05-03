@@ -17,11 +17,15 @@ const plantSchema = new mongoose.Schema(
 
     // Pricing & availability
     basePrice: { type: Number, required: true, min: 0 },
+    quantity: { type: Number, default: 15, min: 0 },
     availability: {
       type: String,
       enum: ["In Stock", "Out of Stock", "Pre-order"],
       default: "In Stock",
     },
+
+    // Bestseller flag
+    bestseller: { type: Boolean, default: false },
 
     // Ratings (kept separate from reviews for fast reads)
     ratingScore: { type: Number, default: 0, min: 0, max: 5 },

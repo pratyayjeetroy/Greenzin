@@ -4,7 +4,7 @@ export const pots = [
     price: 199,
     rating: 4.3,
     review: 320,
-    category: ["Plastic Pots", "Lightweight", "Budget Friendly"],
+    category: ["Plastic", "Lightweight", "Budget Friendly"],
     image1: "/pot_categories/plastic.png",
     image2: "/pot_categories/plastic.png"
   },
@@ -13,7 +13,7 @@ export const pots = [
     price: 229,
     rating: 4.2,
     review: 280,
-    category: ["Plastic Pots", "Durable", "Easy Care"],
+    category: ["Plastic", "Durable", "Easy Care"],
     image1: "/pot_categories/plastic.png",
     image2: "/pot_categories/plastic.png"
   },
@@ -22,7 +22,7 @@ export const pots = [
     price: 499,
     rating: 4.8,
     review: 410,
-    category: ["Ceramic Pots", "Modern Decor", "Glossy"],
+    category: ["Ceramic", "Modern Decor", "Glossy"],
     image1: "/pot_categories/ceramic.png",
     image2: "/pot_categories/ceramic.png"
   },
@@ -31,7 +31,7 @@ export const pots = [
     price: 549,
     rating: 4.7,
     review: 365,
-    category: ["Ceramic Pots", "Glossy", "Indoor Decor"],
+    category: ["Ceramic", "Glossy", "Indoor Decor"],
     image1: "/pot_categories/ceramic.png",
     image2: "/pot_categories/ceramic.png"
   },
@@ -40,7 +40,7 @@ export const pots = [
     price: 349,
     rating: 4.6,
     review: 295,
-    category: ["Clay Pots", "Eco-Friendly", "Traditional"],
+    category: ["Clay", "Eco-Friendly", "Traditional"],
     image1: "/pot_categories/clay.png",
     image2: "/pot_categories/clay.png"
   },
@@ -49,7 +49,7 @@ export const pots = [
     price: 399,
     rating: 4.5,
     review: 248,
-    category: ["Clay Pots", "Eco-Friendly", "Breathable"],
+    category: ["Clay", "Eco-Friendly", "Breathable"],
     image1: "/pot_categories/clay.png",
     image2: "/pot_categories/clay.png"
   },
@@ -58,7 +58,7 @@ export const pots = [
     price: 699,
     rating: 4.7,
     review: 330,
-    category: ["Metal Pots", "Modern Decor", "Premium Finish"],
+    category: ["Metal", "Modern Decor", "Premium Finish"],
     image1: "/pot_categories/metal.png",
     image2: "/pot_categories/metal.png"
   },
@@ -67,7 +67,7 @@ export const pots = [
     price: 749,
     rating: 4.6,
     review: 287,
-    category: ["Metal Pots", "Elegant", "Contemporary"],
+    category: ["Metal", "Elegant", "Contemporary"],
     image1: "/pot_categories/metal.png",
     image2: "/pot_categories/metal.png"
   },
@@ -76,7 +76,7 @@ export const pots = [
     price: 799,
     rating: 4.8,
     review: 390,
-    category: ["Designer Pots", "Premium Look", "Modern Decor"],
+    category: ["Designer", "Premium Look", "Modern Decor"],
     image1: "/pot_categories/designer.png",
     image2: "/pot_categories/designer.png"
   },
@@ -85,7 +85,7 @@ export const pots = [
     price: 849,
     rating: 4.7,
     review: 344,
-    category: ["Designer Pots", "Stylish", "Indoor Decor"],
+    category: ["Designer", "Stylish", "Indoor Decor"],
     image1: "/pot_categories/designer.png",
     image2: "/pot_categories/designer.png"
   },
@@ -94,7 +94,7 @@ export const pots = [
     price: 459,
     rating: 4.5,
     review: 268,
-    category: ["Hanging Pots", "Space Saving", "Indoor Decor"],
+    category: ["Hanging", "Space Saving", "Indoor Decor"],
     image1: "/pot_categories/hanging.png",
     image2: "/pot_categories/hanging.png"
   },
@@ -103,7 +103,7 @@ export const pots = [
     price: 499,
     rating: 4.6,
     review: 301,
-    category: ["Hanging Pots", "Boho Style", "Lightweight"],
+    category: ["Hanging", "Boho Style", "Lightweight"],
     image1: "/pot_categories/hanging.png",
     image2: "/pot_categories/hanging.png"
   },

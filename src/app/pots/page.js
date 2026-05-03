@@ -1,22 +1,33 @@
 "use client";
 
-import { useState, useRef ,useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import PlantCard from "@/components/plants/PlantCard";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { Suspense } from "react";
 import { pots } from "@/data/pots/pots";
 import { categories } from "@/data/pots/potCategories";
 import FaqSection from "@/components/general/FaqSection";
 
 function PotsContent() {
+  const router = useRouter();
   const searchParams = useSearchParams();
-    const categoryFromUrl = searchParams.get("category");
+  const categoryFromUrl = searchParams.get("category");
 
-  const [selectedCategory, setSelectedCategory] = useState(categoryFromUrl ||"Plastic Pots");
+  const [selectedCategory, setSelectedCategory] = useState(categoryFromUrl || "Plastic");
   const filteredPlants = pots
-      .filter((plant) => plant.category?.includes(selectedCategory));
+    .filter((plant) => plant.category?.includes(selectedCategory));
 
-   useEffect(() => {
+  /** Updates both the URL and the selected-category state */
+  const selectCategory = useCallback(
+    (name) => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set("category", name);
+      router.replace(`/pots?${params.toString()}`, { scroll: false });
+    },
+    [router, searchParams],
+  );
+
+  useEffect(() => {
     if (categoryFromUrl) {
       setSelectedCategory(categoryFromUrl);
     }
@@ -88,7 +99,7 @@ function PotsContent() {
           {categories.map((cat) => (
             <div
               key={cat.name}
-              onClick={() => setSelectedCategory(cat.name)}
+              onClick={() => selectCategory(cat.name)}
               className="flex flex-col items-center cursor-pointer"
             >
               {/* Circle */}
@@ -131,7 +142,7 @@ function PotsContent() {
       Top Picks
     </span>
     <h2 className="mt-2 font-[poppins] text-[22px] sm:text-[26px] md:text-[30px] lg:text-[33px] font-[600] text-[#2d2d2d] leading-tight">
-      Featured <span className="text-[#3a7d44]">{selectedCategory}</span>
+      <span className="text-[#3a7d44]">{selectedCategory}</span>
     </h2>
     <div className="mt-3 mx-auto h-0.5 w-16 rounded-full bg-gradient-to-r from-[#83B930] to-[#1992D5]" />
   </div>

@@ -76,7 +76,7 @@ export const gifts = [
     price: 799,
     rating: 4.6,
     review: 198,
-    category: ["Customized Gifts", "Personalized", "Creative"],
+    category: ["Customized", "Personalized", "Creative"],
     image1: "/gift_categories/CustomizedGifts.png",
     image2: "/gift_categories/CustomizedGifts.png"
   },
@@ -85,7 +85,7 @@ export const gifts = [
     price: 949,
     rating: 4.7,
     review: 223,
-    category: ["Customized Gifts", "Handcrafted", "Unique"],
+    category: ["Customized", "Handcrafted", "Unique"],
     image1: "/gift_categories/CustomizedGifts.png",
     image2: "/gift_categories/CustomizedGifts.png"
   }

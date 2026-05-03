@@ -1,8 +1,8 @@
 "use client";
 
-import { useState,useRef ,useEffect} from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { Headset, PhoneCall } from "lucide-react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { Suspense } from "react";
 
 import { FaWhatsapp } from "react-icons/fa";
@@ -12,15 +12,25 @@ import { categories } from "@/data/gifting/giftingCategories";
 import FaqSection from "@/components/general/FaqSection";
 
 function PlantsPage() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const categoryFromUrl = searchParams.get("category");
 
-
-  const [selectedCategory, setSelectedCategory] = useState(categoryFromUrl ||"Birthday");
+  const [selectedCategory, setSelectedCategory] = useState(categoryFromUrl || "Birthday");
   const [activeDot, setActiveDot] = useState(0);
   const scrollRef = useRef(null);
 
-   useEffect(() => {
+  /** Updates both the URL and the selected-category state */
+  const selectCategory = useCallback(
+    (name) => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set("category", name);
+      router.replace(`/gifting?${params.toString()}`, { scroll: false });
+    },
+    [router, searchParams],
+  );
+
+  useEffect(() => {
     if (categoryFromUrl) {
       setSelectedCategory(categoryFromUrl);
     }
@@ -115,7 +125,7 @@ function PlantsPage() {
                     .map((cat) => (
                       <div
                         key={cat.name}
-                        onClick={() => setSelectedCategory(cat.name)}
+                        onClick={() => selectCategory(cat.name)}
                         className="flex flex-col items-center cursor-pointer"
                       >
                         <div
@@ -170,7 +180,7 @@ function PlantsPage() {
               {categories.map((cat) => (
                 <div
                   key={cat.name}
-                  onClick={() => setSelectedCategory(cat.name)}
+                  onClick={() => selectCategory(cat.name)}
                   className="flex flex-col items-center cursor-pointer"
                 >
                   <div
@@ -210,7 +220,7 @@ function PlantsPage() {
       Top Picks
     </span>
     <h2 className="mt-2 font-[poppins] text-[22px] sm:text-[26px] md:text-[30px] lg:text-[33px] font-[600] text-[#2d2d2d] leading-tight">
-      Featured <span className="text-[#3a7d44]">{selectedCategory}</span>
+      <span className="text-[#3a7d44]">{selectedCategory}</span>
     </h2>
     <div className="mt-3 mx-auto h-0.5 w-16 rounded-full bg-gradient-to-r from-[#83B930] to-[#1992D5]" />
   </div>

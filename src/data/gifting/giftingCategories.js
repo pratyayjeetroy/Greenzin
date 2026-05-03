@@ -16,7 +16,7 @@ export const categories = [
     image: "/gift_categories/Housewarming.png"
   },
   {
-    name: "Customized Gifts",
+    name: "Customized",
     image: "/gift_categories/CustomizedGifts.png"
   }
 ];

@@ -4,18 +4,21 @@ import Link from "next/link";
 
 const GIFTS_DATA = [
   {
-    id: "bulk-office",
-    label: "Bulk Office Plants",
-    image: "/home/bulkOfficePlants.png",
-  },
-  {
     id: "employee-appreciation",
     label: "Employee Appreciation",
+    href: "/corporate-gifts?category=Employee Appreciation",
     image: "/home/employeeGift.png",
   },
   {
+    id: "client-gifts",
+    label: "Client",
+    href: "/corporate-gifts?category=Client",
+    image: "/home/bulkOfficePlants.png",
+  },
+  {
     id: "custom-branded",
-    label: "Custom Branded Gifts",
+    label: "Brand Customization",
+    href: "/corporate-gifts?category=Brand Customization",
     image: "/home/customBrandedGift.png",
   },
 ];
@@ -47,7 +50,7 @@ const CorporateGiftsSec = () => {
           {GIFTS_DATA.map((item) => (
             <Link
               key={item.id}
-              href={`/corporate-gifts/${item.id}`}
+              href={item.href}
               className="group relative block w-full overflow-hidden rounded-xl border border-[#e8e8e8] bg-white shadow-sm transition-shadow duration-300 hover:shadow-md"
             >
               <div className="relative w-full aspect-3/2 overflow-hidden bg-[#f4f5f4]">

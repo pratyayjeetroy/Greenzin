@@ -289,7 +289,7 @@ function PlantsContent() {
             Top Picks
           </span>
           <h2 className="mt-2 font-[poppins] text-[22px] leading-tight font-[600] text-[#2d2d2d] sm:text-[26px] md:text-[30px] lg:text-[33px]">
-            Featured <span className="text-[#3a7d44]">{selectedCategory}</span>
+            <span className="text-[#3a7d44]">{selectedCategory}</span>
           </h2>
           <div className="mx-auto mt-3 h-0.5 w-16 rounded-full bg-gradient-to-r from-[#83B930] to-[#1992D5]" />
         </div>
