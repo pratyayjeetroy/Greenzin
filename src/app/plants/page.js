@@ -2,12 +2,13 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import PlantCard from "@/components/plants/PlantCard";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { Suspense } from "react";
 import { categories } from "@/data/plants/plantCategories";
 import FaqSection from "@/components/general/FaqSection";
 
 function PlantsContent() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const categoryFromUrl = searchParams.get("category");
   const highlightName = searchParams.get("highlight");
@@ -17,6 +18,16 @@ function PlantsContent() {
   );
   const [activeDot, setActiveDot] = useState(0);
   const scrollRef = useRef(null);
+
+  /** Updates both the URL and the selected-category state */
+  const selectCategory = useCallback(
+    (name) => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set("category", name);
+      router.replace(`/plants?${params.toString()}`, { scroll: false });
+    },
+    [router, searchParams],
+  );
 
   // ── Plants data from API ──────────────────────────────────────
   const [plants, setPlants] = useState([]);
@@ -179,7 +190,7 @@ function PlantsContent() {
                     .map((cat) => (
                       <div
                         key={cat.name}
-                        onClick={() => setSelectedCategory(cat.name)}
+                        onClick={() => selectCategory(cat.name)}
                         className="flex cursor-pointer flex-col items-center"
                       >
                         <div
@@ -234,7 +245,7 @@ function PlantsContent() {
               {categories.map((cat) => (
                 <div
                   key={cat.name}
-                  onClick={() => setSelectedCategory(cat.name)}
+                  onClick={() => selectCategory(cat.name)}
                   className="flex cursor-pointer flex-col items-center"
                 >
                   <div

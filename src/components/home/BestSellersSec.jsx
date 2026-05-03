@@ -162,12 +162,14 @@ const BestSellersSec = () => {
         {/* Header */}
         <div className="mb-6 flex items-center justify-between sm:mb-8">
           <div>
-            <p className="mb-0.5 text-xs font-semibold uppercase tracking-widest text-[#3d5a3e] sm:text-sm">
+            <span className="text-xs sm:text-sm font-semibold uppercase tracking-widest text-green-600">
               Our Top Picks
-            </p>
-            <h2 className="text-2xl font-bold leading-tight text-gray-900 sm:text-3xl lg:text-4xl">
-              Best Sellers
+            </span>
+            <h2 className="mt-2 font-[Tinos] text-[24px] sm:text-[30px] md:text-[34px] font-bold text-[#2d2d2d] leading-tight">
+              Best{" "}
+              <span className="text-[#3a7d44]">Sellers</span>
             </h2>
+            <div className="mt-3 h-0.5 w-16 rounded-full [background:var(--brand-gradient)]" />
           </div>
           <Link
             href="/best-sellers"

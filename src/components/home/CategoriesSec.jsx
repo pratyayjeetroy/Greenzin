@@ -15,24 +15,24 @@ const CATEGORY_SECTIONS = [
       { text: " by Category", highlight: false },
     ],
     subheading: "Fresh, vibrant plants — perfect for every space",
-    viewAllHref: "/categories/plants",
+    viewAllHref: "/plants",
     cards: [
       {
         id: "flowering-plants",
         label: "Flowering Plants",
-        href: "/categories/plants/flowering",
+        href: "/plants?category=Flowering",
         image: "/home/floweringPlants.png",
       },
       {
         id: "air-purifying-plants",
         label: "Air Purifying Plants",
-        href: "/categories/plants/air-purifying",
+        href: "/plants?category=Air Purifying",
         image: "/home/airPurifyingPlants.png",
       },
       {
         id: "vastu-plants",
         label: "Vastu Plants",
-        href: "/categories/plants/vastu",
+        href: "/plants?category=Vastu",
         image: "/home/vastu.png",
       },
     ],
@@ -103,17 +103,20 @@ const CATEGORY_SECTIONS = [
 
 /** Renders the coloured heading markup from the `headingParts` array */
 const SectionHeading = ({ parts }) => (
-  <h2 className="text-center text-[20px] font-bold leading-tight text-[#2d2d2d] sm:text-[22px] md:text-[26px] lg:text-[28px]">
-    {parts.map((part, i) =>
-      part.highlight ? (
-        <span key={i} className="text-[#228EC0]">
-          {part.text}
-        </span>
-      ) : (
-        <span key={i}>{part.text}</span>
-      ),
-    )}
-  </h2>
+  <>
+    <h2 className="text-center font-[Tinos] text-[24px] sm:text-[30px] md:text-[34px] font-bold leading-tight text-[#2d2d2d]">
+      {parts.map((part, i) =>
+        part.highlight ? (
+          <span key={i} className="text-[#3a7d44]">
+            {part.text}
+          </span>
+        ) : (
+          <span key={i}>{part.text}</span>
+        ),
+      )}
+    </h2>
+    <div className="mt-3 mx-auto h-0.5 w-16 rounded-full [background:var(--brand-gradient)]" />
+  </>
 );
 
 /** Individual category card */

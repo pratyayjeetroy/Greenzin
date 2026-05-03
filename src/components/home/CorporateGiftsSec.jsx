@@ -27,9 +27,10 @@ const CorporateGiftsSec = () => {
         {/* Header row */}
         <div className="relative mb-4 flex flex-col items-center gap-3 sm:mb-6 sm:flex-row sm:justify-center">
           <div className="text-center">
-            <h2 className="text-[20px] font-bold leading-tight text-[#2d2d2d] sm:text-[22px] md:text-[26px] lg:text-[28px]">
-              Explore <span className="text-[#3d5a3e]">Corporate Gifts</span>
+            <h2 className="mt-2 font-[Tinos] text-[24px] sm:text-[30px] md:text-[34px] font-bold leading-tight text-[#2d2d2d]">
+              Explore <span className="text-[#3a7d44]">Corporate Gifts</span>
             </h2>
+            <div className="mt-3 mx-auto h-0.5 w-16 rounded-full [background:var(--brand-gradient)]" />
           </div>
           <div className="sm:absolute sm:right-0 sm:top-1/2 sm:-translate-y-1/2">
             <Link

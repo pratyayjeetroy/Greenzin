@@ -36,10 +36,11 @@ const FeaturedCollectionsSec = () => {
         {/* Header */}
         <div className="mb-5 flex flex-col items-center gap-3 sm:mb-8 sm:flex-row sm:justify-between sm:gap-4">
           <div className="flex-1 text-center">
-            <h2 className="text-[20px] font-bold leading-tight text-[#2d2d2d] sm:text-[22px] md:text-[26px] lg:text-[28px]">
-              Featured <span className="text-[#3d5a3e]">Collections</span> by
+            <h2 className="mt-2 font-[Tinos] text-[24px] sm:text-[30px] md:text-[34px] font-bold leading-tight text-[#2d2d2d]">
+              Featured <span className="text-[#3a7d44]">Collections</span> by
               Professional
             </h2>
+            <div className="mt-3 mx-auto h-0.5 w-16 rounded-full [background:var(--brand-gradient)]" />
           </div>
           <Link
             href="/collections"
