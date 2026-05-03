@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Image from "next/image";
+import emailjs from "@emailjs/browser";
 import { MapPin, Phone, Mail, Clock, Send, CheckCircle, MessageCircle } from "lucide-react";
 
 const contactInfo = [
@@ -54,22 +55,132 @@ const faqs = [
   },
 ];
 
+// ── Reusable inline error message ──
+function FieldError({ id, message }) {
+  if (!message) return null;
+  return (
+    <p
+      id={id}
+      className="contact-error-msg mt-[5px] text-[12px] text-[#c0392b] flex items-center gap-[5px] leading-[1.4]"
+    >
+      <svg
+        viewBox="0 0 16 16"
+        fill="currentColor"
+        className="w-[13px] h-[13px] shrink-0"
+        aria-hidden="true"
+      >
+        <path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1Zm.75 3.75v4a.75.75 0 0 1-1.5 0v-4a.75.75 0 0 1 1.5 0Zm-.75 6.5a.875.875 0 1 1 0-1.75.875.875 0 0 1 0 1.75Z" />
+      </svg>
+      {message}
+    </p>
+  );
+}
+
+const INITIAL_FORM = { name: "", email: "", phone: "", subject: "", message: "" };
+
 export default function ContactPage() {
-  const [form, setForm] = useState({ name: "", email: "", phone: "", subject: "", message: "" });
+  const [form, setForm] = useState(INITIAL_FORM);
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({});
   const [openFaq, setOpenFaq] = useState(null);
 
-  const handleChange = (e) => setForm((p) => ({ ...p, [e.target.name]: e.target.value }));
+  const nameRef = useRef();
+  const emailRef = useRef();
+  const subjectRef = useRef();
+  const messageRef = useRef();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((p) => ({ ...p, [name]: value }));
+    // Clear error on change
+    if (errors[name]) {
+      setErrors((prev) => ({ ...prev, [name]: undefined }));
+    }
+  };
+
+  function validateForm() {
+    const newErrors = {};
+
+    if (!form.name.trim()) {
+      newErrors.name = "Full name is required";
+    }
+
+    if (!form.email.trim()) {
+      newErrors.email = "Email address is required";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) {
+      newErrors.email = "Enter a valid email address";
+    }
+
+    if (!form.subject) {
+      newErrors.subject = "Please select a topic";
+    }
+
+    if (!form.message.trim()) {
+      newErrors.message = "Message cannot be empty";
+    }
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length > 0) {
+      if (newErrors.name) nameRef.current?.focus();
+      else if (newErrors.email) emailRef.current?.focus();
+      else if (newErrors.subject) subjectRef.current?.focus();
+      else if (newErrors.message) messageRef.current?.focus();
+      return false;
+    }
+
+    return true;
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateForm()) return;
     setLoading(true);
-    // Simulate API call
-    await new Promise((r) => setTimeout(r, 1500));
-    setLoading(false);
-    setSubmitted(true);
+
+    const templateParams = {
+  title: "📩 Contact Enquiry",
+  name: form.name,
+  email: form.email,
+  phone: form.phone || "Not provided",
+  message: form.message,
+  extra_section: `Subject: ${form.subject}`,
+};
+
+    if (
+      !process.env.NEXT_PUBLIC_EMAILJS_DECOR_SERVICE_ID ||
+      !process.env.NEXT_PUBLIC_EMAILJS_DECOR_TEMPLATE_ID ||
+      !process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+    ) {
+      alert("Email service is not configured properly.");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      await emailjs.send(
+        process.env.NEXT_PUBLIC_EMAILJS_DECOR_SERVICE_ID ,
+        process.env.NEXT_PUBLIC_EMAILJS_DECOR_TEMPLATE_ID,
+        templateParams,
+        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+      );
+      setSubmitted(true);
+      setForm(INITIAL_FORM);
+    } catch (error) {
+      console.error("EmailJS error:", error);
+      alert("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
+
+  // Helper: input class based on error state
+  const inputClass = (fieldName) =>
+    `w-full rounded-xl bg-[#f8faf7] px-4 py-2.5 text-[13px] text-gray-700 outline-none transition-all placeholder:text-gray-400 border ${
+      errors[fieldName]
+        ? "border-[#c0392b] ring-2 ring-[rgba(192,57,43,0.10)] focus:border-[#c0392b] focus:ring-[rgba(192,57,43,0.15)]"
+        : "border-[#d1e0cc] focus:border-green-500 focus:ring-2 focus:ring-green-100"
+    }`;
 
   return (
     <div className="w-full bg-white overflow-x-hidden">
@@ -84,9 +195,7 @@ export default function ContactPage() {
             className="object-cover object-center"
             priority
           />
-          {/* Overlay */}
           <div className="absolute inset-0 [background:linear-gradient(to_right,rgba(20,60,30,0.88)_0%,rgba(20,60,30,0.60)_55%,rgba(20,60,30,0.15)_100%)]" />
-          {/* Text block — constrained width so it never overflows */}
           <div className="absolute inset-0 flex flex-col justify-center px-5 sm:px-10 md:px-14 lg:px-[7%]">
             <div className="max-w-[90%] sm:max-w-[75%] md:max-w-[60%] lg:max-w-[55%]">
               <span className="inline-block text-[10px] sm:text-xs font-semibold uppercase tracking-widest text-green-300 mb-1.5 sm:mb-2">
@@ -166,14 +275,15 @@ export default function ContactPage() {
                     Thank you for reaching out. Our team will get back to you within 24 hours. 🌿
                   </p>
                   <button
-                    onClick={() => { setSubmitted(false); setForm({ name: "", email: "", phone: "", subject: "", message: "" }); }}
+                    onClick={() => { setSubmitted(false); setErrors({}); }}
                     className="mt-2 rounded-full px-6 py-2.5 text-[13px] font-semibold text-white [background:var(--brand-gradient)] hover:opacity-90 hover:scale-105 transition-all"
                   >
                     Send Another Message
                   </button>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} id="contact-form" className="flex flex-col gap-4">
+                <form onSubmit={handleSubmit} id="contact-form" noValidate className="flex flex-col gap-4">
+
                   {/* Name + Email */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="flex flex-col gap-1.5">
@@ -181,6 +291,7 @@ export default function ContactPage() {
                         Full Name <span className="text-red-400">*</span>
                       </label>
                       <input
+                        ref={nameRef}
                         id="contact-name"
                         name="name"
                         type="text"
@@ -188,14 +299,18 @@ export default function ContactPage() {
                         placeholder="Riya Kapoor"
                         value={form.name}
                         onChange={handleChange}
-                        className="w-full rounded-xl border border-[#d1e0cc] bg-[#f8faf7] px-4 py-2.5 text-[13px] text-gray-700 outline-none focus:border-green-500 focus:ring-2 focus:ring-green-100 transition-all placeholder:text-gray-400"
+                        aria-invalid={!!errors.name}
+                        aria-describedby={errors.name ? "error-contact-name" : undefined}
+                        className={inputClass("name")}
                       />
+                      <FieldError id="error-contact-name" message={errors.name} />
                     </div>
                     <div className="flex flex-col gap-1.5">
                       <label htmlFor="contact-email" className="text-[13px] font-semibold text-gray-700">
                         Email Address <span className="text-red-400">*</span>
                       </label>
                       <input
+                        ref={emailRef}
                         id="contact-email"
                         name="email"
                         type="email"
@@ -203,8 +318,11 @@ export default function ContactPage() {
                         placeholder="riya@email.com"
                         value={form.email}
                         onChange={handleChange}
-                        className="w-full rounded-xl border border-[#d1e0cc] bg-[#f8faf7] px-4 py-2.5 text-[13px] text-gray-700 outline-none focus:border-green-500 focus:ring-2 focus:ring-green-100 transition-all placeholder:text-gray-400"
+                        aria-invalid={!!errors.email}
+                        aria-describedby={errors.email ? "error-contact-email" : undefined}
+                        className={inputClass("email")}
                       />
+                      <FieldError id="error-contact-email" message={errors.email} />
                     </div>
                   </div>
 
@@ -221,20 +339,24 @@ export default function ContactPage() {
                         placeholder="+91 98765 43210"
                         value={form.phone}
                         onChange={handleChange}
-                        className="w-full rounded-xl border border-[#d1e0cc] bg-[#f8faf7] px-4 py-2.5 text-[13px] text-gray-700 outline-none focus:border-green-500 focus:ring-2 focus:ring-green-100 transition-all placeholder:text-gray-400"
+                        className={inputClass("phone")}
                       />
+                      {/* phone is optional — no error shown */}
                     </div>
                     <div className="flex flex-col gap-1.5">
                       <label htmlFor="contact-subject" className="text-[13px] font-semibold text-gray-700">
                         Subject <span className="text-red-400">*</span>
                       </label>
                       <select
+                        ref={subjectRef}
                         id="contact-subject"
                         name="subject"
                         required
                         value={form.subject}
                         onChange={handleChange}
-                        className="w-full rounded-xl border border-[#d1e0cc] bg-[#f8faf7] px-4 py-2.5 text-[13px] text-gray-700 outline-none focus:border-green-500 focus:ring-2 focus:ring-green-100 transition-all"
+                        aria-invalid={!!errors.subject}
+                        aria-describedby={errors.subject ? "error-contact-subject" : undefined}
+                        className={inputClass("subject")}
                       >
                         <option value="" disabled>Select a topic</option>
                         <option value="general">General Enquiry</option>
@@ -245,6 +367,7 @@ export default function ContactPage() {
                         <option value="returns">Returns &amp; Refunds</option>
                         <option value="other">Other</option>
                       </select>
+                      <FieldError id="error-contact-subject" message={errors.subject} />
                     </div>
                   </div>
 
@@ -254,6 +377,7 @@ export default function ContactPage() {
                       Message <span className="text-red-400">*</span>
                     </label>
                     <textarea
+                      ref={messageRef}
                       id="contact-message"
                       name="message"
                       required
@@ -261,8 +385,11 @@ export default function ContactPage() {
                       placeholder="Tell us how we can help you…"
                       value={form.message}
                       onChange={handleChange}
-                      className="w-full resize-none rounded-xl border border-[#d1e0cc] bg-[#f8faf7] px-4 py-2.5 text-[13px] text-gray-700 outline-none focus:border-green-500 focus:ring-2 focus:ring-green-100 transition-all placeholder:text-gray-400"
+                      aria-invalid={!!errors.message}
+                      aria-describedby={errors.message ? "error-contact-message" : undefined}
+                      className={`${inputClass("message")} resize-none`}
                     />
+                    <FieldError id="error-contact-message" message={errors.message} />
                   </div>
 
                   <button
@@ -292,7 +419,7 @@ export default function ContactPage() {
             {/* ── Map + WhatsApp ── */}
             <div className="flex flex-col gap-5 sm:gap-6">
               {/* Map embed */}
-              <div className="rounded-2xl overflow-hidden border border-[#e0ead7] shadow-sm w-full aspect-[4/3] sm:aspect-[4/3] lg:aspect-[4/3]">
+              <div className="rounded-2xl overflow-hidden border border-[#e0ead7] shadow-sm w-full aspect-[4/3]">
                 <iframe
                   title="GreenZin Nursery Location"
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3502.178!2d77.2090!3d28.6139!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjjCsDM2JzUwLjAiTiA3N8KwMTInMzIuNCJF!5e0!3m2!1sen!2sin!4v1609459200000!5m2!1sen!2sin"
@@ -315,7 +442,7 @@ export default function ContactPage() {
                     Quick answers, order updates, and plant care advice — instantly.
                   </p>
                   <a
-                    href="https://wa.me/12345678900"
+                    href="https://wa.me/918282888600"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="mt-2 inline-flex w-fit items-center gap-1.5 bg-white text-[#2e6b4f] text-[12px] sm:text-[13px] font-bold rounded-full px-4 sm:px-5 py-2 hover:shadow-md hover:scale-105 transition-all duration-300"
@@ -378,6 +505,17 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
+
+      <style>{`
+        /* ── Error message entrance animation ── */
+        .contact-error-msg {
+          animation: contactErrorSlide 0.18s ease forwards;
+        }
+        @keyframes contactErrorSlide {
+          from { opacity: 0; transform: translateY(-4px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
 
     </div>
   );

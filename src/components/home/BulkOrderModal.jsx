@@ -1,12 +1,14 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { X } from "lucide-react";
+import emailjs from "@emailjs/browser";
 
 const INITIAL_FORM = {
   name: "",
   email: "",
   phone: "",
+  organization_name: "",
   bulkSize: "<50",
   customizedPlant: false,
   customizedPot: false,
@@ -17,6 +19,13 @@ export default function BulkOrderModal({ isOpen, onClose }) {
   const [form, setForm] = useState(INITIAL_FORM);
   const [submitted, setSubmitted] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({});
+
+  const nameRef = useRef();
+  const emailRef = useRef();
+  const phoneRef = useRef();
+  const bulkRef = useRef();
 
   /* ── Lock body scroll when open ── */
   useEffect(() => {
@@ -25,6 +34,7 @@ export default function BulkOrderModal({ isOpen, onClose }) {
       setSubmitted(false);
       setIsClosing(false);
       setForm(INITIAL_FORM);
+      setErrors({});
     } else {
       document.body.style.overflow = "";
     }
@@ -61,13 +71,94 @@ export default function BulkOrderModal({ isOpen, onClose }) {
       ...prev,
       [name]: type === "checkbox" ? checked : value,
     }));
+    // Clear error for this field as user types
+    if (errors[name]) {
+      setErrors((prev) => ({ ...prev, [name]: undefined }));
+    }
+  }
+
+  function validateForm() {
+    const newErrors = {};
+
+    if (!form.name.trim()) {
+      newErrors.name = "Name is required";
+    }
+
+    if (!form.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) {
+      newErrors.email = "Enter a valid email address";
+    }
+
+    if (!form.phone.trim()) {
+      newErrors.phone = "Phone number is required";
+    }
+
+    if (!form.bulkSize) {
+      newErrors.bulkSize = "Please select a bulk size";
+    }
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length > 0) {
+      if (newErrors.name) nameRef.current?.focus();
+      else if (newErrors.email) emailRef.current?.focus();
+      else if (newErrors.phone) phoneRef.current?.focus();
+      else if (newErrors.bulkSize)
+        bulkRef.current?.scrollIntoView({ behavior: "smooth" });
+
+      return false;
+    }
+
+    return true;
   }
 
   function handleSubmit(e) {
     e.preventDefault();
-    // TODO: wire up to your API / email service
-    console.log("Bulk Order Inquiry:", form);
-    setSubmitted(true);
+    if (!validateForm()) return;
+    setLoading(true);
+
+    const templateParams = {
+      name: form.name,
+      organization_name: form.organization_name,
+      email: form.email,
+      phone: form.phone,
+      bulkSize: form.bulkSize,
+      customizedPlant: form.customizedPlant ? "Yes" : "No",
+      customizedPot: form.customizedPot ? "Yes" : "No",
+      notes: form.notes,
+    };
+
+    if (
+      !process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID ||
+      !process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID ||
+      !process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+    ) {
+      alert("Email service is not configured properly.");
+      setLoading(false);
+      return;
+    }
+
+    emailjs
+      .send(
+        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
+        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
+        templateParams,
+        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+      )
+      .then(
+        (result) => {
+          console.log("SUCCESS!", result.text);
+          setSubmitted(true);
+          setForm(INITIAL_FORM);
+          setLoading(false);
+        },
+        (error) => {
+          console.log("FAILED...", error.text);
+          alert("Something went wrong. Please try again.");
+          setLoading(false);
+        }
+      );
   }
 
   if (!isOpen && !isClosing) return null;
@@ -87,7 +178,6 @@ export default function BulkOrderModal({ isOpen, onClose }) {
           isClosing ? "bulk-card-out" : "bulk-card-in"
         }`}
       >
-
         {/* ── Header ── */}
         <div
           className="[background:linear-gradient(145deg,#3d5a3e_0%,#2e4530_100%)] px-7 pt-8 pb-[26px] rounded-t-[20px] text-center relative"
@@ -102,7 +192,6 @@ export default function BulkOrderModal({ isOpen, onClose }) {
             <X size={20} strokeWidth={2.5} />
           </button>
 
-          {/* Icon + Title inline */}
           <div className="flex items-center justify-center gap-2 mb-2">
             <svg
               viewBox="0 0 24 24"
@@ -116,8 +205,7 @@ export default function BulkOrderModal({ isOpen, onClose }) {
               id="bulk-modal-title"
               className="font-poppins text-lg font-bold text-white leading-snug tracking-wide m-0"
             >
-              Inquire for{" "}
-              <span className="text-[#a8d580]">Bulk Order</span>
+              Inquire for <span className="text-[#a8d580]">Bulk Order</span>
             </h2>
           </div>
 
@@ -136,8 +224,14 @@ export default function BulkOrderModal({ isOpen, onClose }) {
 
               {/* Name */}
               <div className="mb-4">
-                <label htmlFor="bulk-name" className="block text-[13.5px] font-semibold text-[#2d3b2e] mb-[6px] tracking-[0.15px]">Name</label>
+                <label
+                  htmlFor="bulk-name"
+                  className="block text-[13.5px] font-semibold text-[#2d3b2e] mb-[6px] tracking-[0.15px]"
+                >
+                  Name <span className="text-[#c0392b] ml-[2px]">*</span>
+                </label>
                 <input
+                  ref={nameRef}
                   id="bulk-name"
                   name="name"
                   type="text"
@@ -145,15 +239,55 @@ export default function BulkOrderModal({ isOpen, onClose }) {
                   placeholder="Your full name"
                   value={form.name}
                   onChange={handleChange}
-                  className="bulk-input w-full bg-white border-[1.5px] border-[#d8e5d4] rounded-[10px] px-[14px] py-[10px] text-sm text-[#2d3b2e] outline-none transition-[border-color,box-shadow] duration-[180ms] font-[inherit] box-border"
+                  aria-invalid={!!errors.name}
+                  aria-describedby={errors.name ? "error-name" : undefined}
+                  className={`bulk-input w-full bg-white rounded-[10px] px-[14px] py-[10px] text-sm text-[#2d3b2e] outline-none transition-[border-color,box-shadow] duration-[180ms] font-[inherit] box-border border-[1.5px] ${
+                    errors.name
+                      ? "border-[#c0392b] [box-shadow:0_0_0_3px_rgba(192,57,43,0.10)]"
+                      : "border-[#d8e5d4]"
+                  }`}
                   autoComplete="name"
+                />
+                {errors.name && (
+                  <p id="error-name" className="bulk-error-msg mt-[5px] text-[12px] text-[#c0392b] flex items-center gap-[5px] leading-[1.4]">
+                    <svg viewBox="0 0 16 16" fill="currentColor" className="w-[13px] h-[13px] shrink-0" aria-hidden="true">
+                      <path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1Zm.75 3.75v4a.75.75 0 0 1-1.5 0v-4a.75.75 0 0 1 1.5 0Zm-.75 6.5a.875.875 0 1 1 0-1.75.875.875 0 0 1 0 1.75Z"/>
+                    </svg>
+                    {errors.name}
+                  </p>
+                )}
+              </div>
+
+              {/* Organization Name */}
+              <div className="mb-4">
+                <label
+                  htmlFor="bulk-org-name"
+                  className="block text-[13.5px] font-semibold text-[#2d3b2e] mb-[6px] tracking-[0.15px]"
+                >
+                  Organization Name
+                </label>
+                <input
+                  id="bulk-org-name"
+                  name="organization_name"
+                  type="text"
+                  placeholder="Your organization name"
+                  value={form.organization_name}
+                  onChange={handleChange}
+                  className="bulk-input w-full bg-white border-[1.5px] border-[#d8e5d4] rounded-[10px] px-[14px] py-[10px] text-sm text-[#2d3b2e] outline-none transition-[border-color,box-shadow] duration-[180ms] font-[inherit] box-border"
+                  autoComplete="organization"
                 />
               </div>
 
               {/* Email */}
               <div className="mb-4">
-                <label htmlFor="bulk-email" className="block text-[13.5px] font-semibold text-[#2d3b2e] mb-[6px] tracking-[0.15px]">Email</label>
+                <label
+                  htmlFor="bulk-email"
+                  className="block text-[13.5px] font-semibold text-[#2d3b2e] mb-[6px] tracking-[0.15px]"
+                >
+                  Email <span className="text-[#c0392b] ml-[2px]">*</span>
+                </label>
                 <input
+                  ref={emailRef}
                   id="bulk-email"
                   name="email"
                   type="email"
@@ -161,15 +295,35 @@ export default function BulkOrderModal({ isOpen, onClose }) {
                   placeholder="you@example.com"
                   value={form.email}
                   onChange={handleChange}
-                  className="bulk-input w-full bg-white border-[1.5px] border-[#d8e5d4] rounded-[10px] px-[14px] py-[10px] text-sm text-[#2d3b2e] outline-none transition-[border-color,box-shadow] duration-[180ms] font-[inherit] box-border"
+                  aria-invalid={!!errors.email}
+                  aria-describedby={errors.email ? "error-email" : undefined}
+                  className={`bulk-input w-full bg-white rounded-[10px] px-[14px] py-[10px] text-sm text-[#2d3b2e] outline-none transition-[border-color,box-shadow] duration-[180ms] font-[inherit] box-border border-[1.5px] ${
+                    errors.email
+                      ? "border-[#c0392b] [box-shadow:0_0_0_3px_rgba(192,57,43,0.10)]"
+                      : "border-[#d8e5d4]"
+                  }`}
                   autoComplete="email"
                 />
+                {errors.email && (
+                  <p id="error-email" className="bulk-error-msg mt-[5px] text-[12px] text-[#c0392b] flex items-center gap-[5px] leading-[1.4]">
+                    <svg viewBox="0 0 16 16" fill="currentColor" className="w-[13px] h-[13px] shrink-0" aria-hidden="true">
+                      <path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1Zm.75 3.75v4a.75.75 0 0 1-1.5 0v-4a.75.75 0 0 1 1.5 0Zm-.75 6.5a.875.875 0 1 1 0-1.75.875.875 0 0 1 0 1.75Z"/>
+                    </svg>
+                    {errors.email}
+                  </p>
+                )}
               </div>
 
               {/* Phone */}
               <div className="mb-4">
-                <label htmlFor="bulk-phone" className="block text-[13.5px] font-semibold text-[#2d3b2e] mb-[6px] tracking-[0.15px]">Phone Number</label>
+                <label
+                  htmlFor="bulk-phone"
+                  className="block text-[13.5px] font-semibold text-[#2d3b2e] mb-[6px] tracking-[0.15px]"
+                >
+                  Phone Number <span className="text-[#c0392b] ml-[2px]">*</span>
+                </label>
                 <input
+                  ref={phoneRef}
                   id="bulk-phone"
                   name="phone"
                   type="tel"
@@ -177,17 +331,43 @@ export default function BulkOrderModal({ isOpen, onClose }) {
                   placeholder="+91 98765 43210"
                   value={form.phone}
                   onChange={handleChange}
-                  className="bulk-input w-full bg-white border-[1.5px] border-[#d8e5d4] rounded-[10px] px-[14px] py-[10px] text-sm text-[#2d3b2e] outline-none transition-[border-color,box-shadow] duration-[180ms] font-[inherit] box-border"
+                  aria-invalid={!!errors.phone}
+                  aria-describedby={errors.phone ? "error-phone" : undefined}
+                  className={`bulk-input w-full bg-white rounded-[10px] px-[14px] py-[10px] text-sm text-[#2d3b2e] outline-none transition-[border-color,box-shadow] duration-[180ms] font-[inherit] box-border border-[1.5px] ${
+                    errors.phone
+                      ? "border-[#c0392b] [box-shadow:0_0_0_3px_rgba(192,57,43,0.10)]"
+                      : "border-[#d8e5d4]"
+                  }`}
                   autoComplete="tel"
                 />
+                {errors.phone && (
+                  <p id="error-phone" className="bulk-error-msg mt-[5px] text-[12px] text-[#c0392b] flex items-center gap-[5px] leading-[1.4]">
+                    <svg viewBox="0 0 16 16" fill="currentColor" className="w-[13px] h-[13px] shrink-0" aria-hidden="true">
+                      <path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1Zm.75 3.75v4a.75.75 0 0 1-1.5 0v-4a.75.75 0 0 1 1.5 0Zm-.75 6.5a.875.875 0 1 1 0-1.75.875.875 0 0 1 0 1.75Z"/>
+                    </svg>
+                    {errors.phone}
+                  </p>
+                )}
               </div>
 
               {/* Bulk Size */}
-              <div className="mb-4">
-                <p className="block text-[13.5px] font-semibold text-[#2d3b2e] mb-[6px] tracking-[0.15px]">Bulk Size (Qty)</p>
-                <div className="flex flex-wrap gap-y-[10px] gap-x-[18px] mt-1" role="radiogroup" aria-label="Bulk quantity">
+              <div className="mb-4" ref={bulkRef}>
+                <p className="block text-[13.5px] font-semibold text-[#2d3b2e] mb-[6px] tracking-[0.15px]">
+                  Bulk Size (Qty) <span className="text-[#c0392b] ml-[2px]">*</span>
+                </p>
+                <div
+                  className={`flex flex-wrap gap-y-[10px] gap-x-[18px] mt-1 rounded-[10px] transition-all duration-[180ms] ${
+                    errors.bulkSize ? "bulk-radio-error-wrap" : ""
+                  }`}
+                  role="radiogroup"
+                  aria-label="Bulk quantity"
+                  aria-describedby={errors.bulkSize ? "error-bulkSize" : undefined}
+                >
                   {["<50", "50-100", ">100"].map((size) => (
-                    <label key={size} className="flex items-center gap-[7px] cursor-pointer text-sm text-[#2d3b2e] select-none">
+                    <label
+                      key={size}
+                      className="flex items-center gap-[7px] cursor-pointer text-sm text-[#2d3b2e] select-none"
+                    >
                       <input
                         type="radio"
                         name="bulkSize"
@@ -196,11 +376,22 @@ export default function BulkOrderModal({ isOpen, onClose }) {
                         onChange={handleChange}
                         className="absolute opacity-0 w-0 h-0 pointer-events-none bulk-radio-input"
                       />
-                      <span className="bulk-radio-custom w-[18px] h-[18px] rounded-full border-2 border-[#3d5a3e] inline-flex items-center justify-center shrink-0 transition-[border-color,background] duration-[180ms] bg-white relative" aria-hidden="true" />
+                      <span
+                        className="bulk-radio-custom w-[18px] h-[18px] rounded-full border-2 border-[#3d5a3e] inline-flex items-center justify-center shrink-0 transition-[border-color,background] duration-[180ms] bg-white relative"
+                        aria-hidden="true"
+                      />
                       <span className="text-sm text-[#2d3b2e]">{size}</span>
                     </label>
                   ))}
                 </div>
+                {errors.bulkSize && (
+                  <p id="error-bulkSize" className="bulk-error-msg mt-[5px] text-[12px] text-[#c0392b] flex items-center gap-[5px] leading-[1.4]">
+                    <svg viewBox="0 0 16 16" fill="currentColor" className="w-[13px] h-[13px] shrink-0" aria-hidden="true">
+                      <path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1Zm.75 3.75v4a.75.75 0 0 1-1.5 0v-4a.75.75 0 0 1 1.5 0Zm-.75 6.5a.875.875 0 1 1 0-1.75.875.875 0 0 1 0 1.75Z"/>
+                    </svg>
+                    {errors.bulkSize}
+                  </p>
+                )}
               </div>
 
               {/* Customization */}
@@ -220,9 +411,20 @@ export default function BulkOrderModal({ isOpen, onClose }) {
                     onChange={handleChange}
                     className="bulk-checkbox-input absolute opacity-0 w-0 h-0 pointer-events-none"
                   />
-                  <span className="bulk-checkbox-custom w-[18px] h-[18px] rounded-[5px] border-2 border-[#3d5a3e] bg-white inline-flex items-center justify-center shrink-0 transition-[background,border-color] duration-[180ms] text-white" aria-hidden="true">
+                  <span
+                    className="bulk-checkbox-custom w-[18px] h-[18px] rounded-[5px] border-2 border-[#3d5a3e] bg-white inline-flex items-center justify-center shrink-0 transition-[background,border-color] duration-[180ms] text-white"
+                    aria-hidden="true"
+                  >
                     {form.customizedPlant && (
-                      <svg viewBox="0 0 12 10" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-[11px] h-[9px]">
+                      <svg
+                        viewBox="0 0 12 10"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="w-[11px] h-[9px]"
+                      >
                         <polyline points="1,5 4,8 11,1" />
                       </svg>
                     )}
@@ -238,14 +440,25 @@ export default function BulkOrderModal({ isOpen, onClose }) {
                     onChange={handleChange}
                     className="bulk-checkbox-input absolute opacity-0 w-0 h-0 pointer-events-none"
                   />
-                  <span className="bulk-checkbox-custom w-[18px] h-[18px] rounded-[5px] border-2 border-[#3d5a3e] bg-white inline-flex items-center justify-center shrink-0 transition-[background,border-color] duration-[180ms] text-white" aria-hidden="true">
+                  <span
+                    className="bulk-checkbox-custom w-[18px] h-[18px] rounded-[5px] border-2 border-[#3d5a3e] bg-white inline-flex items-center justify-center shrink-0 transition-[background,border-color] duration-[180ms] text-white"
+                    aria-hidden="true"
+                  >
                     {form.customizedPot && (
-                      <svg viewBox="0 0 12 10" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-[11px] h-[9px]">
+                      <svg
+                        viewBox="0 0 12 10"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="w-[11px] h-[9px]"
+                      >
                         <polyline points="1,5 4,8 11,1" />
                       </svg>
                     )}
                   </span>
-                  <span>Customized Pot Design</span>
+                  <span>Customized Pot Selection</span>
                 </label>
               </div>
 
@@ -263,7 +476,8 @@ export default function BulkOrderModal({ isOpen, onClose }) {
               </div>
 
               <p className="text-[12.5px] text-[#6b7c6d] text-center mt-3 mb-0 leading-[1.5]">
-                Note: Our team will call you back within <strong>48 hours</strong>.
+                Note: Our team will call you back within{" "}
+                <strong>24 hours</strong>.
               </p>
 
               {/* Actions */}
@@ -277,14 +491,14 @@ export default function BulkOrderModal({ isOpen, onClose }) {
                   Cancel
                 </button>
                 <button
+                  disabled={loading}
                   type="submit"
                   id="bulk-submit-btn"
-                  className="flex-[2] bg-[#3d5a3e] border-none rounded-[10px] py-3 px-[10px] text-[14.5px] font-bold text-white cursor-pointer font-[inherit] tracking-[0.3px] transition-[background,box-shadow,transform] duration-[180ms] [box-shadow:0_4px_14px_rgba(61,90,62,0.28)] hover:bg-[#2e4530] hover:[box-shadow:0_6px_20px_rgba(61,90,62,0.38)] hover:-translate-y-px active:translate-y-0"
+                  className="flex-[2] bg-[#3d5a3e] border-none rounded-[10px] py-3 px-[10px] text-[14.5px] font-bold text-white cursor-pointer font-[inherit] tracking-[0.3px] transition-[background,box-shadow,transform] duration-[180ms] [box-shadow:0_4px_14px_rgba(61,90,62,0.28)] hover:bg-[#2e4530] hover:[box-shadow:0_6px_20px_rgba(61,90,62,0.38)] hover:-translate-y-px active:translate-y-0 disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  Receive Callback
+                  {loading ? "Sending..." : "Receive Callback"}
                 </button>
               </div>
-
             </form>
           )}
         </div>
@@ -299,7 +513,7 @@ export default function BulkOrderModal({ isOpen, onClose }) {
 
         /* ── Card animations ── */
         .bulk-card-in  { animation: cardIn  0.30s cubic-bezier(.22,.61,.36,1) forwards; }
-        .bulk-card-out { animation: cardOut 0.24s ease-in         forwards; }
+        .bulk-card-out { animation: cardOut 0.24s ease-in forwards; }
         @keyframes cardIn  { from { opacity:0; transform: translateY(28px) scale(0.96); } to { opacity:1; transform: translateY(0) scale(1); } }
         @keyframes cardOut { from { opacity:1; transform: translateY(0) scale(1); } to { opacity:0; transform: translateY(18px) scale(0.97); } }
 
@@ -337,6 +551,23 @@ export default function BulkOrderModal({ isOpen, onClose }) {
           border-color: #3d5a3e;
         }
 
+        /* ── Error message entrance ── */
+        .bulk-error-msg {
+          animation: errorSlide 0.18s ease forwards;
+        }
+        @keyframes errorSlide {
+          from { opacity: 0; transform: translateY(-4px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── Radio group error highlight ── */
+        .bulk-radio-error-wrap {
+          padding: 8px 10px;
+          border: 1.5px solid #c0392b;
+          border-radius: 10px;
+          box-shadow: 0 0 0 3px rgba(192,57,43,0.08);
+        }
+
         /* ── Success pop animation ── */
         .bulk-success-icon { animation: successPop 0.4s cubic-bezier(.22,.61,.36,1) forwards; }
         @keyframes successPop { from { transform: scale(0.6); opacity:0; } to { transform: scale(1); opacity:1; } }
@@ -353,19 +584,34 @@ export default function BulkOrderModal({ isOpen, onClose }) {
 
 function SuccessState({ onClose }) {
   return (
-    <div className="text-center py-8 px-4 pb-6 flex flex-col items-center gap-[14px]" role="status" aria-live="polite">
+    <div
+      className="text-center py-8 px-4 pb-6 flex flex-col items-center gap-[14px]"
+      role="status"
+      aria-live="polite"
+    >
       <div
         className="bulk-success-icon w-[68px] h-[68px] rounded-full [background:linear-gradient(135deg,#3d5a3e,#5a8a5c)] flex items-center justify-center [box-shadow:0_8px_28px_rgba(61,90,62,0.30)]"
         aria-hidden="true"
       >
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round">
+        <svg
+          width="32"
+          height="32"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="#fff"
+          strokeWidth="2.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
           <polyline points="20 6 9 17 4 12" />
         </svg>
       </div>
-      <h3 className="font-poppins text-[20px] font-bold text-[#2d3b2e] m-0">Request Received!</h3>
+      <h3 className="font-poppins text-[20px] font-bold text-[#2d3b2e] m-0">
+        Request Received!
+      </h3>
       <p className="text-sm text-[#6b7c6d] leading-[1.6] m-0 max-w-[300px]">
         Thank you for your inquiry. Our team will call you back within{" "}
-        <strong style={{ color: "#3d5a3e" }}>48 hours</strong> to assist you
+        <strong style={{ color: "#3d5a3e" }}>24 hours</strong> to assist you
         with your bulk order needs.
       </p>
       <button
