@@ -33,7 +33,7 @@ export default function BlogsPage() {
 
             {/* CONTENT */}
             <div className="p-3 sm:p-4 flex flex-col flex-1">
-              <h3 className="text-[15px] sm:text-[16px] md:text-[17px] font-semibold font-[poppins] text-gray-900 line-clamp-2 leading-snug">
+              <h3 className="text-[15px] sm:text-[16px] md:text-[17px] font-semibold font-[poppins] text-gray-700 line-clamp-2 leading-snug">
                 {blog.title}
               </h3>
               <p className="mt-1 text-[13px] sm:text-[14px] md:text-[15px] font-[inter] text-gray-600 line-clamp-2 leading-tight">

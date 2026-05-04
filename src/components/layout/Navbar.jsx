@@ -105,7 +105,7 @@ const Navbar = () => {
     { label: "Corporate Gifts", href: "/corporate-gifts" },
     { label: "Garden Shop", href: "/garden-shop" },
     { label: "Bulk Orders", href: "/bulk-orders" },
-    { label: "Blogs", href: "/blogs/1" },
+    { label: "Blogs", href: "/blogs" },
     { label: "About Us", href: "/about-us" },
     { label: "Contact", href: "/contact" },
   ];

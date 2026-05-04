@@ -6,26 +6,26 @@ const COLLECTIONS_DATA = [
   {
     id: "plant-care-guides",
     date: "October 26, 2023",
-    title: "Plant Care Guides",
+    title: "10 Easy Indoor Plants for Beginners",
     authorLine: "BY AUTHOR NAME OCT 26, 2023",
     image: "/blogs/blog1.png",
-    link: "/collections/plant-care-guides",
+    link: "/blogs/1",
   },
   {
     id: "interior-design-tips",
     date: "October 26, 2023",
-    title: "Interior Design Tips",
+    title: "Best Plants to Gift",
     authorLine: "BY AUTHOR NAME OCT 26, 2023",
     image: "/blogs/blog2.png",
-    link: "/collections/interior-design-tips",
+    link: "/blogs/2",
   },
   {
     id: "wellness-green-living",
     date: "October 26, 2023",
-    title: "Wellness & Green Living",
+    title: "Ceramic vs Plastic Pots",
     authorLine: "BY AUTHOR NAME OCT 26, 2023",
     image: "/blogs/blog3.png",
-    link: "/collections/wellness-green-living",
+    link: "/blogs/3",
   },
 ];
 
@@ -43,7 +43,7 @@ const FeaturedCollectionsSec = () => {
             <div className="mt-3 mx-auto h-0.5 w-16 rounded-full [background:var(--brand-gradient)]" />
           </div>
           <Link
-            href="/collections"
+            href="/blogs"
             className="bg-brand-gradient shrink-0 rounded-full px-4 py-1.5 text-[13px] text-white transition-opacity duration-200 hover:opacity-90 sm:text-[14px] md:text-[15px] lg:text-[16px]"
           >
             View All &gt;
@@ -73,9 +73,9 @@ const FeaturedCollectionsSec = () => {
                 <h3 className="mb-1 text-[18px] font-bold text-[#2d2d2d] sm:text-[19px] md:text-[20px] lg:text-[22px] md:mb-2">
                   {post.title}
                 </h3>
-                <span className="mb-3 text-[11px] font-semibold uppercase tracking-wide text-[#7a7a7a] sm:text-[12px] md:mb-4 md:text-[13px]">
+                {/* <span className="mb-3 text-[11px] font-semibold uppercase tracking-wide text-[#7a7a7a] sm:text-[12px] md:mb-4 md:text-[13px]">
                   {post.authorLine}
-                </span>
+                </span> */}
                 <p className="text-[14px] font-semibold text-[#3d5a3e] transition-colors group-hover:text-[#4a5c47] md:text-[15px] lg:text-[16px]">
                   Read More &gt;
                 </p>
