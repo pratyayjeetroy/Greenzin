@@ -47,8 +47,17 @@ const slides = [
     tag: "Best Sellers",
     subtitle: "Loved by Thousands",
     cta: "Buy Now",
-    ctaHref: "/best-seller",
+    ctaHref: "/bestseller",
     accentColor: "#1a5c38",
+  },
+   {
+    id: 6,
+    image: "/home/kidsComboBanner.png",
+    tag: "Kids Gardening Combo",
+    subtitle: "Grow a Bond with Nature",
+    cta: "Shop Now",
+    ctaHref: "/gardenshop",
+    accentColor: "#2e6b4f",
   },
 ];
 
@@ -94,10 +103,11 @@ export default function HeroCarousel() {
           alt={slide.tag}
           width={1440}
           height={600}
-          className={`block h-auto w-full object-contain transition-opacity duration-500 ease-in-out ${
+          className={`block h-auto w-full object-contain transition-opacity duration-500 overflow-hidden ease-in-out ${
             animating ? "opacity-0" : "opacity-100"
           }`}
           draggable={false}
+
           priority
         />
         {/* Left-to-right white overlay for text legibility */}
