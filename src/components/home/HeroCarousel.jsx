@@ -97,21 +97,19 @@ export default function HeroCarousel() {
   return (
     <div className="relative w-full overflow-hidden" aria-label="Hero carousel">
       {/* ── Background Image wrapper — drives the section height ── */}
-      <div className="relative w-full">
+      <div className="relative w-full" style={{ aspectRatio: "12/5" }}>
         <Image
           src={slide.image}
           alt={slide.tag}
-          width={1440}
-          height={600}
-          className={`block h-auto w-full object-contain transition-opacity duration-500 overflow-hidden ease-in-out ${
+          fill
+          className={`object-contain transition-opacity duration-500 ease-in-out ${
             animating ? "opacity-0" : "opacity-100"
           }`}
           draggable={false}
-
           priority
         />
         {/* Left-to-right white overlay for text legibility */}
-        <div className="absolute inset-0 [background:linear-gradient(to_right,rgba(255,255,255,0.82)_0%,rgba(255,255,255,0.5)_45%,rgba(255,255,255,0)_70%)]" />
+        <div className="absolute inset-0 [background:linear-gradient(to_right,rgba(255,255,255,0.50)_0%,rgba(255,255,255,0.2)_45%,rgba(255,255,255,0)_70%)]" />
 
         {/* ── Text Content ── */}
         <div
