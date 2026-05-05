@@ -26,7 +26,7 @@ const Footer = () => {
             pots, and specialized gifting solutions.
           </p>
           <div className="flex items-center gap-4 mt-2">
-            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="bg-neutral-800 p-2 rounded-full hover:bg-brand-gradient hover:text-white transition-all duration-300" aria-label="Facebook">
+            <a href="https://www.facebook.com/share/1HbmJUZ7uA/" target="_blank" rel="noopener noreferrer" className="bg-neutral-800 p-2 rounded-full hover:bg-brand-gradient hover:text-white transition-all duration-300" aria-label="Facebook">
               <Facebook className="w-5 h-5" />
             </a>
             <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="bg-neutral-800 p-2 rounded-full hover:bg-brand-gradient hover:text-white transition-all duration-300" aria-label="Twitter">
@@ -51,23 +51,21 @@ const Footer = () => {
             <li><Link href="/pots" className="hover:text-white hover:translate-x-1 transition-all inline-flex items-center gap-2"><ArrowRight className="w-3 h-3"/> Pots & Accessories</Link></li>
             <li><Link href="/gifting" className="hover:text-white hover:translate-x-1 transition-all inline-flex items-center gap-2"><ArrowRight className="w-3 h-3"/> Gifting Options</Link></li>
             <li><Link href="/corporate-gifts" className="hover:text-white hover:translate-x-1 transition-all inline-flex items-center gap-2"><ArrowRight className="w-3 h-3"/> Corporate Gifts</Link></li>
-            <li><Link href="/bulk-orders" className="hover:text-white hover:translate-x-1 transition-all inline-flex items-center gap-2"><ArrowRight className="w-3 h-3"/> Bulk Orders</Link></li>
-            <li><Link href="/best-seller" className="hover:text-white hover:translate-x-1 transition-all inline-flex items-center gap-2"><ArrowRight className="w-3 h-3"/> Best Sellers</Link></li>
+            <li><Link href="/garden-shop" className="hover:text-white hover:translate-x-1 transition-all inline-flex items-center gap-2"><ArrowRight className="w-3 h-3"/>Garden Shop</Link></li>
           </ul>
         </div>
 
-        {/* Customer Support */}
+        {/* Know Us */}
         <div>
           <h4 className="text-white text-lg font-semibold mb-6 relative pb-2 after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-10 after:h-1 after:bg-brand-gradient after:rounded-full">
-            Customer Support
+            Know Us
           </h4>
           <ul className="flex flex-col gap-3.5 text-sm text-gray-400">
+            <li><Link href="/faq" className="hover:text-white hover:translate-x-1 transition-all inline-flex items-center gap-2"><ArrowRight className="w-3 h-3"/> Home</Link></li>
             <li><Link href="/about-us" className="hover:text-white hover:translate-x-1 transition-all inline-flex items-center gap-2"><ArrowRight className="w-3 h-3"/> About Us</Link></li>
             <li><Link href="/contact" className="hover:text-white hover:translate-x-1 transition-all inline-flex items-center gap-2"><ArrowRight className="w-3 h-3"/> Contact Us</Link></li>
-            <li><Link href="/faq" className="hover:text-white hover:translate-x-1 transition-all inline-flex items-center gap-2"><ArrowRight className="w-3 h-3"/> FAQ</Link></li>
-            <li><Link href="/shipping" className="hover:text-white hover:translate-x-1 transition-all inline-flex items-center gap-2"><ArrowRight className="w-3 h-3"/> Shipping Policy</Link></li>
-            <li><Link href="/returns" className="hover:text-white hover:translate-x-1 transition-all inline-flex items-center gap-2"><ArrowRight className="w-3 h-3"/> Returns & Refunds</Link></li>
-            <li><Link href="/privacy" className="hover:text-white hover:translate-x-1 transition-all inline-flex items-center gap-2"><ArrowRight className="w-3 h-3"/> Privacy Policy</Link></li>
+            <li><Link href="/bestseller" className="hover:text-white hover:translate-x-1 transition-all inline-flex items-center gap-2"><ArrowRight className="w-3 h-3"/> Best Sellers</Link></li>
+            <li><Link href="/blogs" className="hover:text-white hover:translate-x-1 transition-all inline-flex items-center gap-2"><ArrowRight className="w-3 h-3"/> Blogs</Link></li>
           </ul>
         </div>
 
@@ -83,14 +81,14 @@ const Footer = () => {
             </li>
             <li className="flex items-center gap-3 group">
               <Phone className="w-5 h-5 text-gray-200 shrink-0 group-hover:text-white transition-colors" />
-              <a href="tel:+12345678900" className="hover:text-white transition-colors">
-                +1 (234) 567-8900
+              <a href="tel:+91 82828 88600" className="hover:text-white transition-colors">
+                +91 82828 88600
               </a>
             </li>
             <li className="flex items-center gap-3 group">
               <Mail className="w-5 h-5 text-gray-200 shrink-0 group-hover:text-white transition-colors" />
-              <a href="mailto:support@greenzin.com" className="hover:text-white transition-colors">
-                support@greenzin.com
+              <a href="mailto:greenzincare@gmail.com" className="hover:text-white transition-colors">
+                greenzincare@gmail.com
               </a>
             </li>
           </ul>
