@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import BulkOrderModal from "./BulkOrderModal";
 
 const slides = [
   {
@@ -38,7 +39,7 @@ const slides = [
     tag: "Bulk & Corporate Orders",
     subtitle: "Green Spaces for Your Office",
     cta: "Get a Quote",
-    ctaHref: "/bulk-orders",
+    action: "bulk-modal",
     accentColor: "#2e6b4f",
   },
   {
@@ -50,13 +51,13 @@ const slides = [
     ctaHref: "/bestseller",
     accentColor: "#1a5c38",
   },
-   {
+  {
     id: 6,
     image: "/home/kidsComboBanner.png",
     tag: "Kids Gardening Combo",
     subtitle: "Grow a Bond with Nature",
     cta: "Shop Now",
-    ctaHref: "/gardenshop",
+    ctaHref: "/garden-shop",
     accentColor: "#2e6b4f",
   },
 ];
@@ -65,6 +66,7 @@ export default function HeroCarousel() {
   const [current, setCurrent] = useState(0);
   const [animating, setAnimating] = useState(false);
   const [direction, setDirection] = useState("next");
+  const [bulkModalOpen, setBulkModalOpen] = useState(false);
 
   const goTo = useCallback(
     (index, dir = "next") => {
@@ -138,12 +140,21 @@ export default function HeroCarousel() {
           </p>
 
           {/* CTA Button */}
-          <a
-            href={slide.ctaHref}
-            className="mt-2.5 inline-flex w-fit items-center justify-center rounded-full px-3.5 py-1.5 text-[10px] text-white [box-shadow:0_4px_14px_rgba(56,189,248,0.35)] transition-all duration-300 [background:var(--brand-gradient)] hover:scale-105 hover:shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 sm:mt-3.5 sm:px-5 sm:py-2 sm:text-[13px] md:mt-5 md:px-7 md:py-2.5 md:text-[16px] lg:text-[18px] xl:text-[20px]"
-          >
-            {slide.cta}
-          </a>
+          {slide.action === "bulk-modal" ? (
+            <button
+              onClick={() => setBulkModalOpen(true)}
+              className="mt-2.5 inline-flex w-fit cursor-pointer items-center justify-center rounded-full border-none px-3.5 py-1.5 text-[10px] text-white [box-shadow:0_4px_14px_rgba(56,189,248,0.35)] transition-all duration-300 [background:var(--brand-gradient)] hover:scale-105 hover:shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 sm:mt-3.5 sm:px-5 sm:py-2 sm:text-[13px] md:mt-5 md:px-7 md:py-2.5 md:text-[16px] lg:text-[18px] xl:text-[20px]"
+            >
+              {slide.cta}
+            </button>
+          ) : (
+            <a
+              href={slide.ctaHref}
+              className="mt-2.5 inline-flex w-fit items-center justify-center rounded-full px-3.5 py-1.5 text-[10px] text-white [box-shadow:0_4px_14px_rgba(56,189,248,0.35)] transition-all duration-300 [background:var(--brand-gradient)] hover:scale-105 hover:shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 sm:mt-3.5 sm:px-5 sm:py-2 sm:text-[13px] md:mt-5 md:px-7 md:py-2.5 md:text-[16px] lg:text-[18px] xl:text-[20px]"
+            >
+              {slide.cta}
+            </a>
+          )}
         </div>
       </div>
 
@@ -193,6 +204,11 @@ export default function HeroCarousel() {
           />
         ))}
       </div>
+
+      <BulkOrderModal
+        isOpen={bulkModalOpen}
+        onClose={() => setBulkModalOpen(false)}
+      />
     </div>
   );
 }
