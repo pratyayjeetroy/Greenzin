@@ -105,6 +105,8 @@ export async function POST(request) {
     const availability = formData.get("availability")?.trim() ?? "In Stock";
     const ratingScore = Number(formData.get("ratingScore") ?? 0);
     const reviewCount = Number(formData.get("reviewCount") ?? 0);
+    const quantity   = Number(formData.get("quantity") ?? 15);
+    const bestseller = formData.get("bestseller") === "true";
 
     // ── Nested objects (underscore-separated field names) ─────────
     const description = {
@@ -178,6 +180,8 @@ export async function POST(request) {
       availability,
       ratingScore,
       reviewCount,
+      quantity,
+      bestseller,
       categories,
       highlights,
       description,

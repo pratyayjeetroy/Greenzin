@@ -4,12 +4,12 @@ import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import PlantCard from "@/components/plants/PlantCard";
 
-// ─── Stat Strip ──────────────────────────────────────────────────────────────
+// ─── Stat Strip ───────────────────────────────────────────────────────────────
 function StatStrip() {
   const stats = [
     { value: "500+", label: "Plants sold this month" },
     { value: "4.8★", label: "Average customer rating" },
-    { value: "98%", label: "Happy plant parents" },
+    { value: "98%",  label: "Happy plant parents" },
     { value: "48hr", label: "Express delivery" },
   ];
   return (
@@ -33,22 +33,21 @@ function StatStrip() {
   );
 }
 
-// ─── Sort / Filter Bar ────────────────────────────────────────────────────────
+// ─── Sort Options ─────────────────────────────────────────────────────────────
 const SORT_OPTIONS = [
-  { value: "default", label: "Featured" },
-  { value: "price_asc", label: "Price: Low → High" },
+  { value: "default",    label: "Featured" },
+  { value: "price_asc",  label: "Price: Low → High" },
   { value: "price_desc", label: "Price: High → Low" },
-  { value: "rating", label: "Top Rated" },
+  { value: "rating",     label: "Top Rated" },
 ];
 
-const FILTER_TAGS = ["All", "Indoor", "Outdoor", "Low Maintenance", "Air Purifying", "Flowering"];
-
-function FilterBar({ activeFilter, setActiveFilter, activeSort, setActiveSort }) {
+// ─── Filter Bar ───────────────────────────────────────────────────────────────
+function FilterBar({ filterTags, activeFilter, setActiveFilter, activeSort, setActiveSort }) {
   return (
     <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-      {/* Filter tags */}
+      {/* Filter tags — derived from real API categories */}
       <div className="flex flex-wrap gap-2">
-        {FILTER_TAGS.map((tag) => (
+        {filterTags.map((tag) => (
           <button
             key={tag}
             onClick={() => setActiveFilter(tag)}
@@ -62,7 +61,8 @@ function FilterBar({ activeFilter, setActiveFilter, activeSort, setActiveSort })
           </button>
         ))}
       </div>
-      {/* Sort dropdown — wrapped for gradient border effect */}
+
+      {/* Sort dropdown */}
       <div className={`self-start rounded-lg p-[1.5px] sm:self-auto ${
         activeSort !== "default" ? "bg-brand-gradient" : "bg-gray-200"
       }`}>
@@ -83,11 +83,11 @@ function FilterBar({ activeFilter, setActiveFilter, activeSort, setActiveSort })
 }
 
 // ─── Rank Badge ───────────────────────────────────────────────────────────────
-export function RankBadge({ rank }) {
+function RankBadge({ rank }) {
   const colors = {
-    1: "bg-[#FFD700] text-[#7a5c00]",   // gold
-    2: "bg-[#C0C0C0] text-[#4a4a4a]",   // silver
-    3: "bg-[#CD7F32] text-white",        // bronze
+    1: "bg-[#FFD700] text-[#7a5c00]",
+    2: "bg-[#C0C0C0] text-[#4a4a4a]",
+    3: "bg-[#CD7F32] text-white",
   };
   const style = colors[rank] ?? "bg-[#e8f5e9] text-[#3a7d44]";
   return (
@@ -99,14 +99,12 @@ export function RankBadge({ rank }) {
   );
 }
 
-// ─── Bestseller Card wrapper ──────────────────────────────────────────────────
+// ─── Bestseller Card ──────────────────────────────────────────────────────────
 function BestsellerCard({ plant, rank }) {
   return (
     <div className="relative">
       <RankBadge rank={rank} />
-      {/* Reuse your existing PlantCard — pass through normally */}
       <PlantCard plant={plant} selectedCategory={plant.categories?.[0]} />
-      {/* Sold count pill */}
       {plant.soldCount && (
         <div className="mt-1.5 flex items-center justify-center">
           <span className="inline-flex items-center gap-1 rounded-full bg-[#e8f5e9] px-2.5 py-0.5 font-[inter] text-[11px] font-[500] text-[#3a7d44]">
@@ -124,7 +122,7 @@ function BestsellerCard({ plant, rank }) {
 
 const ITEMS_PER_PAGE = 8;
 
-// ─── Pagination Component ─────────────────────────────────────────────────────
+// ─── Pagination ───────────────────────────────────────────────────────────────
 function Pagination({ currentPage, totalPages, onPageChange }) {
   if (totalPages <= 1) return null;
 
@@ -132,7 +130,6 @@ function Pagination({ currentPage, totalPages, onPageChange }) {
 
   return (
     <div className="mt-8 flex items-center justify-center gap-2 sm:mt-10">
-      {/* Prev */}
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
@@ -143,7 +140,6 @@ function Pagination({ currentPage, totalPages, onPageChange }) {
         </svg>
       </button>
 
-      {/* Page numbers */}
       {pages.map((page) => (
         <button
           key={page}
@@ -158,7 +154,6 @@ function Pagination({ currentPage, totalPages, onPageChange }) {
         </button>
       ))}
 
-      {/* Next */}
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
@@ -174,29 +169,43 @@ function Pagination({ currentPage, totalPages, onPageChange }) {
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 export default function BestsellersPage() {
-  const [plants, setPlants] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [plants, setPlants]           = useState([]);
+  const [filterTags, setFilterTags]   = useState(["All"]);
+  const [loading, setLoading]         = useState(true);
+  const [error, setError]             = useState(null);
 
   const [activeFilter, setActiveFilter] = useState("All");
-  const [activeSort, setActiveSort] = useState("default");
-  const [currentPage, setCurrentPage] = useState(1);
+  const [activeSort, setActiveSort]     = useState("default");
+  const [currentPage, setCurrentPage]   = useState(1);
 
-  // Reset to page 1 whenever filter or sort changes
   const handleFilterChange = (val) => { setActiveFilter(val); setCurrentPage(1); };
-  const handleSortChange = (val) => { setActiveSort(val); setCurrentPage(1); };
+  const handleSortChange   = (val) => { setActiveSort(val);   setCurrentPage(1); };
 
-  // ── Fetch ────────────────────────────────────────────────────────────────
+  // ── Fetch ─────────────────────────────────────────────────────────────────
   const fetchBestsellers = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
-      // Change endpoint to your bestsellers API if you have one,
-      // or filter client-side from /api/plants using a `bestseller: true` flag.
-      const res = await fetch("/api/plants?bestseller=true");
+      const res = await fetch("/api/plants/bestsellers");
       if (!res.ok) throw new Error("Failed to load bestsellers");
       const data = await res.json();
-      setPlants(data.plants ?? []);
+
+      const grouped = data.grouped ?? {};
+
+      // Derive filter tabs from real API categories
+      setFilterTags(["All", ...Object.keys(grouped)]);
+
+      // Flatten all groups into one array, deduplicated by id
+      const seen = new Set();
+      const unique = Object.values(grouped)
+        .flat()
+        .filter((p) => {
+          if (seen.has(p.id)) return false;
+          seen.add(p.id);
+          return true;
+        });
+
+      setPlants(unique);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -208,30 +217,29 @@ export default function BestsellersPage() {
     fetchBestsellers();
   }, [fetchBestsellers]);
 
-  // ── Filter + Sort ────────────────────────────────────────────────────────
+  // ── Filter + Sort ─────────────────────────────────────────────────────────
   const filtered = plants
     .filter((p) =>
       activeFilter === "All" ? true : p.categories?.includes(activeFilter)
     )
     .sort((a, b) => {
-      if (activeSort === "price_asc") return (a.basePrice ?? 0) - (b.basePrice ?? 0);
+      if (activeSort === "price_asc")  return (a.basePrice ?? 0) - (b.basePrice ?? 0);
       if (activeSort === "price_desc") return (b.basePrice ?? 0) - (a.basePrice ?? 0);
-      if (activeSort === "rating") return (b.ratingScore ?? 0) - (a.ratingScore ?? 0);
+      if (activeSort === "rating")     return (b.ratingScore ?? 0) - (a.ratingScore ?? 0);
       return 0;
     });
 
   const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
-  const displayed = filtered.slice(
+  const displayed  = filtered.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
     currentPage * ITEMS_PER_PAGE
   );
 
-
-
+  // ── Render ────────────────────────────────────────────────────────────────
   return (
     <div className="w-full bg-[#f8faf7]">
 
-      {/* ── Page Header ────────────────────────────────────────────────────── */}
+      {/* Page Header */}
       <div className="border-b border-gray-100 bg-white px-4 py-6 sm:px-6 md:px-[40px]">
         {/* Breadcrumb */}
         <div className="mb-3 flex items-center gap-1.5 font-[inter] text-[12px] text-gray-400">
@@ -256,12 +264,13 @@ export default function BestsellersPage() {
         </div>
       </div>
 
-      {/* ── Main Content ───────────────────────────────────────────────────── */}
+      {/* Main Content */}
       <div className="px-4 pt-6 pb-12 sm:px-6 md:px-[40px] md:pb-16">
 
         {/* Filter Bar */}
         <div className="mb-5 sm:mb-6">
           <FilterBar
+            filterTags={filterTags}
             activeFilter={activeFilter}
             setActiveFilter={handleFilterChange}
             activeSort={activeSort}
@@ -270,7 +279,7 @@ export default function BestsellersPage() {
         </div>
 
         {/* Result count */}
-        {!loading && !error && (
+        {!loading && !error && filtered.length > 0 && (
           <p className="mb-4 font-[inter] text-[12px] text-gray-400 sm:text-[13px]">
             Showing{" "}
             <span className="font-[600] text-gray-600">
@@ -281,8 +290,7 @@ export default function BestsellersPage() {
             bestseller{filtered.length !== 1 ? "s" : ""}
             {activeFilter !== "All" && (
               <span>
-                {" "}in{" "}
-                <span className="font-[600] text-[#3a7d44]">{activeFilter}</span>
+                {" "}in <span className="font-[600] text-[#3a7d44]">{activeFilter}</span>
               </span>
             )}
           </p>
@@ -307,15 +315,19 @@ export default function BestsellersPage() {
           ) : displayed.length === 0 ? (
             <div className="col-span-full py-16 text-center">
               <p className="font-[inter] text-gray-500">
-                No bestsellers found for{" "}
-                <span className="font-[600] text-[#3a7d44]">{activeFilter}</span>.
+                No bestsellers found
+                {activeFilter !== "All" && (
+                  <span> for <span className="font-[600] text-[#3a7d44]">{activeFilter}</span></span>
+                )}.
               </p>
-              <button
-                onClick={() => handleFilterChange("All")}
-                className="mt-3 rounded-full border border-[#83B930] px-5 py-2 font-[inter] text-[13px] font-[500] text-[#3a7d44]"
-              >
-                Clear filter
-              </button>
+              {activeFilter !== "All" && (
+                <button
+                  onClick={() => handleFilterChange("All")}
+                  className="mt-3 rounded-full border border-[#83B930] px-5 py-2 font-[inter] text-[13px] font-[500] text-[#3a7d44]"
+                >
+                  Clear filter
+                </button>
+              )}
             </div>
           ) : (
             displayed.map((plant, index) => (
@@ -328,7 +340,7 @@ export default function BestsellersPage() {
           )}
         </div>
 
-        {/* ── Pagination ───────────────────────────────────────────────────── */}
+        {/* Pagination */}
         {!loading && !error && (
           <Pagination
             currentPage={currentPage}
@@ -340,14 +352,14 @@ export default function BestsellersPage() {
           />
         )}
 
-        {/* ── Stat Strip ───────────────────────────────────────────────────── */}
+        {/* Stat Strip */}
         {!loading && displayed.length > 0 && (
           <div className="mt-10 sm:mt-12">
             <StatStrip />
           </div>
         )}
 
-        {/* ── CTA ──────────────────────────────────────────────────────────── */}
+        {/* CTA */}
         {!loading && displayed.length > 0 && (
           <div className="mt-8 text-center sm:mt-10">
             <p className="mb-3 font-[inter] text-[13px] text-gray-500">
