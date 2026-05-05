@@ -2,17 +2,21 @@ import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/db";
 import { Plant } from "@/lib/models/plantSchema";
 import { handleApiError } from "@/lib/utility";
+import { categories } from "@/data/plants/plantCategories"; // adjust path if needed
+
+// Only group by categories that exist in your defined categories list
+const VALID_CATEGORIES = new Set(categories.map((c) => c.name));
 
 // ─── GET /api/plants/bestsellers ──────────────────────────────────────────────
-// Returns all bestseller plants grouped by their categories.
+// Returns all bestseller plants grouped by their valid categories only.
 // No pagination — bestsellers are always a small curated list.
 //
 // Response shape:
 // {
 //   success: true,
 //   grouped: {
-//     "Indoor Plants": [ ...plants ],
-//     "Air Purifying":  [ ...plants ],
+//     "Indoor":       [ ...plants ],
+//     "Life Care":    [ ...plants ],
 //   }
 // }
 export async function GET() {
@@ -25,11 +29,12 @@ export async function GET() {
 
     const serialised = plants.map(({ _id, ...p }) => ({ ...p, id: _id.toString() }));
 
-    // Group by each category a plant belongs to
-    // (a plant with multiple categories appears in each group)
+    // Group by each category a plant belongs to,
+    // skipping any category not present in the defined categories list
     const grouped = {};
     for (const plant of serialised) {
       for (const category of plant.categories) {
+        if (!VALID_CATEGORIES.has(category)) continue;
         if (!grouped[category]) grouped[category] = [];
         grouped[category].push(plant);
       }
