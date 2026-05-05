@@ -77,7 +77,7 @@ const Footer = () => {
           <ul className="flex flex-col gap-4 text-sm text-gray-400">
             <li className="flex items-start gap-3">
               <MapPin className="w-5 h-5 text-gray-200 shrink-0 mt-0.5" />
-              <span className="leading-relaxed">123 Green Valley Road, Nature Tech Park, PC 56789</span>
+              <span className="leading-relaxed">201 Mahatma Gandhi Road ,Kolkata -700082</span>
             </li>
             <li className="flex items-center gap-3 group">
               <Phone className="w-5 h-5 text-gray-200 shrink-0 group-hover:text-white transition-colors" />
