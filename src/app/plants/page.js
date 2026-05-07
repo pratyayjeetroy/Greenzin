@@ -20,38 +20,52 @@ function PlantsContent() {
   const scrollRef = useRef(null);
 
   /** Updates both the URL and the selected-category state */
-  const selectCategory = useCallback(
-    (name) => {
-      const params = new URLSearchParams(searchParams.toString());
-      params.set("category", name);
-      router.replace(`/plants?${params.toString()}`, { scroll: false });
-    },
-    [router, searchParams],
-  );
+ 
 
   // ── Plants data from API ──────────────────────────────────────
   const [plants, setPlants] = useState([]);
   const [plantsLoading, setPlantsLoading] = useState(true);
   const [plantsError, setPlantsError] = useState(null);
 
-  const fetchPlants = useCallback(async () => {
-    setPlantsLoading(true);
-    setPlantsError(null);
-    try {
-      const res = await fetch("/api/plants");
-      if (!res.ok) throw new Error("Failed to load plants");
-      const data = await res.json();
-      setPlants(data.plants ?? []);
-    } catch (err) {
-      setPlantsError(err.message);
-    } finally {
-      setPlantsLoading(false);
-    }
-  }, []);
 
-  useEffect(() => {
-    fetchPlants();
-  }, [fetchPlants]);
+  // 1. Add page state
+const [currentPage, setCurrentPage] = useState(1);
+const [pagination, setPagination] = useState(null);
+
+// 2. Update fetchPlants to accept a page argument and hit the right URL
+const fetchPlants = useCallback(async (category, page = 1) => {
+  setPlantsLoading(true);
+  setPlantsError(null);
+  try {
+    const params = new URLSearchParams({ page, limit: 8 });
+    if (category) params.set("category", category);
+
+    const res = await fetch(`/api/plants?${params.toString()}`);
+    if (!res.ok) throw new Error("Failed to load plants");
+    const data = await res.json();
+    setPlants(data.plants ?? []);
+    setPagination(data.pagination ?? null);
+  } catch (err) {
+    setPlantsError(err.message);
+  } finally {
+    setPlantsLoading(false);
+  }
+}, []);
+
+// 3. Re-fetch whenever category or page changes; reset page on category switch
+useEffect(() => {
+  fetchPlants(selectedCategory, currentPage);
+}, [selectedCategory, currentPage, fetchPlants]);
+
+// Reset to page 1 when the category changes (update selectCategory)
+const selectCategory = useCallback((name) => {
+  setCurrentPage(1);           // ← reset
+  const params = new URLSearchParams(searchParams.toString());
+  params.set("category", name);
+  router.replace(`/plants?${params.toString()}`, { scroll: false });
+}, [router, searchParams]);
+
+
 
   const faqs = [
     {
@@ -323,6 +337,48 @@ function PlantsContent() {
           )}
         </div>
       </div>
+
+      {/* Pagination controls — place after the plant grid */}
+{pagination && pagination.totalPages > 1 && (
+  <div className="mt-8 flex items-center justify-center gap-2 sm:mt-10">
+    {/* Prev Arrow */}
+    <button
+      onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+      disabled={currentPage === 1}
+      className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-500 transition-all disabled:cursor-not-allowed disabled:opacity-30 hover:enabled:border-[#83B930] hover:enabled:text-[#3a7d44]"
+    >
+      <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+      </svg>
+    </button>
+
+    {/* Page Numbers */}
+    {Array.from({ length: pagination.totalPages }, (_, i) => i + 1).map((page) => (
+      <button
+        key={page}
+        onClick={() => setCurrentPage(page)}
+        className={`flex h-8 w-8 items-center justify-center rounded-full font-[inter] text-[13px] font-[500] transition-all ${
+          currentPage === page
+            ? "bg-brand-gradient text-white shadow-sm"
+            : "border border-gray-200 bg-white text-gray-600 hover:border-[#83B930] hover:text-[#3a7d44]"
+        }`}
+      >
+        {page}
+      </button>
+    ))}
+
+    {/* Next Arrow */}
+    <button
+      onClick={() => setCurrentPage((p) => Math.min(pagination.totalPages, p + 1))}
+      disabled={currentPage === pagination.totalPages}
+      className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-500 transition-all disabled:cursor-not-allowed disabled:opacity-30 hover:enabled:border-[#83B930] hover:enabled:text-[#3a7d44]"
+    >
+      <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+      </svg>
+    </button>
+  </div>
+)}
 
       <FaqSection title="General FAQs" faqs={faqs} />
     </div>

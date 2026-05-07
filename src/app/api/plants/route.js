@@ -11,22 +11,63 @@ const ALLOWED_TYPES = new Set(["image/jpeg", "image/png", "image/webp", "image/a
 // ─── GET /api/plants ──────────────────────────────────────────────────────────
 // Returns all plants. Optionally filter by ?category=Indoor+Plants
 // Returns only listing-card fields (avoids sending heavy data).
+// export async function GET(request) {
+//   try {
+//     await connectDB();
+
+//     const { searchParams } = new URL(request.url);
+//     const category = searchParams.get("category");
+
+//     const filter = category ? { categories: category } : {};
+
+//     const plants = await Plant.find(filter)
+//       .select("slug name basePrice ratingScore reviewCount categories image1 image2 availability")
+//       .lean();
+
+//     const serialised = plants.map(({ _id, ...p }) => ({ ...p, id: _id.toString() }));
+
+//     return NextResponse.json({ success: true, plants: serialised }, { status: 200 });
+//   } catch (error) {
+//     return handleApiError(error);
+//   }
+// }
+
 export async function GET(request) {
   try {
     await connectDB();
 
     const { searchParams } = new URL(request.url);
     const category = searchParams.get("category");
+    const page     = Math.max(1, parseInt(searchParams.get("page")  || "1", 10));
+    const limit    = Math.max(1, parseInt(searchParams.get("limit") || "8", 10));
+    const skip     = (page - 1) * limit;
 
     const filter = category ? { categories: category } : {};
 
-    const plants = await Plant.find(filter)
-      .select("slug name basePrice ratingScore reviewCount categories image1 image2 availability")
-      .lean();
+    const [plants, totalCount] = await Promise.all([
+      Plant.find(filter)
+        .select("slug name basePrice ratingScore reviewCount categories image1 image2 availability")
+        .skip(skip)
+        .limit(limit)
+        .lean(),
+      Plant.countDocuments(filter),
+    ]);
 
     const serialised = plants.map(({ _id, ...p }) => ({ ...p, id: _id.toString() }));
 
-    return NextResponse.json({ success: true, plants: serialised }, { status: 200 });
+    return NextResponse.json(
+      {
+        success: true,
+        plants: serialised,
+        pagination: {
+          totalCount,
+          totalPages: Math.ceil(totalCount / limit),
+          currentPage: page,
+          limit,
+        },
+      },
+      { status: 200 },
+    );
   } catch (error) {
     return handleApiError(error);
   }
