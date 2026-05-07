@@ -135,7 +135,7 @@ const ProductInfo = ({ product }) => {
         <div>
           <span className="text-[13px] font-medium text-[#6b6b6b]">Price: </span>
           <span className="text-[18px] font-bold text-[#2d2d2d] sm:text-[20px]">
-            ${product.basePrice.toFixed(2)}
+            ₹{product.basePrice.toFixed(2)}
           </span>
           <span className="ml-1 text-[12px] text-[#7a7a7a]">(Plant Only)</span>
         </div>
@@ -202,7 +202,7 @@ const ProductInfo = ({ product }) => {
         <div>
           <span className="text-[13px] text-[#6b6b6b] font-medium">Total Price: </span>
           <span className="text-[20px] font-bold text-[#1a1a1a] sm:text-[22px]">
-            ${totalPrice.toFixed(2)}
+            ₹{totalPrice.toFixed(2)}
           </span>
         </div>
       </div>

@@ -5,7 +5,7 @@ const RELATED_PRODUCTS = [
   {
     id: "zz-plant",
     name: "ZZ Plant",
-    price: "$14.99",
+    price: "₹14.99",
     rating: 4.7,
     reviews: 132,
     image: "/home/category.png",
@@ -15,7 +15,7 @@ const RELATED_PRODUCTS = [
   {
     id: "peace-lily",
     name: "Peace Lily",
-    price: "$22.99",
+    price: "₹22.99",
     rating: 4.9,
     reviews: 89,
     image: "/home/floweringPlants.jpeg",
@@ -25,7 +25,7 @@ const RELATED_PRODUCTS = [
   {
     id: "pothos",
     name: "Golden Pothos",
-    price: "$12.99",
+    price: "₹12.99",
     rating: 4.8,
     reviews: 214,
     image: "/home/airPurifyingPlants.jpeg",
@@ -35,7 +35,7 @@ const RELATED_PRODUCTS = [
   {
     id: "money-plant",
     name: "Money Plant",
-    price: "$9.99",
+    price: "₹9.99",
     rating: 4.6,
     reviews: 167,
     image: "/home/vastuPlants.jpeg",

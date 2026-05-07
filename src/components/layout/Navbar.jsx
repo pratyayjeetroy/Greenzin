@@ -69,7 +69,9 @@ const Navbar = () => {
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+      router.push(
+        `/search-results?q=${encodeURIComponent(searchQuery.trim())}`,
+      );
       setSearchQuery("");
       setSearchOpen(false);
       setMobileSearchOpen(false);
@@ -77,21 +79,21 @@ const Navbar = () => {
   };
 
   const handleProductClick = (product) => {
-    router.push(`/search?q=${encodeURIComponent(product.name)}`);
+    router.push(`/search-results?q=${encodeURIComponent(product.name)}`);
     setSearchQuery("");
     setSearchOpen(false);
     setMobileSearchOpen(false);
   };
 
   const handleCategoryClick = (cat) => {
-    router.push(`/search?q=${encodeURIComponent(cat)}`);
+    router.push(`/search-results?q=${encodeURIComponent(cat)}`);
     setSearchQuery("");
     setSearchOpen(false);
     setMobileSearchOpen(false);
   };
 
   const handleViewAll = () => {
-    router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+    router.push(`/search-results?q=${encodeURIComponent(searchQuery.trim())}`);
     setSearchQuery("");
     setSearchOpen(false);
     setMobileSearchOpen(false);
