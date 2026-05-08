@@ -1,9 +1,8 @@
 "use client"
-import { useState } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { allProducts, allCategories } from "@/data/searchData";
 import { searchProducts } from "@/components/general/search";
@@ -14,11 +13,17 @@ const Navbar = () => {
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [categoryResults, setCategoryResults] = useState([]);
   const pathname = usePathname();
-  const [searchResults, setSearchResults] = useState([]);
+  const [searchResults, setSearchResults] = useState([]);       // non-plant front-end results
+  const [plantResults, setPlantResults] = useState([]);         // plant DB results (max 3)
+  const [plantTotalCount, setPlantTotalCount] = useState(0);    // total plant matches in DB
+  const [plantLoading, setPlantLoading] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const searchRef = useRef();
+  const inputRef = useRef();
   const mobileSearchRef = useRef();
   const router = useRouter();
+  const debounceTimer = useRef(null);
+  const abortCtrl = useRef(null);
 
   useEffect(() => {
     let touchMoved = false;
@@ -45,23 +50,61 @@ const Navbar = () => {
 
   const handleSearchChange = (val) => {
     setSearchQuery(val);
+
     if (!val.trim()) {
       setSearchResults([]);
       setCategoryResults([]);
+      setPlantResults([]);
+      setPlantTotalCount(0);
       setSearchOpen(false);
+      // Cancel any pending calls
+      if (debounceTimer.current) clearTimeout(debounceTimer.current);
+      if (abortCtrl.current) abortCtrl.current.abort();
       return;
     }
-    const found = searchProducts(val, allProducts);
-    setSearchResults(found.slice(0, 4)); // max 4 products
 
-    // ✅ match from start of word only — no irrelevant suggestions
+    // ── Front-end search (pots, gifts, garden-shop, corporate, etc.) ──────
+    // Filter out "Plants" section — those come from the DB
+    const nonPlantProducts = allProducts.filter(p => p.section !== "Plants");
+    const found = searchProducts(val, nonPlantProducts);
+    setSearchResults(found.slice(0, 4)); // max 4 non-plant results
+
+    // Category suggestions (front-end)
     const matchedCats = allCategories
       .filter(cat =>
         cat.toLowerCase().split(" ")
           .some(word => word.startsWith(val.toLowerCase()))
       )
-      .slice(0, 3); // max 3 suggestions
+      .slice(0, 3);
     setCategoryResults(matchedCats);
+
+    // ── Debounced plant API search ─────────────────────────────────────────
+    if (debounceTimer.current) clearTimeout(debounceTimer.current);
+    debounceTimer.current = setTimeout(async () => {
+      if (abortCtrl.current) abortCtrl.current.abort();
+      abortCtrl.current = new AbortController();
+      setPlantLoading(true);
+      try {
+        const res = await fetch(
+          `/api/search/plants?q=${encodeURIComponent(val.trim())}&mode=preview`,
+          { signal: abortCtrl.current.signal }
+        );
+        if (!res.ok) throw new Error("Search failed");
+        const data = await res.json();
+        setPlantResults(data.plants || []);
+        setPlantTotalCount(data.totalCount || 0);
+        setSearchOpen(
+          (data.plants?.length > 0) || found.length > 0 || matchedCats.length > 0
+        );
+      } catch (err) {
+        if (err.name !== "AbortError") {
+          setPlantResults([]);
+          setPlantTotalCount(0);
+        }
+      } finally {
+        setPlantLoading(false);
+      }
+    }, 300); // 300ms debounce
 
     setSearchOpen(found.length > 0 || matchedCats.length > 0);
   };
@@ -69,32 +112,38 @@ const Navbar = () => {
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
+      // Cancel any pending debounce / in-flight API call so they
+      // can't re-open the dropdown after we've closed it.
+      if (debounceTimer.current) clearTimeout(debounceTimer.current);
+      if (abortCtrl.current) abortCtrl.current.abort();
+      setPlantLoading(false);
+      inputRef.current?.blur();
       router.push(
         `/search-results?q=${encodeURIComponent(searchQuery.trim())}`,
       );
-      setSearchQuery("");
       setSearchOpen(false);
       setMobileSearchOpen(false);
     }
   };
 
   const handleProductClick = (product) => {
+    setSearchQuery(product.name);
+    inputRef.current?.blur();
     router.push(`/search-results?q=${encodeURIComponent(product.name)}`);
-    setSearchQuery("");
     setSearchOpen(false);
     setMobileSearchOpen(false);
   };
 
   const handleCategoryClick = (cat) => {
+    setSearchQuery(cat);
+    inputRef.current?.blur();
     router.push(`/search-results?q=${encodeURIComponent(cat)}`);
-    setSearchQuery("");
     setSearchOpen(false);
     setMobileSearchOpen(false);
   };
 
   const handleViewAll = () => {
     router.push(`/search-results?q=${encodeURIComponent(searchQuery.trim())}`);
-    setSearchQuery("");
     setSearchOpen(false);
     setMobileSearchOpen(false);
   };
@@ -164,7 +213,55 @@ const Navbar = () => {
         </div>
       )}
 
-      {/* Product results grouped by section */}
+      {/* ── Plants section (from DB) ── */}
+      {(plantLoading || plantResults.length > 0) && (
+        <div>
+          <div className="px-4 py-2 text-[11px] font-[700] text-gray-400 uppercase tracking-widest bg-gray-50 border-b border-gray-100 flex items-center justify-between">
+            <span>Plants</span>
+            {plantTotalCount > 0 && (
+              <span className="text-[10px] font-[600] bg-[#EAF3DE] text-[#3B6D11] px-2 py-0.5 rounded-full">
+                {plantTotalCount} found
+              </span>
+            )}
+          </div>
+          {plantLoading && plantResults.length === 0 ? (
+            <div className="px-4 py-3 text-[13px] text-gray-400 animate-pulse">Searching plants…</div>
+          ) : (
+            plantResults.map((plant, i) => (
+              <div
+                key={i}
+                onClick={() => handleProductClick({ name: plant.name, section: "Plants" })}
+                onTouchEnd={(e) => { e.stopPropagation(); handleProductClick({ name: plant.name, section: "Plants" }); }}
+                className="flex items-center gap-3 px-4 py-3 hover:bg-green-50 active:bg-green-100 cursor-pointer border-b border-gray-50 last:border-b-0 transition-colors duration-150"
+              >
+                <img
+                  src={plant.image1}
+                  alt={plant.name}
+                  className="w-10 h-10 rounded-lg object-cover border border-gray-100 shrink-0"
+                />
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-[500] text-gray-700 truncate">{plant.name}</p>
+                  <p className="text-xs text-green-600 font-[500] mt-0.5">₹ {plant.basePrice}</p>
+                </div>
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-300 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            ))
+          )}
+          {plantTotalCount > 3 && (
+            <div
+              onClick={() => { router.push(`/search-results?q=${encodeURIComponent(searchQuery.trim())}&section=Plants`); setSearchOpen(false); setMobileSearchOpen(false); }}
+              onTouchEnd={(e) => { e.stopPropagation(); router.push(`/search-results?q=${encodeURIComponent(searchQuery.trim())}&section=Plants`); setSearchOpen(false); setMobileSearchOpen(false); }}
+              className="px-4 py-2.5 text-center text-[12px] text-[#3a7d44] font-[600] hover:bg-green-50 active:bg-green-100 cursor-pointer border-t border-gray-100 transition-colors duration-150"
+            >
+              See all {plantTotalCount} plants →
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ── Non-plant product results grouped by section ── */}
       {Object.entries(
         searchResults.reduce((acc, product) => {
           if (!acc[product.section]) acc[product.section] = [];
@@ -200,8 +297,8 @@ const Navbar = () => {
         </div>
       ))}
 
-      {/* ✅ View all results at bottom */}
-      {searchResults.length > 0 && (
+      {/* View all results at bottom */}
+      {(searchResults.length > 0 || plantResults.length > 0) && (
         <div
           onClick={handleViewAll}
           onTouchEnd={(e) => { e.stopPropagation(); handleViewAll(); }}
@@ -241,6 +338,7 @@ const Navbar = () => {
             className="flex items-center bg-gray-100 rounded-full px-5 py-2.5 gap-3 border border-gray-200 focus-within:border-green-400 focus-within:bg-white transition-colors duration-200"
           >
             <input
+              ref={inputRef}
               type="search"
               value={searchQuery}
               onChange={(e) => handleSearchChange(e.target.value)}
@@ -322,6 +420,7 @@ const Navbar = () => {
             className="flex items-center bg-gray-100 rounded-full px-4 py-2.5 gap-3 border border-gray-200 focus-within:border-green-400 focus-within:bg-white transition-colors duration-200"
           >
             <input
+              ref={inputRef}
               type="search"
               value={searchQuery}
               onChange={(e) => handleSearchChange(e.target.value)}

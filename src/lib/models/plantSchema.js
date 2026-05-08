@@ -67,6 +67,11 @@ const plantSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+// ─── Indexes ──────────────────────────────────────────────────────────────────
+// Text index speeds up $text queries; regular index speeds up regex on categories
+plantSchema.index({ name: "text", categories: "text" });
+plantSchema.index({ categories: 1 });
+
 // ─── Pre-validate: auto-generate slug from name ───────────────────────────────
 plantSchema.pre("validate", async function () {
   if (!this.slug && this.name) {
