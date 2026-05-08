@@ -9,22 +9,22 @@ const contactInfo = [
   {
     icon: MapPin,
     title: "Visit Our Nursery",
-    lines: ["123 Green Valley Road,", "Nature Tech Park, PC 56789"],
-    href: "https://maps.google.com",
+    lines: ["201 Mahatma Gandhi Road,", "Kolkata -700082"],
+    href: "https://www.google.com/maps?q=201+Mahatma+Gandhi+Road,+Kolkata+700082",
     linkLabel: "Get Directions →",
   },
   {
     icon: Phone,
     title: "Call Us",
-    lines: ["+1 (234) 567-8900", "Mon–Sat, 9 AM – 7 PM"],
-    href: "tel:+12345678900",
+    lines: ["+91 82828 88600", "Mon–Sat, 9 AM – 7 PM"],
+    href: "tel:+91 82828 88600",
     linkLabel: "Call Now →",
   },
   {
     icon: Mail,
     title: "Email Us",
-    lines: ["support@greenzin.com", "We reply within 24 hours"],
-    href: "mailto:support@greenzin.com",
+    lines: ["greenzincare@gmail.com", "We reply within 24 hours"],
+    href: "mailto:greenzincare@gmail.com",
     linkLabel: "Send Email →",
   },
   {
@@ -421,13 +421,13 @@ export default function ContactPage() {
               {/* Map embed */}
               <div className="rounded-2xl overflow-hidden border border-[#e0ead7] shadow-sm w-full aspect-[4/3]">
                 <iframe
-                  title="GreenZin Nursery Location"
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3502.178!2d77.2090!3d28.6139!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjjCsDM2JzUwLjAiTiA3N8KwMTInMzIuNCJF!5e0!3m2!1sen!2sin!4v1609459200000!5m2!1sen!2sin"
-                  allowFullScreen
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  className="w-full h-full border-0"
-                />
+                title="GreenZin Nursery Location"
+                src="https://www.google.com/maps?q=201%20Mahatma%20Gandhi%20Road%2C%20Kolkata%20700082&output=embed"
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                className="w-full h-full border-0"
+              />
               </div>
 
               {/* WhatsApp card */}

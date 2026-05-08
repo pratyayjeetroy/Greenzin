@@ -29,15 +29,15 @@ const Footer = () => {
             <a href="https://www.facebook.com/share/1HbmJUZ7uA/" target="_blank" rel="noopener noreferrer" className="bg-neutral-800 p-2 rounded-full hover:bg-brand-gradient hover:text-white transition-all duration-300" aria-label="Facebook">
               <Facebook className="w-5 h-5" />
             </a>
-            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="bg-neutral-800 p-2 rounded-full hover:bg-brand-gradient hover:text-white transition-all duration-300" aria-label="Twitter">
+            {/* <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="bg-neutral-800 p-2 rounded-full hover:bg-brand-gradient hover:text-white transition-all duration-300" aria-label="Twitter">
               <Twitter className="w-5 h-5" />
-            </a>
+            </a> */}
             <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="bg-neutral-800 p-2 rounded-full hover:bg-brand-gradient hover:text-white transition-all duration-300" aria-label="Instagram">
               <Instagram className="w-5 h-5" />
             </a>
-            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="bg-neutral-800 p-2 rounded-full hover:bg-brand-gradient hover:text-white transition-all duration-300" aria-label="Youtube">
+            {/* <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="bg-neutral-800 p-2 rounded-full hover:bg-brand-gradient hover:text-white transition-all duration-300" aria-label="Youtube">
               <Youtube className="w-5 h-5" />
-            </a>
+            </a> */}
           </div>
         </div>
 
@@ -102,11 +102,11 @@ const Footer = () => {
             &copy; {new Date().getFullYear()} GreenZin. All rights reserved. Designed with precision.
           </p>
           <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-500">
-            <Link href="/terms" className="hover:text-gray-300 transition-colors">Terms of Service</Link>
+            <Link href="/terms">Terms of Service</Link>
             <span className="hidden sm:inline">|</span>
-            <Link href="/privacy" className="hover:text-gray-300 transition-colors">Privacy Policy</Link>
+            <Link href="/privacy">Privacy Policy</Link>
             <span className="hidden sm:inline">|</span>
-            <Link href="/cookie" className="hover:text-gray-300 transition-colors">Cookie Policy</Link>
+            <Link href="/cookie">Cookie Policy</Link>
           </div>
         </div>
       </div>
