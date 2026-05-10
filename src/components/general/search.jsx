@@ -5,7 +5,7 @@ export function searchProducts(query, allProducts) {
   const q = query.toLowerCase();
   return allProducts.filter(product =>
     product.name.toLowerCase().includes(q) ||
-    product.category?.some(cat => cat.toLowerCase().includes(q))
+    product.categories?.some(cat => cat.toLowerCase().includes(q))
   );
 }
 

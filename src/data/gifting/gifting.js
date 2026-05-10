@@ -4,7 +4,7 @@ export const gifts = [
     basePrice: 699,
     ratingScore: 4.7,
     reviewCount: 285,
-    category: ["Birthday", "Indoor Gift", "Easy Care"],
+    categories: ["Birthday", "Indoor Gift", "Easy Care"],
     image1: "/gift_categories/Birthday.png",
     image2: "/gift_categories/Birthday.png"
   },
@@ -13,7 +13,7 @@ export const gifts = [
     basePrice: 849,
     ratingScore: 4.6,
     reviewCount: 214,
-    category: ["Birthday", "Cute Decor", "Low Maintenance"],
+    categories: ["Birthday", "Cute Decor", "Low Maintenance"],
     image1: "/gift_categories/Birthday.png",
     image2: "/gift_categories/Birthday.png"
   },
@@ -22,7 +22,7 @@ export const gifts = [
     basePrice: 749,
     ratingScore: 4.8,
     reviewCount: 301,
-    category: ["Appreciation", "Positive Energy", "Desk Decor"],
+    categories: ["Appreciation", "Positive Energy", "Desk Decor"],
     image1: "/gift_categories/Appreciation.png",
     image2: "/gift_categories/Appreciation.png"
   },
@@ -31,7 +31,7 @@ export const gifts = [
     basePrice: 899,
     ratingScore: 4.7,
     reviewCount: 256,
-    category: ["Appreciation", "Premium Gift", "Elegant"],
+    categories: ["Appreciation", "Premium Gift", "Elegant"],
     image1: "/gift_categories/Appreciation.png",
     image2: "/gift_categories/Appreciation.png"
   },
@@ -40,7 +40,7 @@ export const gifts = [
     basePrice: 999,
     ratingScore: 4.8,
     reviewCount: 338,
-    category: ["Anniversary", "Romantic", "Decorative"],
+    categories: ["Anniversary", "Romantic", "Decorative"],
     image1: "/gift_categories/Anniversary.png",
     image2: "/gift_categories/Anniversary.png"
   },
@@ -49,7 +49,7 @@ export const gifts = [
     basePrice: 1199,
     ratingScore: 4.9,
     reviewCount: 402,
-    category: ["Anniversary", "Couple Gift", "Premium"],
+    categories: ["Anniversary", "Couple Gift", "Premium"],
     image1: "/gift_categories/Anniversary.png",
     image2: "/gift_categories/Anniversary.png"
   },
@@ -58,7 +58,7 @@ export const gifts = [
     basePrice: 1099,
     ratingScore: 4.8,
     reviewCount: 290,
-    category: ["Housewarming", "Home Decor", "Vastu Friendly"],
+    categories: ["Housewarming", "Home Decor", "Vastu Friendly"],
     image1: "/gift_categories/Housewarming.png",
     image2: "/gift_categories/Housewarming.png"
   },
@@ -67,7 +67,7 @@ export const gifts = [
     basePrice: 1299,
     ratingScore: 4.7,
     reviewCount: 244,
-    category: ["Housewarming", "Modern Decor", "Premium Gift"],
+    categories: ["Housewarming", "Modern Decor", "Premium Gift"],
     image1: "/gift_categories/Housewarming.png",
     image2: "/gift_categories/Housewarming.png"
   },
@@ -76,7 +76,7 @@ export const gifts = [
     basePrice: 799,
     ratingScore: 4.6,
     reviewCount: 198,
-    category: ["Customized", "Personalized", "Creative"],
+    categories: ["Customized", "Personalized", "Creative"],
     image1: "/gift_categories/CustomizedGifts.png",
     image2: "/gift_categories/CustomizedGifts.png"
   },
@@ -85,7 +85,7 @@ export const gifts = [
     basePrice: 949,
     ratingScore: 4.7,
     reviewCount: 223,
-    category: ["Customized", "Handcrafted", "Unique"],
+    categories: ["Customized", "Handcrafted", "Unique"],
     image1: "/gift_categories/CustomizedGifts.png",
     image2: "/gift_categories/CustomizedGifts.png"
   }

@@ -134,13 +134,23 @@ const Navbar = () => {
     setMobileSearchOpen(false);
   };
 
+  // const handleCategoryClick = (cat) => {
+  //   setSearchQuery(cat);
+  //   inputRef.current?.blur();
+  //   router.push(`/search-results?q=${encodeURIComponent(cat)}`);
+  //   setSearchOpen(false);
+  //   setMobileSearchOpen(false);
+  // };
+
   const handleCategoryClick = (cat) => {
-    setSearchQuery(cat);
-    inputRef.current?.blur();
-    router.push(`/search-results?q=${encodeURIComponent(cat)}`);
-    setSearchOpen(false);
-    setMobileSearchOpen(false);
-  };
+  setSearchQuery(cat);
+  inputRef.current?.blur();
+  // Strip trailing " Plants" / " Plant" so the query hits the DB correctly
+  const cleanQuery = cat.replace(/\s+plants?$/i, "").trim();
+  router.push(`/search-results?q=${encodeURIComponent(cleanQuery)}`);
+  setSearchOpen(false);
+  setMobileSearchOpen(false);
+};
 
   const handleViewAll = () => {
     router.push(`/search-results?q=${encodeURIComponent(searchQuery.trim())}`);

@@ -37,7 +37,7 @@ function PlantsPage() {
   }, [categoryFromUrl]);
 
   const filteredPlants = gifts.filter(
-    (plant) => plant.category?.includes(selectedCategory)
+    (plant) => plant.categories?.includes(selectedCategory)
   );
 
   const faqs = [

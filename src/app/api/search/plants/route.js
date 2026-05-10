@@ -32,20 +32,39 @@ export async function GET(request) {
     // Split query into individual words and build an $or filter so that a plant
     // is returned if ANY word from the query matches its name or any category.
     // e.g. "indoor plant" → matches docs containing "indoor" OR "plant" in name/categories.
+    // const words = query.split(/\s+/).filter(Boolean);
+    // const wordConditions = words.map((word) => {
+    //   const escaped = word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    //   const regex = new RegExp(escaped, "i");
+    //   return {
+    //     $or: [
+    //       { name: { $regex: regex } },
+    //       { categories: { $regex: regex } },
+    //     ],
+    //   };
+    // });
     const words = query.split(/\s+/).filter(Boolean);
-    const wordConditions = words.map((word) => {
-      const escaped = word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-      const regex = new RegExp(escaped, "i");
-      return {
-        $or: [
-          { name: { $regex: regex } },
-          { categories: { $regex: regex } },
+const wordConditions = words.map((word) => {
+  const escaped = word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  
+  const nameRegex = new RegExp(escaped, "i");
+  const catRegex = new RegExp(`(^|\\s)${escaped}(\\s|$)`, "i");
+  
+  return {
+    $or: [
+      { name: { $regex: nameRegex } },
+      { categories: { $regex: catRegex } },
         ],
       };
     });
 
+// ALL words must match (not any) — fixes broad results
+  const filter = wordConditions.length === 1
+    ? wordConditions[0]
+    : { $and: wordConditions };
+
     // Use $or across all word conditions — match if ANY word hits
-    const filter = { $or: wordConditions };
+    // const filter = { $or: wordConditions };
 
     const selectFields = "slug name basePrice ratingScore reviewCount categories image1 image2 availability bestseller";
 

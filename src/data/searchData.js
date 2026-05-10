@@ -16,7 +16,7 @@ export const allProducts = [
 // in searchData.js
 // CORRECT — returns plain strings
 export const allCategories = [...new Set(
-  allProducts.flatMap(p => p.category)
+  allProducts.flatMap(p => p.categories)
 )];
 
 // gives → [{ cat: "Eco-Friendly", section: "Pots" }, ...]

@@ -30,7 +30,7 @@ function CorporateContent() {
   );
 
   const filteredPlants = corporateGifts.filter(
-    (plant) => plant.category?.includes(selectedCategory)
+    (plant) => plant.categories?.includes(selectedCategory)
   );
 
   useEffect(() => {

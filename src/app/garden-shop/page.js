@@ -22,7 +22,7 @@ function ToolsPage() {
     }
   }, [categoryFromUrl]);
   const filteredTools = tools.filter(
-    (tool) => tool.category?.includes(selectedCategory)
+    (tool) => tool.categories?.includes(selectedCategory)
   );
 
  

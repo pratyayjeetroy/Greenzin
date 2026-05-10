@@ -4,7 +4,7 @@ export const tools = [
     basePrice: 299,
     ratingScore: 4.5,
     reviewCount: 210,
-    category: ["Gardening Tools", "Sharp Blade", "Lightweight"],
+    categories: ["Gardening Tools", "Sharp Blade", "Lightweight"],
     image1: "/tool_categories/t1.png",
     image2: "/tool_categories/t1.png"
   },
@@ -13,7 +13,7 @@ export const tools = [
     basePrice: 249,
     ratingScore: 4.3,
     reviewCount: 320,
-    category: ["Gardening Tools", "Lightweight", "Budget Friendly"],
+    categories: ["Gardening Tools", "Lightweight", "Budget Friendly"],
     image1: "/tool_categories/t2.png",
     image2: "/tool_categories/t2.png"
   },
@@ -22,7 +22,7 @@ export const tools = [
     basePrice: 199,
     ratingScore: 4.4,
     reviewCount: 340,
-    category: ["Gardening Tools", "Thorn Proof", "Breathable"],
+    categories: ["Gardening Tools", "Thorn Proof", "Breathable"],
     image1: "/tool_categories/t3.png",
     image2: "/tool_categories/t3.png"
   },
@@ -31,7 +31,7 @@ export const tools = [
     basePrice: 149,
     ratingScore: 4.5,
     reviewCount: 410,
-    category: ["Grow Bags", "UV Resistant", "Breathable"],
+    categories: ["Grow Bags", "UV Resistant", "Breathable"],
     image1: "/tool_categories/g1.png",
     image2: "/tool_categories/g1.png"
   },
@@ -40,7 +40,7 @@ export const tools = [
     basePrice: 179,
     ratingScore: 4.6,
     reviewCount: 367,
-    category: ["Grow Bags", "Heavy Duty", "Reusable"],
+    categories: ["Grow Bags", "Heavy Duty", "Reusable"],
     image1: "/tool_categories/g2.png",
     image2: "/tool_categories/g2.png"
   },
@@ -49,7 +49,7 @@ export const tools = [
     basePrice: 599,
     ratingScore: 4.7,
     reviewCount: 290,
-    category: ["Grow Bags", "Value Pack", "Durable"],
+    categories: ["Grow Bags", "Value Pack", "Durable"],
     image1: "/tool_categories/g3.png",
     image2: "/tool_categories/g3.png"
   },
@@ -58,7 +58,7 @@ export const tools = [
     basePrice: 299,
     ratingScore: 4.9,
     reviewCount: 185,
-    category: ["Captain Green", "Kids Activity", "Combo Kit"],
+    categories: ["Captain Green", "Kids Activity", "Combo Kit"],
     image1: "/tool_categories/cg.png",
     image2: "/tool_categories/cg.png"
   },
@@ -67,7 +67,7 @@ export const tools = [
     basePrice: 1199,
     ratingScore: 4.9,
     reviewCount: 143,
-    category: ["Captain Green", "School Project", "Best Value"],
+    categories: ["Captain Green", "School Project", "Best Value"],
     image1: "/tool_categories/cg.png",
     image2: "/tool_categories/cg.png"
   },
@@ -76,7 +76,7 @@ export const tools = [
     basePrice: 499,
     ratingScore: 4.8,
     reviewCount: 167,
-    category: ["Captain Green", "Home Activity", "Premium Kit"],
+    categories: ["Captain Green", "Home Activity", "Premium Kit"],
     image1: "/tool_categories/cg.png",
     image2: "/tool_categories/cg.png"
   }

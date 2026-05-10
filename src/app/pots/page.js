@@ -15,7 +15,7 @@ function PotsContent() {
 
   const [selectedCategory, setSelectedCategory] = useState(categoryFromUrl || "Plastic");
   const filteredPlants = pots
-    .filter((plant) => plant.category?.includes(selectedCategory));
+    .filter((plant) => plant.categories?.includes(selectedCategory));
 
   /** Updates both the URL and the selected-category state */
   const selectCategory = useCallback(

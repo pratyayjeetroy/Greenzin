@@ -98,14 +98,49 @@ function SearchContent() {
   /* ── Front-end results (non-plant) ── */
   const nonPlantProducts = allProducts.filter(p => p.section !== "Plants");
   const rawOtherResults = searchProducts(query, nonPlantProducts);
-  let otherResults = rawOtherResults
+  // ✅ Normalize all data
+const normalizePlant = (p) => ({
+  ...p,
+  price: p.basePrice,
+  rating: p.ratingScore,
+  section: "Plants",
+});
+
+const normalizeOther = (p) => ({
+  ...p,
+  price: p.price ?? p.basePrice,
+  rating: p.rating ?? p.ratingScore,
+});
+
+// ✅ Combine all results
+const allPlants = plantPageData.map(normalizePlant);
+const allOther = rawOtherResults.map(normalizeOther);
+
+// ✅ Reusable filter + sort
+const applyFiltersAndSort = (data) => {
+  let result = data
     .filter(p => selectedSection === "All" || p.section === selectedSection)
     .filter(p => minPrice === "" || p.price >= Number(minPrice))
     .filter(p => maxPrice === "" || p.price <= Number(maxPrice))
     .filter(p => selectedRating === 0 || p.rating >= selectedRating);
-  if (sortBy === "price_asc") otherResults = [...otherResults].sort((a, b) => a.price - b.price);
-  if (sortBy === "price_desc") otherResults = [...otherResults].sort((a, b) => b.price - a.price);
-  if (sortBy === "rating") otherResults = [...otherResults].sort((a, b) => b.rating - a.rating);
+
+  if (sortBy === "price_asc") result.sort((a, b) => a.price - b.price);
+  if (sortBy === "price_desc") result.sort((a, b) => b.price - a.price);
+  if (sortBy === "rating") result.sort((a, b) => b.rating - a.rating);
+
+  return result;
+};
+
+let allResults = [...allPlants, ...allOther];
+
+// ✅ apply reusable logic
+let filteredResults = applyFiltersAndSort(allResults);
+
+// split
+const plantResults = filteredResults.filter(p => p.section === "Plants");
+const otherResults = filteredResults.filter(p => p.section !== "Plants");
+
+// ✅ Split again
 
   /* ── Fetch plants preview (for "All" overview) ── */
   const fetchPlantPreview = useCallback(async () => {
@@ -131,6 +166,10 @@ function SearchContent() {
     finally { setPlantLoading(false); }
   }, [query]);
 
+  const previewFilteredPlants = applyFiltersAndSort(
+  plantPreview.map(normalizePlant)
+);
+
   useEffect(() => { fetchPlantPreview(); }, [fetchPlantPreview]);
 
   useEffect(() => {
@@ -138,7 +177,10 @@ function SearchContent() {
       fetchPlantPage(currentPage);
     }
   }, [expandedSection, currentPage, fetchPlantPage]);
-
+  
+useEffect(() => {
+  setCurrentPage(1);
+}, [minPrice, maxPrice, selectedRating, selectedSection, sortBy]);
   // Scroll to top after new page data finishes loading
   const prevLoadingRef = React.useRef(false);
   useEffect(() => {
@@ -172,8 +214,7 @@ function SearchContent() {
   const hasActiveFilters = selectedSection !== "All" || minPrice || maxPrice || selectedRating > 0;
   const activeFilterCount = [selectedSection !== "All", minPrice || maxPrice, selectedRating > 0].filter(Boolean).length;
 
-  const totalResults = plantTotalCount + rawOtherResults.length;
-
+const totalResults = filteredResults.length;
   const FilterContent = () => (
     <>
       <p className="text-[11px] font-[600] text-gray-400 uppercase tracking-wider mb-3 pb-2 border-b border-gray-100">Filters</p>
@@ -340,9 +381,13 @@ function SearchContent() {
                   </div>
                 ) : (
                   <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
-                    {plantPageData.map((plant, i) => (
-                      <PlantCard key={plant.slug || i} plant={{ ...plant, price: plant.basePrice, category: plant.categories }} selectedCategory={plant.categories?.[0]} />
-                    ))}
+                    {plantResults.map((plant, i) => (
+                    <PlantCard
+                      key={plant.slug || i}
+                      plant={plant}
+                      selectedCategory={plant.categories?.[0]}
+                    />
+                  ))}
                   </div>
                 )}
                 {plantPagination && (
@@ -387,9 +432,13 @@ function SearchContent() {
                     <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
                       {plantLoading
                         ? Array.from({ length: 3 }).map((_, i) => <div key={i} className="bg-white rounded-2xl aspect-[3/4] animate-pulse border border-gray-100" />)
-                        : plantPreview.map((plant, i) => (
-                            <PlantCard key={plant.slug || i} plant={{ ...plant, price: plant.basePrice, category: plant.categories }} selectedCategory={plant.categories?.[0]} />
-                          ))
+                        :previewFilteredPlants.map((plant, i) => (
+                      <PlantCard
+                        key={plant.slug || i}
+                        plant={plant}
+                        selectedCategory={plant.categories?.[0]}
+                      />
+                    ))
                       }
                     </div>
                     {plantTotalCount > PREVIEW_LIMIT && (
