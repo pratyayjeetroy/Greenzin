@@ -32,7 +32,7 @@ const Footer = () => {
             {/* <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="bg-neutral-800 p-2 rounded-full hover:bg-brand-gradient hover:text-white transition-all duration-300" aria-label="Twitter">
               <Twitter className="w-5 h-5" />
             </a> */}
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="bg-neutral-800 p-2 rounded-full hover:bg-brand-gradient hover:text-white transition-all duration-300" aria-label="Instagram">
+            <a href="https://www.instagram.com/greenzin.in?stkn=MWdmbjdxZmd2NTFsMg==" target="_blank" rel="noopener noreferrer" className="bg-neutral-800 p-2 rounded-full hover:bg-brand-gradient hover:text-white transition-all duration-300" aria-label="Instagram">
               <Instagram className="w-5 h-5" />
             </a>
             {/* <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="bg-neutral-800 p-2 rounded-full hover:bg-brand-gradient hover:text-white transition-all duration-300" aria-label="Youtube">
