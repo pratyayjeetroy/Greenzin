@@ -4,7 +4,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import PlantCard from "@/components/plants/PlantCard";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Suspense } from "react";
-import { pots } from "@/data/pots/pots";
+// import { pots } from "@/data/pots/pots";
 import { categories } from "@/data/pots/potCategories";
 import FaqSection from "@/components/general/FaqSection";
 
@@ -13,27 +13,75 @@ function PotsContent() {
   const searchParams = useSearchParams();
   const categoryFromUrl = searchParams.get("category");
 
-  const [selectedCategory, setSelectedCategory] = useState(categoryFromUrl || "Plastic");
-  const filteredPlants = pots
-    .filter((plant) => plant.categories?.includes(selectedCategory));
+  // const [selectedCategory, setSelectedCategory] = useState(categoryFromUrl || "Plastic");
+  // const filteredPlants = pots
+  //   .filter((plant) => plant.categories?.includes(selectedCategory));
+  const selectedCategory = categoryFromUrl || "Plastic";
+
+const [plants, setPlants] = useState([]);
+const [loading, setLoading] = useState(true);
+const [error, setError] = useState("");
 
   /** Updates both the URL and the selected-category state */
+
+
   const selectCategory = useCallback(
-    (name) => {
-      const params = new URLSearchParams(searchParams.toString());
-      params.set("category", name);
-      router.replace(`/pots?${params.toString()}`, { scroll: false });
-    },
-    [router, searchParams],
-  );
+  (name) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("category", name);
 
-  useEffect(() => {
-    if (categoryFromUrl) {
-      setSelectedCategory(categoryFromUrl);
+    router.replace(`/pots?${params.toString()}`, {
+      scroll: false,
+    });
+  },
+  [router, searchParams]
+);
+
+// Fetch products whenever the selected category changes
+useEffect(() => {
+  const controller = new AbortController();
+
+  const fetchPots = async () => {
+    try {
+      setLoading(true);
+      setError("");
+
+      const response = await fetch(
+        `/api/pots?page=1&limit=100&category=${encodeURIComponent(selectedCategory)}`,
+        {
+          method: "GET",
+          cache: "no-store",
+          signal: controller.signal,
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch pots");
+      }
+
+      const data = await response.json();
+
+      if (!data.success) {
+        throw new Error(data.message || "Unable to load products");
+      }
+
+      setPlants(data.pots || []);
+    } catch (err) {
+      if (err.name !== "AbortError") {
+        console.error("Error fetching pots:", err);
+        setError("Unable to load pots. Please try again.");
+      }
+    } finally {
+      if (!controller.signal.aborted) {
+        setLoading(false);
+      }
     }
-  }, [categoryFromUrl]);
+  };
 
-  
+  fetchPots();
+
+  return () => controller.abort();
+}, [selectedCategory]);
 
   const faqs = [
     {
@@ -133,26 +181,69 @@ function PotsContent() {
       </div>
 
       {/* Featured Products Section */}
-<div className="w-full px-4 sm:px-6 md:px-[40px] pt-6 sm:pt-8 md:pt-[24px] pb-10 sm:pb-12 md:pb-16 bg-[#f8faf7]"> 
-         {/* <h2 className="text-[22px] sm:text-[26px] md:text-[30px] lg:text-[33px] font-[600] font-[poppins] text-slate-800 text-center mb-6 sm:mb-8 md:mb-10">
-          Featured {selectedCategory}
-        </h2> */}
-        <div className="text-center mb-6 sm:mb-8 md:mb-10">
+{/* Featured Products Section */}
+<div className="w-full px-4 sm:px-6 md:px-[40px] pt-6 sm:pt-8 md:pt-[24px] pb-10 sm:pb-12 md:pb-16 bg-[#f8faf7]">
+
+  <div className="text-center mb-6 sm:mb-8 md:mb-10">
     <span className="text-xs sm:text-sm font-semibold uppercase tracking-widest text-green-600">
       Top Picks
     </span>
+
     <h2 className="mt-2 font-[poppins] text-[22px] sm:text-[26px] md:text-[30px] lg:text-[33px] font-[600] text-[#2d2d2d] leading-tight">
       <span className="text-[#3a7d44]">{selectedCategory}</span>
     </h2>
+
     <div className="mt-3 mx-auto h-0.5 w-16 rounded-full bg-gradient-to-r from-[#83B930] to-[#1992D5]" />
   </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5 md:gap-8 items-stretch">
-          {filteredPlants.map((plant, index) => (
-            <PlantCard key={index} plant={plant} selectedCategory={selectedCategory} />
-          ))}
-        </div>
-      </div>
+  {/* Loading */}
+  {loading && (
+    <div className="text-center py-16">
+      <p className="text-gray-600 font-[inter]">
+        Loading pots...
+      </p>
+    </div>
+  )}
+
+  {/* Error */}
+  {!loading && error && (
+    <div className="text-center py-16">
+      <p className="text-red-600">{error}</p>
+
+      <button
+        onClick={() => {
+          router.refresh();
+        }}
+        className="mt-4 px-5 py-2 rounded-lg bg-green-700 text-white"
+      >
+        Try Again
+      </button>
+    </div>
+  )}
+
+  {/* Empty products */}
+  {!loading && !error && plants.length === 0 && (
+    <div className="text-center py-16">
+      <p className="text-gray-600 font-[inter]">
+        No pots available in this category yet.
+      </p>
+    </div>
+  )}
+
+  {/* Products */}
+  {!loading && !error && plants.length > 0 && (
+    <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5 md:gap-8 items-stretch">
+      {plants.map((plant) => (
+        <PlantCard
+          key={plant.id}
+          plant={plant}
+          selectedCategory={selectedCategory}
+        />
+      ))}
+    </div>
+  )}
+
+</div>
 
       <FaqSection  faqs={faqs} />
 

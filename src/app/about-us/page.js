@@ -5,10 +5,10 @@ import Link from "next/link";
 import { Leaf, Heart, Globe, Award, Users, Sprout } from "lucide-react";
 
 const stats = [
-  { value: "50,000+", label: "Happy Customers", icon: Heart },
-  { value: "1,200+", label: "Plant Varieties", icon: Leaf },
-  { value: "12+", label: "Cities Covered", icon: Globe },
-  { value: "8+", label: "Years of Expertise", icon: Award },
+  { value: "500+", label: "Happy Customers", icon: Heart },
+  { value: "150+", label: "Plant Varieties", icon: Leaf },
+  { value: "2+", label: "Cities Covered", icon: Globe },
+  { value: "1+", label: "Year of Passion", icon: Award },
 ];
 
 const values = [
@@ -22,7 +22,7 @@ const values = [
     icon: Heart,
     title: "Customer Love",
     description:
-      "We don't just sell plants — we build relationships. Our team of plant experts is always on hand to guide you through your green journey with personalised care tips.",
+      "We don't just sell plants — we build relationships. Our team is always on hand to guide you through your green journey with personalised care tips.",
   },
   {
     icon: Sprout,
@@ -40,25 +40,18 @@ const values = [
 
 const team = [
   {
-    name: "Arjun Mehta",
+    name: "Sangita Burman",
     role: "Founder & CEO",
     image: "",
-    initials: "AM",
-    bio: "Passionate botanist turned entrepreneur, Arjun started GreenZin with a simple mission — make plants accessible to everyone.",
+    initials: "SB",
+    bio: "Passionate plant lover turned entrepreneur, Sangita started GreenZin with a simple mission — make plants accessible to everyone.",
   },
   {
-    name: "Priya Sharma",
-    role: "Head of Horticulture",
-    image: "",
-    initials: "PS",
-    bio: "With 10+ years in plant science, Priya ensures every plant that leaves our nursery is in perfect health and ready to thrive.",
-  },
-  {
-    name: "Karan Verma",
+    name: "Tamali Roy",
     role: "Customer Experience Lead",
     image: "",
-    initials: "KV",
-    bio: "Karan leads our care-first support team, ensuring every customer gets the right advice and the best plant experience possible.",
+    initials: "TR",
+    bio: "Tamali leads our care-first support team, ensuring every customer gets the right advice and the best plant experience possible.",
   },
 ];
 
@@ -169,10 +162,10 @@ export default function AboutUsPage() {
                 </blockquote>
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center font-bold text-sm shrink-0">
-                    AM
+                    SB
                   </div>
                   <div>
-                    <p className="font-semibold text-[14px] sm:text-[15px]">Arjun Mehta</p>
+                    <p className="font-semibold text-[14px] sm:text-[15px]">Sangita Burman</p>
                     <p className="text-white/70 text-[12px] sm:text-[13px]">Founder, GreenZin</p>
                   </div>
                 </div>
@@ -229,7 +222,7 @@ export default function AboutUsPage() {
             </h2>
             <div className="mt-3 mx-auto h-0.5 w-16 rounded-full [background:var(--brand-gradient)]" />
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 sm:gap-6 md:gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6 md:gap-8 max-w-2xl mx-auto">
             {team.map(({ name, role, initials, bio }) => (
               <div
                 key={name}
