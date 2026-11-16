@@ -1,7 +1,7 @@
 export const pots = [
   {
     name: "Classic Black Plastic Pot",
-    basePrice: 199,
+    basePrice: 195,
     ratingScore: 4.3,
     reviewCount: 320,
     categories: ["Plastic", "Lightweight", "Budget Friendly"],

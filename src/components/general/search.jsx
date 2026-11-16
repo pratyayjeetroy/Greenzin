@@ -1,5 +1,4 @@
 // components/general/search.js
-
 export function searchProducts(query, allProducts) {
   if (!query || query.trim() === "") return [];
   const q = query.toLowerCase();
