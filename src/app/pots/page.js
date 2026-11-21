@@ -238,6 +238,7 @@ useEffect(() => {
           key={plant.id}
           plant={plant}
           selectedCategory={selectedCategory}
+          type="pot"
         />
       ))}
     </div>

@@ -45,7 +45,7 @@ function StarRating({ rating }) {
   );
 }
 
-export default function PlantCard({ plant, selectedCategory, isHighlighted }) {
+export default function PlantCard({ plant, selectedCategory, isHighlighted, type }) {
   const cardRef = useRef(null);
   const [glowing, setGlowing] = useState(false);
 
@@ -60,7 +60,7 @@ export default function PlantCard({ plant, selectedCategory, isHighlighted }) {
 
   return (
     <Link
-      href={plant.slug ? `/plants/${plant.slug}` : "#"}
+      href={plant.slug ? `/${type === "pot" ? "pots" : "plants"}/${plant.slug}` : "#"}
       className="block h-full"
     >
       <div
