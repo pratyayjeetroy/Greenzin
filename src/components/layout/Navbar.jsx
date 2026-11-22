@@ -330,7 +330,7 @@ const Navbar = () => {
         <div className="shrink-0">
           <Link href="/">
             <Image
-              src="/greenZinLogo.png"
+              src="/greenzinLogo.png"
               alt="GreenZin - The Best Gardening Brand"
               width={200}
               height={56}
